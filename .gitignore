@@ -1,5 +1,5 @@
-id_rsa(zeusrpg)
-id_rsa(zeusrpg).pub
+id_rsa
+id_rsa.pub
+config.py
 **/__pycache__
 debug.log
-discord/config.py
