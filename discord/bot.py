@@ -1,6 +1,7 @@
 import discord
 
-from discord.config import BOT_TOKEN
+from discord.ext import commands
+from config import BOT_TOKEN
 
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
@@ -17,5 +18,5 @@ if __name__ == "__main__":
             print('Loaded {0}'.format(extension))
         except Exception as e:
             raise Exception
-
+    
 bot.run(f'{BOT_TOKEN}')
