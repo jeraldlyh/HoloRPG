@@ -7,7 +7,7 @@ bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
 
 extensions = [
-
+        'cogs.template'
     ]
 
 
@@ -18,5 +18,5 @@ if __name__ == "__main__":
             print('Loaded {0}'.format(extension))
         except Exception as e:
             raise Exception
-    
+
 bot.run(f'{BOT_TOKEN}')
