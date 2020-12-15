@@ -5,29 +5,32 @@ import datetime
 from discord.ext import commands
 from config import BOT_TOKEN
 
-bot = commands.Bot(command_prefix='.')
-bot.remove_command('help')
-
 extensions = [
-        'cogs.template'
+        'cogs.template',
+        'cogs.profile'
     ]
 
+class RPGBot(commands.Bot):
+    def __init__(self):
+        # Creates a super class to inherit child classes
+        super().__init__(command_prefix = '.')
 
 
-@bot.event
-async def on_ready():
-    await bot.change_presence(activity=discord.Activity(name='ZeusRPG', type=3))
-    time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Singapore'))
-    login_time = time_now.strftime('%d-%m-%Y %I:%M %p')
-    print("-----------------")
-    print('Logged in as {0} at {1}'.format(bot.user.name, login_time))
+        for cog in extensions:
+            self.load_extension(cog)
+            print(f'Loaded {cog}')
 
-if __name__ == "__main__":
-    for extension in extensions:
-        try:
-            bot.load_extension(extension)
-            print('Loaded {0}'.format(extension))
-        except Exception as e:
-            raise Exception
 
-bot.run(f'{BOT_TOKEN}')
+    async def on_ready(self):
+        await self.change_presence(activity=discord.Activity(name='ZeusRPG', type=3))
+        time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Singapore'))
+        login_time = time_now.strftime('%d-%m-%Y %I:%M %p')
+        print("-----------------")
+        print('Logged in as {0} at {1}'.format(self.user.name, login_time))
+
+    def run(self):
+        super().run(BOT_TOKEN)
+        
+
+bot = RPGBot()
+bot.run()
