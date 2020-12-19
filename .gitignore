@@ -3,3 +3,4 @@ id_rsa.pub
 discord/config.py
 **/__pycache__
 debug.log
+/.vscode

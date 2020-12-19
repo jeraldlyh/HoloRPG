@@ -7,7 +7,8 @@ from config import BOT_TOKEN
 
 extensions = [
         'cogs.template',
-        'cogs.profile'
+        'cogs.profile',
+        'cogs.moderation'
     ]
 
 class RPGBot(commands.Bot):
@@ -19,7 +20,7 @@ class RPGBot(commands.Bot):
         for cog in extensions:
             self.load_extension(cog)
             print(f'Loaded {cog}')
-
+    
 
     async def on_ready(self):
         await self.change_presence(activity=discord.Activity(name='ZeusRPG', type=3))
