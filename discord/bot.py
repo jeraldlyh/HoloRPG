@@ -8,7 +8,8 @@ from config import BOT_TOKEN
 extensions = [
         'cogs.template',
         'cogs.profile',
-        'cogs.moderation'
+        'cogs.moderation',
+        'cogs.classes'
     ]
 
 class RPGBot(commands.Bot):
