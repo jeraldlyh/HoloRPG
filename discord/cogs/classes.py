@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from utils.embed import command_processed, command_error
 from utils.checks import has_registered, has_chosen_class
-from utils.checks import NotChosenClass
+from utils.checks import NotRegistered, NotChosenClass
 
 class Classes(commands.Cog):
     def __init__(self, bot):
@@ -87,8 +87,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             return await ctx.send(embed=message)
         else:
             sql = ('''
-                INSERT INTO classes(user_id, main_class, sub_class, level, experience, health, attack, defence)
-                VALUES(?,?,?,?,?,?,?,?)
+                INSERT INTO classes(user_id, main_class, sub_class, level, experience, max_health, health, attack, defence, dungeon)
+                VALUES(?,?,?,?,?,?,?,?,?,?)
             ''')
             val = (
                 ctx.author.id,                                  # User ID
@@ -96,10 +96,11 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 self.classDict[selectedJob]['Jobs'][0],         # Sub class
                 1,                                              # Level
                 0,                                              # Experience
+                self.classDict[selectedJob]['Base Stats'][0],   # Starting max health
                 self.classDict[selectedJob]['Base Stats'][0],   # Health
                 self.classDict[selectedJob]['Base Stats'][1],   # Attack
                 self.classDict[selectedJob]['Base Stats'][2],   # Defence
-                1                                               # Dungeon level
+                0                                               # Dungeon level
                 )
             self.cursor.execute(sql, val)
             self.database.commit()
@@ -126,7 +127,10 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
 
     @advance.error
     async def advance_error(self, ctx, error):
-        if isinstance(error, NotChosenClass):
+        if isinstance(error, NotRegistered):
+            message = command_error(description=f'{ctx.author.mention} {error}')
+            await ctx.send(embed=message)
+        elif isinstance(error, NotChosenClass):
             message = command_error(description=f'{ctx.author.mention} {error}')
             await ctx.send(embed=message)
 

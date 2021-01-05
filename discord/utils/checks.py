@@ -14,7 +14,7 @@ def has_registered():
         cursor = database.cursor()
         cursor.execute(f'SELECT user_id FROM profile WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
-        if ctx.author.id != result[0]:
+        if result is None:
             # <user> have not registered in the game yet.
             raise NotRegistered('You have not registered in the game yet.')
         return True
@@ -27,7 +27,7 @@ def has_chosen_class():
         cursor = database.cursor()
         cursor.execute(f'SELECT user_id FROM classes WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
-        if ctx.author.id != result[0]:
+        if result is None:
             # <user> have not chosen a class yet.
             raise NotRegistered('You have not chosen a class yet.')
         return True
