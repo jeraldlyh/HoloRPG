@@ -2,8 +2,9 @@ import sqlite3
 import discord
 
 from discord.ext import commands
-from utils.embed import (command_processed, command_error)
-from utils.checks import has_registered
+from utils.embed import command_processed, command_error
+from utils.checks import has_registered, has_chosen_class
+from utils.checks import NotChosenClass
 
 class Classes(commands.Cog):
     def __init__(self, bot):
@@ -98,6 +99,7 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 self.classDict[selectedJob]['Base Stats'][0],   # Health
                 self.classDict[selectedJob]['Base Stats'][1],   # Attack
                 self.classDict[selectedJob]['Base Stats'][2],   # Defence
+                1                                               # Dungeon level
                 )
             self.cursor.execute(sql, val)
             self.database.commit()
@@ -105,15 +107,9 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             return await ctx.send(embed=message)
 
     @has_registered()
+    @has_chosen_class()
     @commands.command(description='Advances to next class')
     async def advance(self, ctx):
-        # Checks if user has already selected a class
-        self.cursor.execute(f'SELECT level, main_class, sub_class FROM classes WHERE user_id = {ctx.author.id}')
-        result = self.cursor.fetchone()
-        if result is None:
-            message = command_error(description=f'{ctx.author.mention} You have not selected your class yet!')
-            return await ctx.send(embed=message)
-        
         # Checks if user has sufficient level to advance job
         requiredLevelIndex = self.classDict[result[1]]['Jobs'].index(result[2]) + 1
         if result[0] < self.advancementLevels[requiredLevelIndex]:
@@ -127,6 +123,12 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             self.database.commit()
             message = command_processed(description=f'{ctx.author.mention} Congratulations, you have just advanced to **{nextJob}**!')
             return await ctx.send(embed=message)
+
+    @advance.error
+    async def advance_error(self, ctx, error):
+        if isinstance(error, NotChosenClass):
+            message = command_error(description=f'{ctx.author.mention} {error}')
+            await ctx.send(embed=message)
 
 # Adding the cog to main script
 def setup(bot):

@@ -9,7 +9,8 @@ extensions = [
         'cogs.template',
         'cogs.profile',
         'cogs.moderation',
-        'cogs.classes'
+        'cogs.classes',
+        'cogs.dungeon'
     ]
 
 class RPGBot(commands.Bot):
