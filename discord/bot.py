@@ -9,13 +9,15 @@ extensions = [
         'cogs.template',
         'cogs.profile',
         'cogs.moderation',
-        'cogs.classes'
+        'cogs.classes',
+        'cogs.help'
     ]
 
 class RPGBot(commands.Bot):
     def __init__(self):
         # Creates a super class to inherit child classes
         super().__init__(command_prefix = '.')
+        self.remove_command('help')
 
 
         for cog in extensions:
@@ -32,6 +34,7 @@ class RPGBot(commands.Bot):
 
     def run(self):
         super().run(BOT_TOKEN)
+    
         
 
 bot = RPGBot()
