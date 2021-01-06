@@ -10,7 +10,7 @@ class NotChosenClass(commands.CheckFailure):
 def has_registered():
     '''Checks if user has been registered in database'''
     def predicate(ctx):
-        database = sqlite3.connect("users.db")
+        database = sqlite3.connect('users.db')
         cursor = database.cursor()
         cursor.execute(f'SELECT user_id FROM profile WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
@@ -23,7 +23,7 @@ def has_registered():
 def has_chosen_class():
     '''Checks if user has chosen a class'''
     def predicate(ctx):
-        database = sqlite3.connect("users.db")
+        database = sqlite3.connect('users.db')
         cursor = database.cursor()
         cursor.execute(f'SELECT user_id FROM classes WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
@@ -35,7 +35,7 @@ def has_chosen_class():
 
 def user_has_registered(userID):
     '''Checks if a particular user has been registered in database'''
-    database = sqlite3.connect("users.db")
+    database = sqlite3.connect('users.db')
     cursor = database.cursor()
     cursor.execute(f'SELECT user_id FROM profile WHERE user_id = {userID}')
     result = cursor.fetchone()

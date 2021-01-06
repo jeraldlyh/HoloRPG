@@ -1,16 +1,17 @@
 import discord
 import pytz
 import datetime
+import os
 
 from discord.ext import commands
-from config import BOT_TOKEN
+from config.parser import Parser
 
 extensions = [
         'cogs.template',
         'cogs.profile',
         'cogs.moderation',
         'cogs.classes',
-        'cogs.help'
+        'cogs.help',
         'cogs.dungeon'
     ]
 
@@ -19,6 +20,7 @@ class RPGBot(commands.Bot):
         # Creates a super class to inherit child classes
         super().__init__(command_prefix = '.')
         self.remove_command('help')
+        self.config = Parser()
 
 
         for cog in extensions:
@@ -34,9 +36,7 @@ class RPGBot(commands.Bot):
         print('Logged in as {0} at {1}'.format(self.user.name, login_time))
 
     def run(self):
-        super().run(BOT_TOKEN)
-    
-        
+        super().run(self.config.discordKey)
 
 bot = RPGBot()
 bot.run()

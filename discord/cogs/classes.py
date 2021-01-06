@@ -16,7 +16,7 @@ class Classes(commands.Cog):
                 'Skills' : { # Chance, Attack Damage
                     'Perforate' : [100, 200],
                     'Ultimate' : [15, 500],
-                    'Block' : 50
+                    'Block' : [50, 0]
                 }
             },
             'Archer' : {
@@ -25,7 +25,7 @@ class Classes(commands.Cog):
                 'Skills' : {
                     'Pierce' : [100, 200],
                     'Ultimate' : [15, 500],
-                    'Swerve' : 50
+                    'Swerve' : [50, 0]
                 }
             },
             'Rogue' : {
@@ -34,7 +34,7 @@ class Classes(commands.Cog):
                 'Skills' : {
                     'Ninjutsu' : [100, 200],
                     'Ultimate' : [15, 500],
-                    'Shinobi' : 50
+                    'Shinobi' : [50, 0]
                 }
             },
             'Magician' : {
@@ -43,13 +43,11 @@ class Classes(commands.Cog):
                 'Skills' : {
                     'Spellslinger' : [100, 200],
                     'Ultimate' : [15, 500],
-                    'Heal' : 50
+                    'Heal' : [50, 0]
                 }
             }
         }
         self.advancementLevels = [1, 30, 60, 90]
-        self.database = sqlite3.connect('users.db')
-        self.cursor = self.database.cursor()
 
 
     @commands.command(description='Displays available classes')
@@ -73,6 +71,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
     @has_registered()
     @commands.command(description='Chooses a main class')
     async def choose(self, ctx, job):
+        database = sqlite3.connect('users.db')
+        cursor = database.cursor()
         selectedJob = str(job).capitalize()
 
         if selectedJob not in self.classDict:
@@ -80,8 +80,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             return await ctx.send(embed=message)
         
         # Checks if user has already selected a class previously
-        self.cursor.execute(f'SELECT user_id, main_class FROM classes WHERE user_id = {ctx.author.id}')
-        result = self.cursor.fetchone()
+        cursor.execute(f'SELECT user_id, main_class FROM classes WHERE user_id = {ctx.author.id}')
+        result = cursor.fetchone()
         if result is not None and result[0] == ctx.author.id:
             message = command_error(description=f'{ctx.author.mention} You have already selected a class - **{result[1]}**.')
             return await ctx.send(embed=message)
@@ -102,8 +102,9 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 self.classDict[selectedJob]['Base Stats'][2],   # Defence
                 0                                               # Dungeon level
                 )
-            self.cursor.execute(sql, val)
-            self.database.commit()
+            cursor.execute(sql, val)
+            database.commit()
+            database.close()
             message = command_processed(description=f"{ctx.author.mention} You have successfully selected **{selectedJob}** as your class. You're now officially a **{self.classDict[selectedJob]['Jobs'][0]}**!")
             return await ctx.send(embed=message)
 
@@ -120,8 +121,9 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             nextJob = self.classDict[result[1]]['Jobs'][requiredLevelIndex]
             sql = 'UPDATE classes SET sub_class = ? WHERE user_id = ?'
             val = (nextJob, ctx.author.id)
-            self.cursor.execute(sql, val)
-            self.database.commit()
+            cursor.execute(sql, val)
+            database.commit()
+            database.close()
             message = command_processed(description=f'{ctx.author.mention} Congratulations, you have just advanced to **{nextJob}**!')
             return await ctx.send(embed=message)
 

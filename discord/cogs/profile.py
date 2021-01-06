@@ -12,26 +12,14 @@ from utils.checks import NotRegistered, NotChosenClass
 class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.database = sqlite3.connect('users.db')
-        self.cursor = self.database.cursor()
-        # self.cursor.execute('''
-        # CREATE TABLE IF NOT EXISTS classes(
-        #     user_id INT,
-        #     main_class VARCHAR(20),
-        #     sub_class VARCHAR(20),
-        #     health INT,
-        #     experience INT,
-        #     level INT,
-        #     attack INT,
-        #     defence INT
-        # )
-        # '''
-        # )
+
 
     @commands.command(description='Registers user into the database')
     async def register(self, ctx):
-        self.cursor.execute(f'SELECT user_id FROM profile WHERE user_id = {ctx.author.id}')
-        result = self.cursor.fetchone()
+        database = sqlite3.connect('users.db')
+        cursor = database.cursor()
+        cursor.execute(f'SELECT user_id FROM profile WHERE user_id = {ctx.author.id}')
+        result = cursor.fetchone()
 
         # If user does not exist in database
         if result is None:
@@ -42,8 +30,9 @@ class Profile(commands.Cog):
             time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Singapore'))
             date_registered = time_now.strftime('%Y-%m-%d %H:%M:%S')
             val = (ctx.author.id, date_registered)
-            self.cursor.execute(sql, val)
-            self.database.commit()
+            cursor.execute(sql, val)
+            database.commit()
+            database.close()
             message = command_processed(description=f'{ctx.author.mention} has successfully registered.')
             await ctx.send(embed=message)
         else:
@@ -54,11 +43,15 @@ class Profile(commands.Cog):
     @has_chosen_class()
     @commands.command(description='Display user profile')
     async def profile(self, ctx, user:discord.User=None):
-        self.cursor.execute(f'''
+        database = sqlite3.connect('users.db')
+        cursor = database.cursor()
+        cursor.execute(f'''
             SELECT sub_class, level, experience, max_health, health, attack, defence
             FROM classes WHERE user_id = {ctx.author.id}
             ''')
-        result = self.cursor.fetchone()
+        result = cursor.fetchone()
+        database.close()
+
         if user is None:
             user = ctx.author
         embed = discord.Embed(color=discord.Color.from_hsv(random.random(), 1, 1))
