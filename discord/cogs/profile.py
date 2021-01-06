@@ -7,6 +7,7 @@ import random
 from discord.ext import commands
 from utils.embed import command_processed, command_error
 from utils.checks import has_registered, has_chosen_class
+from utils.checks import NotRegistered, NotChosenClass
 
 class Profile(commands.Cog):
     def __init__(self, bot):
@@ -35,7 +36,7 @@ class Profile(commands.Cog):
         # If user does not exist in database
         if result is None:
             sql = ('''
-                INSERT INTO profile(user_id, date_registered) 
+                INSERT INTO profile(user_id, date_registered)
                 VALUES(?,?)
             ''')
             time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Singapore'))
@@ -44,6 +45,9 @@ class Profile(commands.Cog):
             self.cursor.execute(sql, val)
             self.database.commit()
             message = command_processed(description=f'{ctx.author.mention} has successfully registered.')
+            await ctx.send(embed=message)
+        else:
+            message = command_error(description=f'{ctx.author.mention} You have already registered in the game.')
             await ctx.send(embed=message)
 
     @has_registered()
@@ -69,7 +73,14 @@ class Profile(commands.Cog):
         embed.add_field(name='Currencies', value=f'**')
         await ctx.send(embed=embed)
 
-
+    @profile.error
+    async def profile_error(self, ctx, error):
+        if isinstance(error, NotRegistered):
+            message = command_error(description=f'{ctx.author.mention} {error}')
+            await ctx.send(embed=message)
+        elif isinstance(error, NotChosenClass):
+            message = command_error(description=f'{ctx.author.mention} {error}')
+            await ctx.send(embed=message)
 
 # Adding the cog to main script
 def setup(bot):
