@@ -16,15 +16,14 @@ class Dungeon(commands.Cog):
 
     def in_same_dungeon(self, listOfUserIDs):
         '''Checks if all party members are in the same dungeon location'''
-
+        
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
-        cursor.execute(f'SELECT dungeon FROM classes WHERE user_id = {listOfUserIDs[0]}')
-        dungeonLevel = cursor.fetchone()[0]
-        for userID in listOfUserIDs[1:]:
-            cursor.execute(f'SELECT dungeon FROM classes WHERE user_id = {userID}')
-            result = cursor.fetchone()[0]
-            if result != dungeonLevel:
+        cursor.execute(f'SELECT dungeon FROM classes WHERE user_id IN {tuple(listOfUserIDs)}')
+        result = cursor.fetchall()
+        dungeonLevel = result[0]
+        for level in list(result):
+            if level != dungeonLevel:
                 return False
         return True
 
@@ -39,7 +38,7 @@ class Dungeon(commands.Cog):
     def has_sufficient_hp(self, playersData):
         '''
         Checks if all players have sufficient HP to enter the dungeon
-        Returns a string if one of the players have insufficient HP
+        Returns a string if at least one of the players has insufficient HP
         '''
 
         errorList = []
