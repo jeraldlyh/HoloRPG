@@ -14,36 +14,36 @@ class Classes(commands.Cog):
                 'Jobs': ['Dawn Warrior', 'Gladiator', 'Champion', 'Battle Master'],
                 'Base Stats' : [150, 10, 15],
                 'Skills' : { # Chance, Attack Damage
-                    'Perforate' : [100, 200],
+                    'Perforate' : [100, 120],
                     'Ultimate' : [15, 500],
-                    'Block' : [50, 0]
+                    'Block' : [50, 170]
                 }
             },
             'Archer' : {
                 'Jobs': ['Hunter', 'Ranger', 'Arcane Archer', 'Bow Master'],
                 'Base Stats' : [110, 15, 10],
                 'Skills' : {
-                    'Pierce' : [100, 200],
+                    'Pierce' : [100, 120],
                     'Ultimate' : [15, 500],
-                    'Swerve' : [50, 0]
+                    'Swerve' : [50, 170]
                 }
             },
             'Rogue' : {
                 'Jobs': ['Genin', 'Chunin', 'Jonin', 'Hokage'],
                 'Base Stats' : [110, 15, 10],
                 'Skills' : {
-                    'Ninjutsu' : [100, 200],
+                    'Ninjutsu' : [100, 120],
                     'Ultimate' : [15, 500],
-                    'Shinobi' : [50, 0]
+                    'Shinobi' : [50, 170]
                 }
             },
             'Magician' : {
                 'Jobs' : ['Battle Cleric', 'Sorcerer', 'Summoner', 'Warlock'],
                 'Base Stats' : [100, 7, 7],
                 'Skills' : {
-                    'Spellslinger' : [100, 200],
+                    'Spellslinger' : [100, 120],
                     'Ultimate' : [15, 500],
-                    'Heal' : [50, 0]
+                    'Heal' : [50, 170]
                 }
             }
         }
@@ -71,15 +71,14 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
     @has_registered()
     @commands.command(description='Chooses a main class')
     async def choose(self, ctx, job):
-        database = sqlite3.connect('users.db')
-        cursor = database.cursor()
         selectedJob = str(job).capitalize()
-
         if selectedJob not in self.classDict:
             message = command_error(description='There are currently **4** classes available. Refer to ``.classes``.')
             return await ctx.send(embed=message)
         
         # Checks if user has already selected a class previously
+        database = sqlite3.connect(self.bot.config.dbPath)
+        cursor = database.cursor()
         cursor.execute(f'SELECT user_id, main_class FROM classes WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
         if result is not None and result[0] == ctx.author.id:
@@ -87,10 +86,10 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             return await ctx.send(embed=message)
         else:
             sql = ('''
-                INSERT INTO classes(user_id, main_class, sub_class, level, experience, max_health, health, attack, defence, dungeon)
-                VALUES(?,?,?,?,?,?,?,?,?,?)
+                INSERT INTO classes(user_id, main_class, sub_class, level, experience, max_health, health, attack, defence, max_dungeon, dungeon)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?)
             ''')
-            val = (
+            data = (
                 ctx.author.id,                                  # User ID
                 selectedJob,                                    # Main class
                 self.classDict[selectedJob]['Jobs'][0],         # Sub class
@@ -100,9 +99,10 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 self.classDict[selectedJob]['Base Stats'][0],   # Health
                 self.classDict[selectedJob]['Base Stats'][1],   # Attack
                 self.classDict[selectedJob]['Base Stats'][2],   # Defence
+                0,                                              # Max dungeon level
                 0                                               # Dungeon level
                 )
-            cursor.execute(sql, val)
+            cursor.execute(sql, data)
             database.commit()
             database.close()
             message = command_processed(description=f"{ctx.author.mention} You have successfully selected **{selectedJob}** as your class. You're now officially a **{self.classDict[selectedJob]['Jobs'][0]}**!")
@@ -120,8 +120,10 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
         else:
             nextJob = self.classDict[result[1]]['Jobs'][requiredLevelIndex]
             sql = 'UPDATE classes SET sub_class = ? WHERE user_id = ?'
-            val = (nextJob, ctx.author.id)
-            cursor.execute(sql, val)
+            data = (nextJob, ctx.author.id)
+            database = sqlite3.connect(self.bot.config.dbPath)
+            cursor = database.cursor()
+            cursor.execute(sql, data)
             database.commit()
             database.close()
             message = command_processed(description=f'{ctx.author.mention} Congratulations, you have just advanced to **{nextJob}**!')

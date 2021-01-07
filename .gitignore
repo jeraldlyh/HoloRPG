@@ -1,6 +1,6 @@
 id_rsa
 id_rsa.pub
-discord/config.py
 **/__pycache__
 debug.log
 /.vscode
+discord/config/config.ini

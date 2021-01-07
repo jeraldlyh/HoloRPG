@@ -16,7 +16,7 @@ class Profile(commands.Cog):
 
     @commands.command(description='Registers user into the database')
     async def register(self, ctx):
-        database = sqlite3.connect('users.db')
+        database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
         cursor.execute(f'SELECT user_id FROM profile WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
@@ -29,8 +29,8 @@ class Profile(commands.Cog):
             ''')
             time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Singapore'))
             date_registered = time_now.strftime('%Y-%m-%d %H:%M:%S')
-            val = (ctx.author.id, date_registered)
-            cursor.execute(sql, val)
+            data = (ctx.author.id, date_registered)
+            cursor.execute(sql, data)
             database.commit()
             database.close()
             message = command_processed(description=f'{ctx.author.mention} has successfully registered.')
@@ -43,7 +43,7 @@ class Profile(commands.Cog):
     @has_chosen_class()
     @commands.command(description='Display user profile')
     async def profile(self, ctx, user:discord.User=None):
-        database = sqlite3.connect('users.db')
+        database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
         cursor.execute(f'''
             SELECT sub_class, level, experience, max_health, health, attack, defence
