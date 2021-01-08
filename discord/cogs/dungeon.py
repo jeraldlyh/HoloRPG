@@ -8,6 +8,7 @@ from discord.ext import commands
 from cogs.monsters import Monsters
 from cogs.classes import Classes
 from utils.checks import has_registered, user_has_registered
+from utils.checks import NotRegistered, NotChosenClass
 from utils.embed import command_processed, command_error
 
 class Dungeon(commands.Cog):
@@ -530,8 +531,8 @@ class Dungeon(commands.Cog):
 
             await self.start_battle(ctx, playersData, dungeonLevel, monster, color)
 
-
     @has_registered()
+    @has_chosen_class()
     @commands.command(description='Travels to another dungeon location')
     async def travel(self, ctx, dungeonLevel:int):
         # Checks if player tries to access level < 1
@@ -552,6 +553,7 @@ class Dungeon(commands.Cog):
         level = result[0]
         maxLevel = result[1]
 
+        # Checks if selected level is below player's maxLevel
         if dungeonLevel < maxLevel:
             sql = ('''
                 UPDATE dungeon
@@ -569,6 +571,16 @@ class Dungeon(commands.Cog):
             database.close()
             message = command_error(description=f'{ctx.author.mention} You are not strong enough to travel beyond **Level {maxLevel} - {Monsters(0).dungeons[maxLevel- 1]}**')
             await ctx.send(embed=message)
+
+    @travel.error
+    async def travel_error(self, ctx, error):
+        if isinstance(error, NotRegistered):
+            message = command_error(description=f'{ctx.author.mention} {error}')
+            await ctx.send(embed=message)
+        elif isinstance(error, NotChosenClass):
+            message = command_error(description=f'{ctx.author.mention} {error}')
+            await ctx.send(embed=message)
+
 
 
 # Adding the cog to main script
