@@ -19,7 +19,7 @@ class Dungeon(commands.Cog):
         
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
-        cursor.execute(f'SELECT dungeon FROM classes WHERE user_id IN {tuple(listOfUserIDs)}')
+        cursor.execute(f'SELECT level FROM dungeon WHERE user_id IN {tuple(listOfUserIDs)}')
         result = cursor.fetchall()
         dungeonLevel = result[0]
         for level in list(result):

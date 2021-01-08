@@ -79,28 +79,29 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
         # Checks if user has already selected a class previously
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
-        cursor.execute(f'SELECT user_id, main_class FROM classes WHERE user_id = {ctx.author.id}')
+        cursor.execute(f'SELECT main_class FROM profile WHERE user_id = {ctx.author.id}')
         result = cursor.fetchone()
         if result is not None and result[0] == ctx.author.id:
             message = command_error(description=f'{ctx.author.mention} You have already selected a class - **{result[1]}**.')
             return await ctx.send(embed=message)
         else:
             sql = ('''
-                INSERT INTO classes(user_id, main_class, sub_class, level, experience, max_health, health, attack, defence, max_dungeon, dungeon)
-                VALUES(?,?,?,?,?,?,?,?,?,?,?)
+                UPDATE profile
+                SET main_class = ?,
+                    sub_class = ?,
+                    max_health = ?,
+                    health = ?,
+                    attack = ?,
+                    defence = ?
+                WHERE user_id = ?
             ''')
             data = (
-                ctx.author.id,                                  # User ID
                 selectedJob,                                    # Main class
                 self.classDict[selectedJob]['Jobs'][0],         # Sub class
-                1,                                              # Level
-                0,                                              # Experience
                 self.classDict[selectedJob]['Base Stats'][0],   # Starting max health
                 self.classDict[selectedJob]['Base Stats'][0],   # Health
                 self.classDict[selectedJob]['Base Stats'][1],   # Attack
                 self.classDict[selectedJob]['Base Stats'][2],   # Defence
-                0,                                              # Max dungeon level
-                0                                               # Dungeon level
                 )
             cursor.execute(sql, data)
             database.commit()
@@ -112,6 +113,11 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
     @has_chosen_class()
     @commands.command(description='Advances to next class')
     async def advance(self, ctx):
+        database = sqlite3.connect(self.bot.config.dbPath)
+        cursor = database.cursor()
+        cursor.execute(f'SELECT level, main_class, sub_class FROM profile WHERE user_id = {ctx.author.id}')
+        result = cursor.fetchone()
+
         # Checks if user has sufficient level to advance job
         requiredLevelIndex = self.classDict[result[1]]['Jobs'].index(result[2]) + 1
         if result[0] < self.advancementLevels[requiredLevelIndex]:
@@ -119,13 +125,12 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             return await ctx.send(embed=message)
         else:
             nextJob = self.classDict[result[1]]['Jobs'][requiredLevelIndex]
-            sql = 'UPDATE classes SET sub_class = ? WHERE user_id = ?'
+            sql = 'UPDATE profile SET sub_class = ? WHERE user_id = ?'
             data = (nextJob, ctx.author.id)
-            database = sqlite3.connect(self.bot.config.dbPath)
-            cursor = database.cursor()
             cursor.execute(sql, data)
             database.commit()
             database.close()
+            
             message = command_processed(description=f'{ctx.author.mention} Congratulations, you have just advanced to **{nextJob}**!')
             return await ctx.send(embed=message)
 

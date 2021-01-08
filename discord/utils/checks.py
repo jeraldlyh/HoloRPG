@@ -17,7 +17,7 @@ def has_registered():
         result = cursor.fetchone()
         if result is None:
             # <user> have not registered in the game yet.
-            raise NotRegistered('You have not registered in the game yet.')
+            raise NotRegistered('You have **not registered** in the game yet')
         return True
     return commands.check(predicate)
 
@@ -31,7 +31,7 @@ def has_chosen_class():
         result = cursor.fetchone()
         if result is None:
             # <user> have not chosen a class yet.
-            raise NotRegistered('You have not chosen a class yet.')
+            raise NotRegistered('You have **not chosen** a class yet')
         return True
     return commands.check(predicate)
 

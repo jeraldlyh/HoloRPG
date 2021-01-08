@@ -3,6 +3,7 @@ import pytz
 import datetime
 import os
 
+from create_sql import create_dungeon_table, create_profile_table
 from discord.ext import commands
 from config.parser import Parser
 
@@ -22,10 +23,12 @@ class RPGBot(commands.Bot):
         self.remove_command('help')
         self.config = Parser()
 
-
         for cog in extensions:
             self.load_extension(cog)
             print(f'Loaded {cog}')
+        
+        create_profile_table(self.config.dbPath)
+        create_dungeon_table(self.config.dbPath)
     
 
     async def on_ready(self):
