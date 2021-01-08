@@ -3,13 +3,14 @@ import math
 import os
 
 class Monsters(object):
-    def __init__(self, baseLevel):
+    def __init__(self, index):
         # Dungeons
         self.dungeons = ['Dungeon 1', 'Dungeon 2', 'Dungeon 3', 'Dungeon 4']
-        self.dungeonName = self.dungeons[baseLevel]
+        self.dungeonName = self.dungeons[index]
+        self.baseLevel = index + 1
         
         # Monster Stats
-        self.level = random.randint(baseLevel, baseLevel + 10 if baseLevel != 0 else baseLevel + 9)
+        self.level = random.randint(self.baseLevel, self.baseLevel + 10 if self.baseLevel != 0 else self.baseLevel + 9)
         self.HP = 15 * self.level
         self.maxHP = self.HP
         self.attack = 7 + 2 * self.level

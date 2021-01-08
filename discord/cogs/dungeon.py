@@ -14,16 +14,64 @@ class Dungeon(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def in_same_dungeon(self, listOfUserIDs):
-        '''Checks if all party members are in the same dungeon location'''
-        
+    def format_grammar(self, errorList, singular, plural, errorType):
+        '''Fixes minor grammar in sentences'''
+
+        # Returns empty string if list is empty
+        errorText = f'<@{errorList[0]}>' if errorList else ''
+        for playerID in errorList[1:]:
+            errorText += f', <@{playerID}>'
+
+        # Grammar correction
+        if errorText:
+            if len(errorList) == 1:
+                errorText += f' {singular} {errorType}'
+            else:
+                errorText += f' {plural} {errorType}'
+        return errorText
+
+    def check_dungeon_status(self, playersData):
+        '''
+        Pulls latest status updates from SQL database
+        Checks if any of the players are currently in a battle
+        '''
+
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
-        cursor.execute(f'SELECT level FROM dungeon WHERE user_id IN {tuple(listOfUserIDs)}')
-        result = cursor.fetchall()
-        dungeonLevel = result[0]
-        for level in list(result):
-            if level != dungeonLevel:
+        sql = (f'''
+                SELECT status
+                FROM dungeon
+                WHERE user_id = {list(playersData.keys())[0]}
+            ''')
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        status = result[0]
+
+        errorList = []
+        for index, data in enumerate(playersData.items()):
+            if index == 0:
+                continue
+
+            sql = (f'''
+                SELECT status
+                FROM dungeon
+                WHERE user_id = {data[0]}
+            ''')
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result[0] != status:
+                errorList.append(playerID)
+
+        errorType = 'currently **in battle**'
+        errorText = self.format_grammar(errorList, 'is', 'are', errorType)
+        return errorText
+
+    def in_same_dungeon_location(self, playersData):
+        '''Checks if all party members are in the same dungeon location'''
+
+        dungeonLevel = playersData[list(playersData.keys())[0]]['Dungeon'][1]
+        for playerID in playersData:
+            if playersData[playerID]['Dungeon'][1] != dungeonLevel:
                 return False
         return True
 
@@ -31,7 +79,7 @@ class Dungeon(commands.Cog):
         '''Checks if there's at least one player alive in the dungeon after each turn'''
 
         for player in playersData:
-            if playersData[player]['Statistics'][2] != 0:
+            if playersData[player]['Statistics'][4] != 0:
                 return True
         return False
 
@@ -43,21 +91,12 @@ class Dungeon(commands.Cog):
 
         errorList = []
         for playerID in playersData:
-            playerHP = playersData[playerID]['Statistics'][2]
+            playerHP = playersData[playerID]['Statistics'][4]
             if playerHP == 0:
                 errorList.append(playerID)
 
-        # Returns empty string if list is empty
-        errorText = f'<@{errorList[0]}>' if errorList else ''
-        for playerID in errorList[1:]:
-            errorText += f', <@{playerID}>'
-
-        # Grammar correction
-        if errorText:
-            if len(errorList) == 1:
-                errorText += ' has **insufficient health** to enter the dungeon'
-            else:
-                errorText += ' have **insufficient health** to enter the dungeon'
+        errorType = '**insufficient health** to enter the dungeon'
+        errorText = self.format_grammar(errorList, 'has', 'have', errorType)
         return errorText
 
     def format_skills_text(self, skillsDict):
@@ -65,10 +104,10 @@ class Dungeon(commands.Cog):
 
         # Finds longest length of string to beautify formatting
         longestString = len(list(skillsDict.keys())[0])
-        for skill in list(skillsDict.keys())[:1]:
+        for skill in list(skillsDict.keys())[1:]:
             if len(skill) > longestString:
                 longestString = len(skill)
-
+        
         skillsText = '```\t' + ' ' * longestString + 'CHANCE\t' + 'DAMAGE\n'
         for skill in skillsDict:
             skillsText += f'{skill.upper()}\t'
@@ -101,8 +140,8 @@ class Dungeon(commands.Cog):
         healthText = f'```{monster.name}\t' + ' ' * (longestString - len(monster.name)) + f'{monster.HP}/{monster.maxHP}🖤'
         for playerID in playersData:
             playerName = playersData[playerID]['Info'][0]
-            playerHP = playersData[playerID]['Statistics'][2]
-            playerMaxHP = playersData[playerID]['Statistics'][3]
+            playerHP = playersData[playerID]['Statistics'][4]
+            playerMaxHP = playersData[playerID]['Statistics'][5]
             healthText += f'\n{playerName}\t' + ' ' * (longestString - len(playerName)) + f'{playerHP}/{playerMaxHP}❤️'
         healthText += '```'
         return healthText
@@ -128,22 +167,44 @@ class Dungeon(commands.Cog):
 
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
-        data = []           # To be converted into tuple for SQL query subsequently
+        profileData = []           # To be converted into tuple for SQL query subsequently
+        dungeonData = []
         for playerID in playersData:
-            playerLevel = playersData[playerID]['Statistics'][0]
-            playerEXP = playersData[playerID]['Statistics'][1] + int(experience)
-            playerHP = playersData[playerID]['Statistics'][2]
-            playerDungeon = playersData[playerID]['Statistics'][7] + int(dungeon)
-            data.append((playerLevel, playerEXP, playerHP, playerDungeon, playerID))
+            playerLevel = playersData[playerID]['Statistics'][1]
+            playerEXP = playersData[playerID]['Statistics'][2] + int(experience)
+            playerHP = playersData[playerID]['Statistics'][4]
+            playerDungeon = playersData[playerID]['Dungeon'][1]
+            playerMaxDungeon = playersData[playerID]['Dungeon'][2]
+
+            # Checks if player travelled to previous dungeons
+            if playerDungeon < playerMaxDungeon:
+                playerDungeon += int(dungeon)
+            else:
+                playerMaxDungeon = playerDungeon + int(dungeon)
+
+            profileData.append((playerLevel, playerEXP, playerHP, playerID))
+            dungeonData.append((0, playerDungeon, playerMaxDungeon, playerID))
+        
+        # Profile table
         sql = (f'''
-            UPDATE classes 
-            SET level = ?, 
-                experience = ?, 
-                health = ?, 
-                dungeon = ?
+            UPDATE profile
+            SET level = ?,
+                experience = ?,
+                health = ?
             WHERE user_id = ?
         ''')
-        cursor.executemany(sql, data)
+        cursor.executemany(sql, profileData)
+        database.commit()
+
+        # Dungeon data
+        sql = (f'''
+            UPDATE dungeon
+            SET status = ?,
+                level = ?,
+                max_level = ?
+            WHERE user_id = ?
+        ''')
+        cursor.executemany(sql, dungeonData)
         database.commit()
         database.close()
 
@@ -152,11 +213,11 @@ class Dungeon(commands.Cog):
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
         sql = (f'''
-            UPDATE dungeon 
-            SET status = ?, 
+            UPDATE dungeon
+            SET status = ?
             WHERE user_id = ?
         ''')
-        cursor.execute(sql, [(1, playerID) for playerID in playersData])
+        cursor.executemany(sql, [(1, playerID) for playerID in playersData])
         database.commit()
         database.close()
 
@@ -208,21 +269,52 @@ class Dungeon(commands.Cog):
                     deniedPlayers += (f'<@{playersIDList[index]}> ')
             message = command_error(description=f'{deniedPlayers}did not accept the request.')
             await ctx.send(embed=message)
-            return 0
-        return 1
+            return False
+        return True
+
+    async def pre_dungeon_checks(self, ctx, playersData):
+        '''
+        Executes necessary checks before commencement of dungeon
+        Returns True if all checks are successfuly
+        '''
+
+        dungeonLocationCheck = self.in_same_dungeon_location(playersData)
+        hpCheck = self.has_sufficient_hp(playersData)
+        dungeonStatusCheck = self.check_dungeon_status(playersData)
+
+        # Checks if all party members are in the same dungeon location
+        if not dungeonLocationCheck:
+            message = command_error(description=f'{ctx.author.mention} Not all the players are in the **same** dungeon!')
+            await ctx.send(embed=message)
+            return False
+
+        # Checks if all party members have sufficient HP to enter the dungeon
+        elif hpCheck:
+            message = command_error(description=hpCheck)
+            await ctx.send(embed=message)
+            return False
+
+        # Checks if any of the players are currently in another battle
+        elif dungeonStatusCheck:
+            message = command_error(description=dungeonStatusCheck)
+            await ctx.send(embed=message)
+            return False
+
+        return True
 
     async def start_battle(self, ctx, playersData, dungeonLevel, monster, color):
         '''Battle logs for dungeon fights'''
-
+        
+        self.change_dungeon_status(playersData)     # Changes status of player(s) in dungeon
         battleText = '\n' + self.format_health_text(playersData, monster)
         while self.is_players_alive(playersData) and monster.HP > 0:
             for playerID in playersData:
                 playerName = playersData[playerID]['Info'][0]
                 playerAvatar = playersData[playerID]['Info'][1]
-                playerJob = playersData[playerID]['Statistics'][6]
-                playerHP = playersData[playerID]['Statistics'][2]
-                playerAttack = playersData[playerID]['Statistics'][4]
-                playerDefence = playersData[playerID]['Statistics'][5]
+                playerJob = playersData[playerID]['Statistics'][0]
+                playerHP = playersData[playerID]['Statistics'][4]
+                playerAttack = playersData[playerID]['Statistics'][6]
+                playerDefence = playersData[playerID]['Statistics'][7]
                 battleLogs = ''
 
                 if playerHP == 0:       # If player is dead, does not get to continue in the battle
@@ -271,18 +363,18 @@ class Dungeon(commands.Cog):
                         battleLogs += f'=> **{playerName}** dealt **{damageDealt}**`💗` to **{monster.name}**\n'
 
                     damageDealt = self.damage_dealt(monster.attack, playerDefence)
-                    playersData[playerID]['Statistics'][2] -= damageDealt
+                    playersData[playerID]['Statistics'][4] -= damageDealt
 
-                    if playersData[playerID]['Statistics'][2] < 0:
-                        playersData[playerID]['Statistics'][2] = 0
+                    if playersData[playerID]['Statistics'][4] < 0:
+                        playersData[playerID]['Statistics'][4] = 0
 
                     battleLogs += f'=> **{playerName}** received **{damageDealt}**`💗` from **{monster.name}**\n' 
 
                 except asyncio.TimeoutError:
                     # Player did not make his move
-                    playersData[playerID]['Statistics'][2] = 0
+                    playersData[playerID]['Statistics'][4] = 0              # Sets player HP to 0
                     battleLogs += f'=> **{playerName}** took too long to respond and got killed `💀`\n'
-                    playersData[playerID]['Info'][0] = playerName + ' 💀'
+                    playersData[playerID]['Info'][0] = playerName + ' 💀'   # Adds an indication for dead players
                     
                 battleText = self.format_battle_text(battleLogs, playersData, monster)
 
@@ -327,15 +419,28 @@ class Dungeon(commands.Cog):
         if len(users) != 0:
             # Party play
             cursor.execute(f'''
-                SELECT level, experience, health, max_health, attack, defence, main_class, dungeon
-                FROM classes 
-                WHERE user_id = {ctx.author.id}
+                SELECT p.main_class, 
+                        p.level, 
+                        p.experience, 
+                        p.currency, 
+                        p.health, 
+                        p.max_health, 
+                        p.attack, 
+                        p.defence,
+                        d.status,
+                        d.level,
+                        d.max_level
+                FROM profile p
+                JOIN dungeon d
+                    ON d.user_id = p.user_id
+                WHERE p.user_id = {ctx.author.id}
             ''')
             result = cursor.fetchone()
             playersData = {
                 ctx.author.id : {
                     'Info' : [ctx.author.name, ctx.author.default_avatar_url],
-                    'Statistics' : [data for data in list(result)]
+                    'Statistics' : [stats for stats in list(result)[:8]],
+                    'Dungeon' : [data for data in list(result)[8:]]
                 }
             }
 
@@ -346,73 +451,124 @@ class Dungeon(commands.Cog):
                     return await ctx.send(embed=message)
 
                 cursor.execute(f'''
-                    SELECT level, experience, health, max_health, attack, defence, main_class, dungeon
-                    FROM classes 
-                    WHERE user_id = {user.id}
+                    SELECT p.main_class, 
+                        p.level, 
+                        p.experience, 
+                        p.currency, 
+                        p.health, 
+                        p.max_health, 
+                        p.attack, 
+                        p.defence,
+                        d.status,
+                        d.level,
+                        d.max_level
+                FROM profile p
+                JOIN dungeon d
+                    ON d.user_id = p.user_id
+                WHERE p.user_id = {user.id}
                 ''')
                 result = cursor.fetchone()
                 data = {
                     user.id : {
                         'Info' : [user.name, user.default_avatar_url],
-                        'Statistics' : [data for data in list(result)]
+                        'Statistics' : [stats for stats in list(result)[:8]],
+                        'Dungeon' : [data for data in list(result)[8:]]
                     }
                 }
                 playersData.update(data)
-                
-            # Checks if all party members are in the same dungeon location
-            if not self.in_same_dungeon(list(playersData.keys())):
-                message = command_error(description=f'{ctx.author.mention} Not all the players are in the **same** dungeon!')
-                return await ctx.send(embed=message)
+            database.close()
 
-            # Checks if all party members have sufficient HP to enter the dungeon
-            hpCheck = self.has_sufficient_hp(playersData)
-            if hpCheck:
-                message = command_error(description=hpCheck)
-                return await ctx.send(embed=message)
+            # All players successfully completed pre-dungeon checks
+            dungeonCheck = await self.pre_dungeon_checks(ctx, playersData)
+            if dungeonCheck:
+                dungeonLevel = playersData[ctx.author.id]['Dungeon'][1] - 1
+                monster = Monsters(dungeonLevel)  # Instantiates a monster class
+                # color = discord.Color.from_hsv(random.random(), 1, 1)
+                color = random.randint(0, 0xffffff)
 
-            dungeonLevel = playersData[ctx.author.id]['Statistics'][7]
-            monster = Monsters(dungeonLevel)  # Instantiates a monster class
-            # color = discord.Color.from_hsv(random.random(), 1, 1)
-            color = random.randint(0, 0xffffff)
-
-            request = await self.dungeon_requests(ctx, playersData, monster, color)
-            if request == 1:
-                await self.start_battle(ctx, playersData, dungeonLevel, monster, color)
+                # All players accepted the request
+                requestCheck = await self.dungeon_requests(ctx, playersData, monster, color)
+                if requestCheck:
+                    await self.start_battle(ctx, playersData, dungeonLevel, monster, color)
 
         else:
             # Solo play
             cursor.execute(f'''
-                SELECT level, experience, health, max_health, attack, defence, main_class, dungeon
-                FROM classes 
-                WHERE user_id = {ctx.author.id}
+                SELECT p.main_class, 
+                        p.level, 
+                        p.experience, 
+                        p.currency, 
+                        p.health, 
+                        p.max_health, 
+                        p.attack, 
+                        p.defence,
+                        d.status,
+                        d.level,
+                        d.max_level
+                FROM profile p
+                JOIN dungeon d
+                    ON d.user_id = p.user_id
+                WHERE p.user_id = {ctx.author.id}
             ''')
             result = cursor.fetchone()
+            database.close()
+
             playersData = {
                 ctx.author.id : {
                     'Info' : [ctx.author.name, ctx.author.default_avatar_url],
-                    'Statistics' : [data for data in list(result)]
+                    'Statistics' : [stats for stats in list(result)[:8]],
+                    'Dungeon' : [data for data in list(result)[8:]]
                 }
             }
 
-            # Checks if player has sufficient HP to enter the dungeon
-            hpCheck = self.has_sufficient_hp(playersData)
-            if hpCheck:
-                message = command_error(description=hpCheck)
-                return await ctx.send(embed=message)
-
-            dungeonLevel = playersData[ctx.author.id]['Statistics'][7]
-            monster = Monsters(dungeonLevel)  # Instantiates a monster class
-            # color = discord.Color.from_hsv(random.random(), 1, 1)
-            color = random.randint(0, 0xffffff)
+            # All players successfully completed pre-dungeon checks
+            if await self.pre_dungeon_checks(ctx, playersData):
+                dungeonLevel = playersData[ctx.author.id]['Dungeon'][1] - 1
+                monster = Monsters(dungeonLevel)  # Instantiates a monster class
+                # color = discord.Color.from_hsv(random.random(), 1, 1)
+                color = random.randint(0, 0xffffff)
 
             await self.start_battle(ctx, playersData, dungeonLevel, monster, color)
 
-        database.close()
 
+    @has_registered()
+    @commands.command(description='Travels to another dungeon location')
+    async def travel(self, ctx, dungeonLevel:int):
+        # Checks if player tries to access level < 1
+        if dungeonLevel < 1:
+            message = command_error(description=f'{ctx.author.mention} Dungeon level **{dungeonLevel}** is **out of bounds**')
+            return await ctx.send(embed=message)
 
-    # @has_registered()
-    # @commands.command(description='Travels to another dungeon location')
-    # async def travel(self, ctx, dungeon:int):
+        database = sqlite3.connect(self.bot.config.dbPath)
+        cursor = database.cursor()
+        sql = (f'''
+            SELECT level, max_level
+            FROM dungeon
+            WHERE user_id = {ctx.author.id}
+        ''')
+        cursor.execute(sql)
+        result = cursor.fetchone()
+
+        level = result[0]
+        maxLevel = result[1]
+
+        if dungeonLevel < maxLevel:
+            sql = ('''
+                UPDATE dungeon
+                SET level = ?
+                WHERE user_id = ?
+            ''')
+            data = (dungeonLevel, ctx.author.id)
+            cursor.execute(sql, data)
+            cursor.commit()
+            database.close()
+
+            message = command_processed(description=f'{ctx.author.mention} You have successfully travelled to **Level {dungeonLevel} - {Monsters(0).dungeons[dungeonLevel- 1]}**')
+            await ctx.send(embed=message)
+        else:
+            database.close()
+            message = command_error(description=f'{ctx.author.mention} You are not strong enough to travel beyond **Level {maxLevel} - {Monsters(0).dungeons[maxLevel- 1]}**')
+            await ctx.send(embed=message)
 
 
 # Adding the cog to main script

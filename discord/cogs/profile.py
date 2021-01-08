@@ -49,10 +49,10 @@ class Profile(commands.Cog):
 
             # Dungeon table
             sql = ('''
-                INSERT INTO dungeon(user_id, level, max_level)
-                VALUES(?,?,?)
+                INSERT INTO dungeon(user_id, status, level, max_level)
+                VALUES(?,?,?,?)
             ''')
-            data = (ctx.author.id, 1, 1)
+            data = (ctx.author.id, 0, 1, 1)
             cursor.execute(sql, data)
             database.commit()
             database.close()

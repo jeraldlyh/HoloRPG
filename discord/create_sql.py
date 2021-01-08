@@ -26,6 +26,7 @@ def create_dungeon_table(dbPath):
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS dungeon(
         user_id INTEGER,
+        status INTEGER,
         level INTEGER,
         max_level INTEGER
     )

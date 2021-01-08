@@ -102,6 +102,7 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 self.classDict[selectedJob]['Base Stats'][0],   # Health
                 self.classDict[selectedJob]['Base Stats'][1],   # Attack
                 self.classDict[selectedJob]['Base Stats'][2],   # Defence
+                ctx.author.id                                   # User ID
                 )
             cursor.execute(sql, data)
             database.commit()
