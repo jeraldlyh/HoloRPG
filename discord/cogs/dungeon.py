@@ -16,7 +16,14 @@ class Dungeon(commands.Cog):
         self.bot = bot
 
     def format_grammar(self, errorList, singular, plural, errorType):
-        '''Fixes minor grammar in sentences'''
+        '''
+        [errorList] - A list of players' IDs
+        [singular] - Singular verb for an object
+        [pluar] - Plural verb for an object
+        [errorType] - Type of error message to be displayed
+
+        Reformats the error message by formatting the verbs in the sentence
+        '''
 
         # Returns empty string if list is empty
         errorText = f'<@{errorList[0]}>' if errorList else ''
@@ -33,8 +40,14 @@ class Dungeon(commands.Cog):
 
     def check_dungeon_status(self, playersData):
         '''
-        Pulls latest status updates from SQL database
+        [playersData] - A dictionary of players' data which contains their statistics
+
+        Pulls latest status data from SQL database to compare with old data stored in the
+        memory which in this case is playerData
+
         Checks if any of the players are currently in a battle
+        1 - TRUE
+        0 - FALSE
         '''
 
         database = sqlite3.connect(self.bot.config.dbPath)
@@ -68,7 +81,11 @@ class Dungeon(commands.Cog):
         return errorText
 
     def in_same_dungeon_location(self, playersData):
-        '''Checks if all party members are in the same dungeon location'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+
+        Checks if all party members are in the same dungeon location
+        '''
 
         dungeonLevel = playersData[list(playersData.keys())[0]]['Dungeon'][1]
         for playerID in playersData:
@@ -77,7 +94,11 @@ class Dungeon(commands.Cog):
         return True
 
     def is_players_alive(self, playersData):
-        '''Checks if there's at least one player alive in the dungeon after each turn'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+
+        Checks if there's at least one player alive in the dungeon after each turn
+        '''
 
         for player in playersData:
             if playersData[player]['Statistics'][4] != 0:
@@ -86,8 +107,10 @@ class Dungeon(commands.Cog):
 
     def has_sufficient_hp(self, playersData):
         '''
+        [playersData] - A dictionary of players' data which contains their statistics
+
         Checks if all players have sufficient HP to enter the dungeon
-        Returns a string if at least one of the players has insufficient HP
+        Returns a string that contains the players with insufficient HP
         '''
 
         errorList = []
@@ -101,7 +124,12 @@ class Dungeon(commands.Cog):
         return errorText
 
     def format_skills_text(self, skillsDict):
-        '''Beautify indentation skills text to be display in embed'''
+        '''
+        [skillsDict] - A dictionary of skills obtained from classes.py that contains the skills of
+        the player's main class
+
+        Beautify indentation in the text to be display in embed message
+        '''
 
         # Finds longest length of string to beautify formatting
         longestString = len(list(skillsDict.keys())[0])
@@ -128,7 +156,12 @@ class Dungeon(commands.Cog):
         return skillsText
 
     def format_health_text(self, playersData, monster):
-        '''Beautify indentation skills text to be display in embed'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+        [monster] - A monster object that contains its relevant statistics
+
+        Beautify indentation in the text to be display in embed message
+        '''
 
         # Finds longest length of string to beautify formatting
         longestString = len(monster.name)
@@ -148,13 +181,24 @@ class Dungeon(commands.Cog):
         return healthText
 
     def format_battle_text(self, battleLogs, playersData, monster):
-        '''Inserts battleText infront of healthText'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+        [battleLogs] - Strings of battle information in player's turn
+        [monster] - A monster object that contains its relevant statistics
+
+        Inserts battleLogs infront of healthText
+        '''
 
         battleText = battleLogs + self.format_health_text(playersData, monster)
         return battleText
 
     def damage_dealt(self, damage, defence):
-        '''Computes damage dealt to player/monster'''
+        '''
+        [damage] - An integer that represents a player/monster's attack power
+        [defence] - An integer that represents a player/monster's defence
+
+        Computes damage dealt to player/monster
+        '''
 
         lowerBound = damage * 0.75
         upperBound = damage * 1.25
@@ -164,7 +208,13 @@ class Dungeon(commands.Cog):
         return (damageDealt - defence)
 
     def update_database(self, playersData, experience=0, dungeon=0):
-        '''Updates SQL database'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+        [experience] - An integer that represents amount of experience gained from the dungeon; defaults to 0 
+        [dungeon] - An integer that increments players' dungeon level; defaults to 0
+
+        Updates SQL database
+        '''
 
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
@@ -210,7 +260,11 @@ class Dungeon(commands.Cog):
         database.close()
 
     def change_dungeon_status(self, playersData):
-        '''Change status of player(s) to prevent them from entering another dungeon concurrently'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+
+        Changes status of player(s) to prevent them from entering another dungeon concurrently
+        '''
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
         sql = (f'''
@@ -223,7 +277,13 @@ class Dungeon(commands.Cog):
         database.close()
 
     async def dungeon_requests(self, ctx, playersData, monster, color):
-        '''Sends out confirmation requests to respective players'''
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+        [monster] - A monster object that contains its relevant statistics
+        [color] - A hexcode used in embed message to be standardised throughout the combat
+
+        Sends out confirmation requests to respective players
+        '''
 
         embed = discord.Embed(
                 title=f'{monster.dungeonName}',
@@ -275,8 +335,10 @@ class Dungeon(commands.Cog):
 
     async def pre_dungeon_checks(self, ctx, playersData):
         '''
-        Executes necessary checks before commencement of dungeon
-        Returns True if all checks are successfuly
+        [playersData] - A dictionary of players' data which contains their statistics
+        
+        Executes necessary checks before commencement of the dungeon
+        Returns TRUE if all checks are successfuly
         '''
 
         dungeonLocationCheck = self.in_same_dungeon_location(playersData)
@@ -303,8 +365,16 @@ class Dungeon(commands.Cog):
 
         return True
 
-    async def start_battle(self, ctx, playersData, dungeonLevel, monster, color):
-        '''Battle logs for dungeon fights'''
+    async def start_battle(self, ctx, playersData, monster, color):
+        '''
+        [playersData] - A dictionary of players' data which contains their statistics
+        [monster] - A monster object that contains its relevant statistics
+        [color] - A hexcode used in embed message to be standardised throughout the combat
+
+        Commencement of the dungeon battle
+
+        Sends out embed message at every single loop which contains options for players to choose their skill
+        '''
         
         self.change_dungeon_status(playersData)     # Changes status of player(s) in dungeon
         battleText = '\n' + self.format_health_text(playersData, monster)
@@ -414,6 +484,14 @@ class Dungeon(commands.Cog):
     @has_registered()
     @commands.command(description='Enters a dungeon')
     async def dungeon(self, ctx, *users:discord.User):
+        '''
+        [users] - A list of Discord users tagged in the command
+
+        Pulls relevant players' data from SQL database and compiles it into a dictionary to be called with
+        other functions
+        
+        Provides options for solo or party play
+        '''
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
 
@@ -490,7 +568,7 @@ class Dungeon(commands.Cog):
                 # All players accepted the request
                 requestCheck = await self.dungeon_requests(ctx, playersData, monster, color)
                 if requestCheck:
-                    await self.start_battle(ctx, playersData, dungeonLevel, monster, color)
+                    await self.start_battle(ctx, playersData, monster, color)
 
         else:
             # Solo play
@@ -529,12 +607,17 @@ class Dungeon(commands.Cog):
                 # color = discord.Color.from_hsv(random.random(), 1, 1)
                 color = random.randint(0, 0xffffff)
 
-            await self.start_battle(ctx, playersData, dungeonLevel, monster, color)
+            await self.start_battle(ctx, playersData, monster, color)
 
     @has_registered()
     @has_chosen_class()
     @commands.command(description='Travels to another dungeon location')
     async def travel(self, ctx, dungeonLevel:int):
+        '''
+        [dungeonLevel] - An integer that represents player's selected dungeon
+
+        Allows player to travel back to previous dungeons to assist their allies
+        '''
         # Checks if player tries to access level < 1
         if dungeonLevel < 1:
             message = command_error(description=f'{ctx.author.mention} Dungeon level **{dungeonLevel}** is **out of bounds**')

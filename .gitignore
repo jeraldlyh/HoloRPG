@@ -4,3 +4,5 @@ id_rsa.pub
 debug.log
 /.vscode
 discord/config/config.ini
+discord/utils/updateDB.py
+test.py
