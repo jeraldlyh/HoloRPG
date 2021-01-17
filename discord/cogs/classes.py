@@ -77,8 +77,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             return await ctx.send(embed=message)
         
         # Checks if user has already selected a class previously
-        database = sqlite3.connect(self.bot.config.dbPath)
-        cursor = database.cursor()
+        connection = sqlite3.connect(self.bot.config.dbPath)
+        cursor = connection.cursor()
         cursor.execute(f"SELECT main_class FROM profile WHERE user_id = {ctx.author.id}")
         result = cursor.fetchone()
         if result is not None and result[0] == ctx.author.id:
@@ -105,8 +105,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 ctx.author.id                                   # User ID
                 )
             cursor.execute(sql, data)
-            database.commit()
-            database.close()
+            connection.commit()
+            connection.close()
             message = command_processed(description=f"{ctx.author.mention} You have successfully selected **{selectedJob}** as your class. You're now officially a **{self.classDict[selectedJob]['Jobs'][0]}**!")
             return await ctx.send(embed=message)
 
@@ -114,8 +114,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
     @has_chosen_class()
     @commands.command(description="Advances to next class")
     async def advance(self, ctx):
-        database = sqlite3.connect(self.bot.config.dbPath)
-        cursor = database.cursor()
+        connection = sqlite3.connect(self.bot.config.dbPath)
+        cursor = connection.cursor()
         cursor.execute(f"SELECT level, main_class, sub_class FROM profile WHERE user_id = {ctx.author.id}")
         result = cursor.fetchone()
 
@@ -129,8 +129,8 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             sql = "UPDATE profile SET sub_class = ? WHERE user_id = ?"
             data = (nextJob, ctx.author.id)
             cursor.execute(sql, data)
-            database.commit()
-            database.close()
+            connection.commit()
+            connection.close()
             
             message = command_processed(description=f"{ctx.author.mention} Congratulations, you have just advanced to **{nextJob}**!")
             return await ctx.send(embed=message)

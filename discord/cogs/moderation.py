@@ -11,7 +11,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f"Latency: {self.bot.latency}")
+        await ctx.send(f"Latency: _{self.bot.latency}_")
 
     @commands.command()
     async def heal(self, ctx, *users:discord.User):
@@ -20,7 +20,6 @@ class Moderation(commands.Cog):
         profileData = [(100, ctx.author.id)]
         for x in users:
             profileData.append((100, x.id))
-
         
         sql = (f"""
             UPDATE profile
@@ -31,6 +30,30 @@ class Moderation(commands.Cog):
         database.commit()
         database.close()
         await ctx.send("Healed all players")
+
+    @commands.command()
+    async def reset(self, ctx, *users:discord.User):
+        database = sqlite3.connect(self.bot.config.dbPath)
+        cursor = database.cursor()
+        profileData = [(1, 1, 100, 100, 50, 50, ctx.author.id)]
+        for x in users:
+            profileData.append((1, 1, 100, 100, 50, 50, x.id))
+
+        
+        sql = (f"""
+            UPDATE profile
+            SET level = ?,
+                experience = ?,
+                max_health = ?,
+                health = ?,
+                attack = ?,
+                defence = ?
+            WHERE user_id = ?
+        """)
+        cursor.executemany(sql, profileData)
+        database.commit()
+        database.close()
+        await ctx.send("Database reset")
 
 # Adding the cog to main script
 def setup(bot):
