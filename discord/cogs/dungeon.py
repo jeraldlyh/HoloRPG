@@ -7,36 +7,15 @@ import os
 from discord.ext import commands
 from cogs.monsters import Monsters
 from cogs.classes import Classes
-from utils.checks import has_registered, user_has_registered
+from cogs.stats import Statistics
+from utils.checks import has_registered, user_has_registered, has_chosen_class
 from utils.checks import NotRegistered, NotChosenClass
 from utils.embed import command_processed, command_error
+from utils.format import format_battle_text, format_skills_text, format_health_text, format_grammar
 
 class Dungeon(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    def format_grammar(self, errorList, singular, plural, errorType):
-        """
-        [errorList] - A list of players' IDs
-        [singular] - Singular verb for an object
-        [pluar] - Plural verb for an object
-        [errorType] - Type of error message to be displayed
-
-        Reformats the error message by formatting the verbs in the sentence
-        """
-
-        # Returns empty string if list is empty
-        errorText = f"<@{errorList[0]}>" if errorList else ""
-        for playerID in errorList[1:]:
-            errorText += f", <@{playerID}>"
-
-        # Grammar correction
-        if errorText:
-            if len(errorList) == 1:
-                errorText += f" {singular} {errorType}"
-            else:
-                errorText += f" {plural} {errorType}"
-        return errorText
 
     def check_dungeon_status(self, playersData):
         """
@@ -77,14 +56,14 @@ class Dungeon(commands.Cog):
                 errorList.append(data[0])
 
         errorType = "currently **in battle**"
-        errorText = self.format_grammar(errorList, "is", "are", errorType)
+        errorText = format_grammar(errorList, "is", "are", errorType)
         return errorText
 
     def in_same_dungeon_location(self, playersData):
         """
         [playersData] - A dictionary of players' data which contains their statistics
 
-        Checks if all party members are in the same dungeon location
+        Returns TRUE if all party members are in the same dungeon location
         """
 
         dungeonLevel = playersData[list(playersData.keys())[0]]["Dungeon"][1]
@@ -97,7 +76,7 @@ class Dungeon(commands.Cog):
         """
         [playersData] - A dictionary of players' data which contains their statistics
 
-        Checks if there"s at least one player alive in the dungeon after each turn
+        Returns TRUE if there"s at least one player alive in the dungeon after each turn
         """
 
         for player in playersData:
@@ -120,92 +99,8 @@ class Dungeon(commands.Cog):
                 errorList.append(playerID)
 
         errorType = "**insufficient health** to enter the dungeon"
-        errorText = self.format_grammar(errorList, "has", "have", errorType)
+        errorText = format_grammar(errorList, "has", "have", errorType)
         return errorText
-
-    def format_skills_text(self, skillsDict):
-        """
-        [skillsDict] - A dictionary of skills obtained from classes.py that contains the skills of
-        the player's main class
-
-        Beautify indentation in the text to be display in embed message
-        """
-
-        # Finds longest length of string to beautify formatting
-        longestString = len(list(skillsDict.keys())[0])
-        for skill in list(skillsDict.keys())[1:]:
-            if len(skill) > longestString:
-                longestString = len(skill)
-        
-        skillsText = "```\t" + " " * longestString + "CHANCE\t" + "DAMAGE\n"
-        for skill in skillsDict:
-            skillsText += f"{skill.upper()}\t"
-            chanceToHit = skillsDict[skill][0]
-            damage = skillsDict[skill][1]
-
-            # Adds in extra spaces so that all text are aligned
-            if len(skill) != longestString:
-                skillsText += " " * (longestString - len(skill))
-
-            skillsText += f"{chanceToHit}%\t  "
-            if len(str(chanceToHit)) < 3:
-                skillsText += " " * (3 - len(str(chanceToHit)))
-
-            skillsText += f"{damage}%\n"
-        skillsText += "```"
-        return skillsText
-
-    def format_health_text(self, playersData, monster):
-        """
-        [playersData] - A dictionary of players' data which contains their statistics
-        [monster] - A monster object that contains its relevant statistics
-
-        Beautify indentation in the text to be display in embed message
-        """
-
-        # Finds longest length of string to beautify formatting
-        longestString = len(monster.name)
-        for playerID in playersData:
-            playerName = playersData[playerID]["Info"][0]
-            if len(playerName) > longestString:
-                longestString = len(playerName)
-
-        # healthText = "```\t" + " " * longestString + "HEALTH\n"
-        healthText = f"```{monster.name}\t" + " " * (longestString - len(monster.name)) + f"{monster.HP}/{monster.maxHP}🖤"
-        for playerID in playersData:
-            playerName = playersData[playerID]["Info"][0]
-            playerHP = playersData[playerID]["Statistics"][4]
-            playerMaxHP = playersData[playerID]["Statistics"][5]
-            healthText += f"\n{playerName}\t" + " " * (longestString - len(playerName)) + f"{playerHP}/{playerMaxHP}❤️"
-        healthText += "```"
-        return healthText
-
-    def format_battle_text(self, battleLogs, playersData, monster):
-        """
-        [playersData] - A dictionary of players' data which contains their statistics
-        [battleLogs] - Strings of battle information in player"s turn
-        [monster] - A monster object that contains its relevant statistics
-
-        Inserts battleLogs infront of healthText
-        """
-
-        battleText = battleLogs + self.format_health_text(playersData, monster)
-        return battleText
-
-    def damage_dealt(self, damage, defence):
-        """
-        [damage] - An integer that represents a player/monster's attack power
-        [defence] - An integer that represents a player/monster's defence
-
-        Computes damage dealt to player/monster
-        """
-
-        lowerBound = damage * 0.75
-        upperBound = damage * 1.25
-        damageDealt = random.randint(int(lowerBound), int(upperBound))
-        if defence > damageDealt:       # Defence complete negates damage taken
-            return 0
-        return (damageDealt - defence)
 
     def update_database(self, playersData, experience=0, dungeon=0):
         """
@@ -377,7 +272,7 @@ class Dungeon(commands.Cog):
         """
         
         self.change_dungeon_status(playersData)     # Changes status of player(s) in dungeon
-        battleText = "\n" + self.format_health_text(playersData, monster)
+        battleText = "\n" + format_health_text(playersData, monster)
         while self.is_players_alive(playersData) and monster.HP > 0:
             for playerID in playersData:
                 playerName = playersData[playerID]["Info"][0]
@@ -409,7 +304,7 @@ class Dungeon(commands.Cog):
                 )
                 
                 skillsDict = Classes(self.bot).classDict[playerJob]["Skills"]
-                skillsText = self.format_skills_text(skillsDict)
+                skillsText = format_skills_text(skillsDict)
                 battleEmbed.add_field(name="Skills Available", value=skillsText, inline=False)
                 await ctx.send(embed=battleEmbed)
                 
@@ -426,14 +321,14 @@ class Dungeon(commands.Cog):
 
                     chanceGenerated = random.randint(1, 100)
                     if chanceGenerated <= chanceToHit:       # Manage to damage the monster
-                        damageDealt = round(self.damage_dealt(playerAttack, monster.defence) * (damageMultipler / 100))
+                        damageDealt = round(Statistics().damage_dealt(playerAttack, monster.defence) * (damageMultipler / 100))
                         monster.HP -= damageDealt
                         if monster.HP < 0:
                             monster.HP = 0
 
                         battleLogs += f"=> **{playerName}** dealt **{damageDealt}**`💗` to **{monster.name}**\n"
 
-                    damageDealt = self.damage_dealt(monster.attack, playerDefence)
+                    damageDealt = Statistics().damage_dealt(monster.attack, playerDefence)
                     playersData[playerID]["Statistics"][4] -= damageDealt
 
                     if playersData[playerID]["Statistics"][4] < 0:
@@ -447,10 +342,10 @@ class Dungeon(commands.Cog):
                     battleLogs += f"=> **{playerName}** took too long to respond and got killed `💀`\n"
                     playersData[playerID]["Info"][0] = playerName + " 💀"   # Adds an indication for dead players
                     
-                battleText = self.format_battle_text(battleLogs, playersData, monster)
+                battleText = format_battle_text(battleLogs, playersData, monster)
 
         if not self.is_players_alive(playersData):      # All players are dead
-            healthText = self.format_health_text(playersData, monster)
+            healthText = format_health_text(playersData, monster)
             loseEmbed = discord.Embed(
                 title=monster.dungeonName,
                 description=f"**All** players have been defeated by **{monster.name}**\n{healthText}",
@@ -466,7 +361,7 @@ class Dungeon(commands.Cog):
                     continue
                 playersMention += f", <@{list(playersData.keys())[index]}> "
 
-            healthText = self.format_health_text(playersData, monster)
+            healthText = format_health_text(playersData, monster)
             winEmbed = discord.Embed(
                 title=monster.dungeonName,
                 description=f"**{monster.name}** has been defeated by {playersMention}\n{healthText}",
@@ -562,7 +457,7 @@ class Dungeon(commands.Cog):
             dungeonCheck = await self.pre_dungeon_checks(ctx, playersData)
             if dungeonCheck:
                 dungeonLevel = playersData[ctx.author.id]["Dungeon"][1]
-                monster = Monsters(dungeonLevel)  # Instantiates a monster class
+                monster = Monsters(dungeonLevel, len(playersData))  # Instantiates a monster class
                 # color = discord.Color.from_hsv(random.random(), 1, 1)
                 color = random.randint(0, 0xffffff)
 
@@ -605,7 +500,7 @@ class Dungeon(commands.Cog):
             dungeonCheck = await self.pre_dungeon_checks(ctx, playersData)
             if dungeonCheck:
                 dungeonLevel = playersData[ctx.author.id]["Dungeon"][1]
-                monster = Monsters(dungeonLevel)  # Instantiates a monster class
+                monster = Monsters(dungeonLevel, len(playersData))  # Instantiates a monster class
                 # color = discord.Color.from_hsv(random.random(), 1, 1)
                 color = random.randint(0, 0xffffff)
 
@@ -650,11 +545,11 @@ class Dungeon(commands.Cog):
             cursor.commit()
             database.close()
 
-            message = command_processed(description=f"{ctx.author.mention} You have successfully travelled to **Level {dungeonLevel} - {Monsters(0).dungeons[dungeonLevel- 1]}**")
+            message = command_processed(description=f"{ctx.author.mention} You have successfully travelled to **Level {dungeonLevel} - {Monsters(0, 0).dungeons[dungeonLevel]}**")
             await ctx.send(embed=message)
         else:
             database.close()
-            message = command_error(description=f"{ctx.author.mention} You are not strong enough to travel beyond **Level {maxLevel} - {Monsters(0).dungeons[maxLevel- 1]}**")
+            message = command_error(description=f"{ctx.author.mention} You are not strong enough to travel beyond **Level {maxLevel} - {Monsters(0, 0).dungeons[maxLevel]}**")
             await ctx.send(embed=message)
 
     @travel.error

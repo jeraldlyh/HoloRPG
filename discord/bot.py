@@ -41,5 +41,6 @@ class RPGBot(commands.Bot):
     def run(self):
         super().run(self.config.discordKey)
 
-bot = RPGBot()
-bot.run()
+if __name__ == "__main__":
+    bot = RPGBot()
+    bot.run()

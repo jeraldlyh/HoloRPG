@@ -107,7 +107,7 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             cursor.execute(sql, data)
             database.commit()
             database.close()
-            message = command_processed(description=f"{ctx.author.mention} You have successfully selected **{selectedJob}** as your class. You're now officially a **{self.classDict[selectedJob]["Jobs"][0]}**!")
+            message = command_processed(description=f"{ctx.author.mention} You have successfully selected **{selectedJob}** as your class. You're now officially a **{self.classDict[selectedJob]['Jobs'][0]}**!")
             return await ctx.send(embed=message)
 
     @has_registered()
