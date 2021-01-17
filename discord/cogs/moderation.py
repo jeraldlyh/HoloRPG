@@ -9,7 +9,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f'Latency: {self.bot.latency}')
+        await ctx.send(f"Latency: {self.bot.latency}")
 
 
 # Adding the cog to main script

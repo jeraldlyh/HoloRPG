@@ -3,7 +3,7 @@ import sqlite3
 def create_profile_table(dbPath):
     database = sqlite3.connect(dbPath)
     cursor = database.cursor()
-    cursor.execute('''
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS profile(
         user_id INTEGER,
         date_registered DATETIME,
@@ -18,16 +18,16 @@ def create_profile_table(dbPath):
         attack INTEGER,
         defence INTEGER
     )
-    ''')
+    """)
 
 def create_dungeon_table(dbPath):
     database = sqlite3.connect(dbPath)
     cursor = database.cursor()
-    cursor.execute('''
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS dungeon(
         user_id INTEGER,
         status INTEGER,
         level INTEGER,
         max_level INTEGER
     )
-    ''')
+    """)
