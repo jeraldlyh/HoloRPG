@@ -77,13 +77,16 @@ class Statistics():
         Returns a tuple of monster statistics
         """
 
-        for key in self.baseStats:
-            if level < key:
-                multiplier = 1 + self.baseStats[key]["Monster"]["Scaling"] * numberOfPlayers
-                health = int(self.baseStats[key]["Monster"]["HP"] * level * multiplier)
-                attack = int(self.baseStats[key]["Monster"]["Attack"] * level * multiplier)
-                defence = int(self.baseStats[key]["Monster"]["Defence"] * level * multiplier)
-                return health, attack, defence
+        index = 0
+        for key in list(self.baseStats.keys())[::-1]:
+            if level >= key:
+                index = key
+
+        multiplier = 1 + self.baseStats[index]["Monster"]["Scaling"] * numberOfPlayers
+        health = int(self.baseStats[index]["Monster"]["HP"] * level * multiplier)
+        attack = int(self.baseStats[index]["Monster"]["Attack"] * level * multiplier)
+        defence = int(self.baseStats[index]["Monster"]["Defence"] * level * multiplier)
+        return health, attack, defence
 
     def damage_dealt(self, attack, defence, playersData, targetID=None):
         """
@@ -117,12 +120,12 @@ class Statistics():
     def process_level(self, playerID, level, experience, attack=0, defence=0, max_health=0, connection=None):
         """
         [playerID] - An integer that represents player's
-        [experience] - An integer that represents player's current EXP
         [level] - An integer that represents player's current level
+        [experience] - An integer that represents player's current EXP
         [attack] - An integer that represents player's attack, defaults to 0
         [defence] - An integer that represents player's defence, defaults to 0
         [max HP] - An integer that represents player's max HP, defaults to 0
-        [connection] - A SQL connection passed in from the pool
+        [connection] - A SQL connection passed in from the pool, defaults to None
         """
 
         if connection is None:
@@ -130,9 +133,9 @@ class Statistics():
         
         # Searches correct index
         index = 0
-        for x in self.levels[::-1]:
-            if level >= x:
-                index = x
+        for key in self.levels[::-1]:
+            if level >= key:
+                index = key
 
         experienceRequired = self.experience_required(level)
 

@@ -368,7 +368,7 @@ class Dungeon(commands.Cog):
                     playersData[playerID]["Statistics"][4] = 0              # Sets player HP to 0
                     battleLogs += f"=> **{playerName}** took too long to respond and got killed `💀`\n"
                     playersData[playerID]["Info"][0] = playerName + " 💀"   # Adds an indication for dead players
-                    
+
                 battleText = format_battle_text(battleLogs, playersData, monster)
 
         if not self.is_players_alive(playersData):      # All players are dead
@@ -529,8 +529,8 @@ class Dungeon(commands.Cog):
                 # color = discord.Color.from_hsv(random.random(), 1, 1)
                 color = random.randint(0, 0xffffff)
 
-            await self.start_battle(ctx, playersData, monster, color, connection)
-            connection.close()
+                await self.start_battle(ctx, playersData, monster, color, connection)
+                connection.close()
 
     @has_registered()
     @has_chosen_class()
