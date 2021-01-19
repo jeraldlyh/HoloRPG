@@ -31,6 +31,7 @@ def format_skills_text(skillsDict):
         skillsText += "```"
         return skillsText
 
+
 def format_health_text(playersData, monster):
     """
     [playersData] - A dictionary of players' data which contains their statistics
@@ -40,20 +41,22 @@ def format_health_text(playersData, monster):
     """
 
     # Finds longest length of string to beautify formatting
-    longestString = len(monster.name) if monster.HP != 0 else len(monster.name) + 2
+    longestString = len(monster.name)
     for playerID in playersData:
         playerName = playersData[playerID]["Info"][0]
         if len(playerName) > longestString:
             longestString = len(playerName)
-
+    
     # healthText = "```\t" + " " * longestString + "HEALTH\n"
-    healthText = f"```{monster.name}\t" if monster.HP != 0 else f"```{monster.name} 💀 \t"
+    healthText = f"```{monster.name}\t"
     healthText += " " * (longestString - len(monster.name)) + f"{monster.HP}/{monster.maxHP}🖤"
+    
     for playerID in playersData:
         playerName = playersData[playerID]["Info"][0]
         playerHP = playersData[playerID]["Statistics"][4]
         playerMaxHP = playersData[playerID]["Statistics"][5]
         healthText += f"\n{playerName}\t" + " " * (longestString - len(playerName)) + f"{playerHP}/{playerMaxHP}❤️"
+    
     healthText += "```"
     return healthText
 

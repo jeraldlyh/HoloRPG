@@ -13,7 +13,8 @@ extensions = [
         "cogs.moderation",
         "cogs.classes",
         "cogs.help",
-        "cogs.dungeon"
+        "cogs.dungeon",
+        "cogs.level"
     ]
 
 class RPGBot(commands.Bot):

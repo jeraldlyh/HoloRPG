@@ -36,8 +36,10 @@ class Moderation(commands.Cog):
         database = sqlite3.connect(self.bot.config.dbPath)
         cursor = database.cursor()
         profileData = [(1, 1, 100, 100, 50, 50, ctx.author.id)]
+        dungeonData = [(1, ctx.author.id)]
         for x in users:
             profileData.append((1, 1, 100, 100, 50, 50, x.id))
+            dungeonData.append((1, x.id))
 
         
         sql = (f"""
@@ -52,6 +54,15 @@ class Moderation(commands.Cog):
         """)
         cursor.executemany(sql, profileData)
         database.commit()
+
+        sql = (f"""
+            UPDATE dungeon
+            SET level = ?
+            WHERE user_id = ?
+        """)
+        cursor.executemany(sql, dungeonData)
+        database.commit()
+
         database.close()
         await ctx.send("Database reset")
 

@@ -2,7 +2,7 @@ import random
 import math
 import os
 
-from cogs.stats import Statistics
+from utils.stats import Statistics
 
 class Monsters(object):
     def __init__(self, index, numberOfPlayers):

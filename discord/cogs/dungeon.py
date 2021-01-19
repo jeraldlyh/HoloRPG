@@ -7,7 +7,8 @@ import os
 from discord.ext import commands
 from cogs.monsters import Monsters
 from cogs.classes import Classes
-from cogs.stats import Statistics
+from cogs.level import Level
+from utils.stats import Statistics
 from utils.checks import has_registered, user_has_registered, has_chosen_class
 from utils.checks import NotRegistered, NotChosenClass
 from utils.embed import command_processed, command_error
@@ -131,7 +132,7 @@ class Dungeon(commands.Cog):
             else:
                 playerMaxDungeon = playerDungeon + int(dungeon)
 
-            levelCheck =  Statistics().process_level(
+            levelData =  Statistics().process_level(
                 playerID,
                 playerLevel,
                 playerEXP + experience,
@@ -140,17 +141,7 @@ class Dungeon(commands.Cog):
                 playerMaxHP,
                 connection)
 
-            if levelCheck[0] != 0:      # If player manages to level up
-                message = discord.Embed(
-                    description=f"""
-                    <@{playerID}> You have leveled up **{levelCheck[0]}** times!\n
-                    💗Health: **+{levelCheck[3]}**
-                    🗡Attack: **+{levelCheck[1]}**
-                    🛡Defence: **+{levelCheck[2]}**
-                    """,
-                    color=0x95ed6f
-                    )
-                await ctx.send(embed=message)
+            await Level(self.bot).send_level_message(ctx, playerID, levelData)
 
             # Appends a tuple for SQL query subsequently
             profileData.append((playerHP, playerID))
@@ -299,7 +290,7 @@ class Dungeon(commands.Cog):
         battleText = "\n" + format_health_text(playersData, monster)
         while self.is_players_alive(playersData) and monster.HP > 0:
             for playerID in playersData:
-                if monster.HP == 0:     # In case monster dies before other player's turn
+                if monster.HP <= 0:     # In case monster dies before other player's turn
                     break
 
                 playerName = playersData[playerID]["Info"][0]
@@ -350,25 +341,29 @@ class Dungeon(commands.Cog):
                     if chanceGenerated <= chanceToHit:       # Successfully damages the monster
                         damageDealt = round(Statistics().damage_dealt(playerAttack, monster.defence, playersData) * (damageMultipler / 100))
                         monster.HP -= damageDealt
-                        if monster.HP < 0:
+                        if monster.HP <= 0:
                             monster.HP = 0
+                            monster.name += " ☠️"
 
                         battleLogs += f"=> **{playerName}** dealt **{damageDealt}**`💗` to **{monster.name}**\n"
 
                     # Monster damages player
                     damageDealt = round(Statistics().damage_dealt(monster.attack, playerDefence, playersData, playerID))
                     playersData[playerID]["Statistics"][4] -= damageDealt
-                    if playersData[playerID]["Statistics"][4] < 0:      # Checks if damage is overkilling the player's HP
-                        playersData[playerID]["Statistics"][4] = 0      # Prevents health from becoming a negative value
+                    
+                    # Checks if damage is overkilling the player's HP
+                    if playersData[playerID]["Statistics"][4] <= 0:
+                        playersData[playerID]["Statistics"][4] = 0                  # Prevents health from becoming a negative value
+                        playersData[playerID]["Info"][0] = playerName + " ☠️"       # Adds an indication for dead players
 
                     battleLogs += f"=> **{playerName}** received **{damageDealt}**`💗` from **{monster.name}**\n" 
 
                 except asyncio.TimeoutError:
                     # Player did not make his move
                     playersData[playerID]["Statistics"][4] = 0              # Sets player HP to 0
-                    battleLogs += f"=> **{playerName}** took too long to respond and got killed `💀`\n"
-                    playersData[playerID]["Info"][0] = playerName + " 💀"   # Adds an indication for dead players
-
+                    battleLogs += f"=> **{playerName}** took too long to respond and got killed `☠️`\n"
+                    playersData[playerID]["Info"][0] = playerName + " ☠️"   # Adds an indication for dead players
+                
                 battleText = format_battle_text(battleLogs, playersData, monster)
 
         if not self.is_players_alive(playersData):      # All players are dead
@@ -391,7 +386,7 @@ class Dungeon(commands.Cog):
             healthText = format_health_text(playersData, monster)
             winEmbed = discord.Embed(
                 title=monster.dungeonName,
-                description=f"**{monster.name}** has been defeated by {playersMention}\n{healthText}",
+                description=f"**{monster.name[:-2]}** has been defeated by {playersMention}\n{healthText}",
                 color=color
             )
             winEmbed.add_field(
