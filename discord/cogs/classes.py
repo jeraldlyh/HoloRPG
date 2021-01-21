@@ -17,7 +17,8 @@ class Classes(commands.Cog):
                     "Perforate" : [100, 120],
                     "Ultimate" : [15, 500],
                     "Block" : [50, 170]
-                }
+                },
+                "Passive" : 15
             },
             "Archer" : {
                 "Jobs": ["Hunter", "Ranger", "Arcane Archer", "Bow Master"],
@@ -26,7 +27,8 @@ class Classes(commands.Cog):
                     "Pierce" : [100, 120],
                     "Ultimate" : [15, 500],
                     "Swerve" : [50, 170]
-                }
+                },
+                "Passive" : 20
             },
             "Rogue" : {
                 "Jobs": ["Genin", "Chunin", "Jonin", "Hokage"],
@@ -35,7 +37,8 @@ class Classes(commands.Cog):
                     "Ninjutsu" : [100, 120],
                     "Ultimate" : [15, 500],
                     "Shinobi" : [50, 170]
-                }
+                },
+                "Passive" : 5
             },
             "Magician" : {
                 "Jobs" : ["Battle Cleric", "Sorcerer", "Summoner", "Warlock"],
@@ -44,7 +47,8 @@ class Classes(commands.Cog):
                     "Spellslinger" : [100, 120],
                     "Ultimate" : [15, 500],
                     "Heal" : [50, 170]
-                }
+                },
+                "Passive" : 15
             }
         }
         self.advancementLevels = [1, 30, 60, 90]
@@ -89,6 +93,7 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
                 UPDATE profile
                 SET main_class = ?,
                     sub_class = ?,
+                    passive = ?,
                     max_health = ?,
                     health = ?,
                     attack = ?,
@@ -98,6 +103,7 @@ Lvl 90  | Battle Master | Bow Master    | Hokage      | Warlock
             data = (
                 selectedJob,                                    # Main class
                 self.classDict[selectedJob]["Jobs"][0],         # Sub class
+                self.classDict[selectedJob]["Passive"],         # Passive
                 self.classDict[selectedJob]["Base Stats"][0],   # Starting max health
                 self.classDict[selectedJob]["Base Stats"][0],   # Health
                 self.classDict[selectedJob]["Base Stats"][1],   # Attack

@@ -32,29 +32,17 @@ class Dungeon(commands.Cog):
         """
 
         cursor = connection.cursor()
-        sql = (f"""
-                SELECT status
-                FROM dungeon
-                WHERE user_id = {list(playersData.keys())[0]}
-            """)
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        status = result[0]
-
         errorList = []
-        for index, data in enumerate(playersData.items()):
-            if index == 0:
-                continue
-
+        for playerID in playersData:
             sql = (f"""
                 SELECT status
                 FROM dungeon
-                WHERE user_id = {data[0]}
+                WHERE user_id = {playerID}
             """)
             cursor.execute(sql)
             result = cursor.fetchone()
-            if result[0] != status:
-                errorList.append(data[0])
+            if result[0] == 1:
+                errorList.append(playerID)
 
         errorType = "currently **in battle**"
         errorText = format_grammar(errorList, "is", "are", errorType)
@@ -183,6 +171,79 @@ class Dungeon(commands.Cog):
         """)
         cursor.executemany(sql, [(1, playerID) for playerID in playersData])
         connection.commit()
+
+    def damage_player(self, playersData, monster, playerID):
+        """
+        [playersData] - A dictionary of players' data which contains their statistics
+        [monster] - A monster object that contains its relevant statistics
+        [playerID] - An integer that represents player ID
+        """
+
+        playerName = playersData[playerID]["Info"][0]
+        playerClass = playersData[playerID]["Statistics"][0]
+        playerDefence = playersData[playerID]["Statistics"][7]
+        playerPassive = playersData[playerID]["Statistics"][8]
+
+        damageDealt = round(Statistics().damage_dealt(monster.attack, playerDefence, playersData, playerID))
+        passiveChance = random.randint(1, 100)
+
+        if playerClass == "Warrior" and passiveChance <= playerPassive:
+            # Blocks and negate damage to monster
+            monster.HP -= damageDealt
+            return f"=> **{playerName}** manages to **block** the attack `🛡️`\n" + \
+                   f"=> **{playerName}** deflects **{damageDealt}**`💗` to **{monster.name}**\n"
+
+        playersData[playerID]["Statistics"][4] -= damageDealt
+        
+        # Checks if damage is overkilling the player's HP
+        if playersData[playerID]["Statistics"][4] <= 0:
+            playersData[playerID]["Statistics"][4] = 0                  # Prevents health from becoming a negative value
+            playersData[playerID]["Info"][0] = playerName + " ☠️"       # Adds an indication for dead players
+
+        return f"=> **{playerName}** received **{damageDealt}**`💗` from **{monster.name}**\n"
+
+    def damage_monster(self, playersData, monster, playerID, skill):
+        """
+        [playersData] - A dictionary of players' data which contains their statistics
+        [monster] - A monster object that contains its relevant statistics
+        [playerID] - An integer that represents player ID
+        [skill] - A list that contains skill damage and multiplier
+        """
+
+        chanceToHit = skill[0]
+        damageMultipler = skill[1]
+        playerName = playersData[playerID]["Info"][0]
+        playerClass = playersData[playerID]["Statistics"][0]
+        playerAttack = playersData[playerID]["Statistics"][6]
+        playerPassive = playersData[playerID]["Statistics"][8]
+        attackChance = random.randint(1, 100)
+        passiveChance = random.randint(1, 100)
+        damageDealt = round(Statistics().damage_dealt(playerAttack, monster.defence, playersData) * (damageMultipler / 100))
+        output = ""
+
+        if playerClass == "Magician" and passiveChance <= playerPassive:    # Mages does not have to land a hit to proc their passive
+            # Heals all party members by 10-20% HP
+            healthRestored = random.randint(10, 20)
+            for playerID in playersData:
+                playerHP = playersData[playerID]["Statistics"][4]
+                playersData[playerID]["Statistics"][4] = round(playerHP * ((100 + healthRestored) / 100))
+                output += f"=> **{playerName}** manages to heal all party members by {healthRestored}% health `💓`\n"
+
+        if attackChance <= chanceToHit:     # Manage to land a hit
+            if playerClass == "Archer" and passiveChance <= playerPassive:
+                # Lands a critical shot of 150% effectiveness
+                damageDealt *= 1.5
+                monster.HP -= damageDealt
+                return f"=> **{playerName}** manages to land a critical hit `💢`\n" + \
+                       f"=> **{playerName}** dealt **{damageDealt}**`💗` to **{monster.name}**\n"
+
+            monster.HP -= damageDealt
+            if monster.HP <= 0:
+                monster.HP = 0
+                monster.name += " ☠️"
+            output += f"=> **{playerName}** dealt **{damageDealt}**`💗` to **{monster.name}\n**"
+        return output
+
 
     async def dungeon_requests(self, ctx, playersData, monster, color):
         """
@@ -331,35 +392,18 @@ class Dungeon(commands.Cog):
                 try:
                     def check(message):
                         return message.author.id == playerID and \
-                        int(message.content) in range(1, 1 + len(skillsDict))
+                        message.content in [str(index) for index in range(1, 1 + len(skillsDict))]
                         # message.content.lower() in [skill.lower() for skill in list(skillsDict.keys())]
                     message = await self.bot.wait_for("message", timeout=15, check=check)
 
                     index = int(message.content) - 1
                     skill = skillsDict[list(skillsDict.keys())[index]]
-                    chanceToHit = skill[0]
-                    damageMultipler = skill[1]
 
-                    chanceGenerated = random.randint(1, 100)
-                    if chanceGenerated <= chanceToHit:       # Successfully damages the monster
-                        damageDealt = round(Statistics().damage_dealt(playerAttack, monster.defence, playersData) * (damageMultipler / 100))
-                        monster.HP -= damageDealt
-                        if monster.HP <= 0:
-                            monster.HP = 0
-                            monster.name += " ☠️"
-
-                        battleLogs += f"=> **{playerName}** dealt **{damageDealt}**`💗` to **{monster.name}**\n"
+                    # Player damages monster
+                    battleLogs += self.damage_monster(playersData, monster, playerID, skill)
 
                     # Monster damages player
-                    damageDealt = round(Statistics().damage_dealt(monster.attack, playerDefence, playersData, playerID))
-                    playersData[playerID]["Statistics"][4] -= damageDealt
-                    
-                    # Checks if damage is overkilling the player's HP
-                    if playersData[playerID]["Statistics"][4] <= 0:
-                        playersData[playerID]["Statistics"][4] = 0                  # Prevents health from becoming a negative value
-                        playersData[playerID]["Info"][0] = playerName + " ☠️"       # Adds an indication for dead players
-
-                    battleLogs += f"=> **{playerName}** received **{damageDealt}**`💗` from **{monster.name}**\n" 
+                    battleLogs += self.damage_player(playersData, monster, playerID)
 
                 except asyncio.TimeoutError:
                     # Player did not make his move
@@ -419,14 +463,15 @@ class Dungeon(commands.Cog):
         if len(users) != 0:
             # Party play
             cursor.execute(f"""
-                SELECT p.main_class, 
-                        p.level, 
-                        p.experience, 
-                        p.currency, 
-                        p.health, 
-                        p.max_health, 
-                        p.attack, 
+                SELECT p.main_class,
+                        p.level,
+                        p.experience,
+                        p.currency,
+                        p.health,
+                        p.max_health,
+                        p.attack,
                         p.defence,
+                        p.passive,
                         d.status,
                         d.level,
                         d.max_level
@@ -439,8 +484,8 @@ class Dungeon(commands.Cog):
             playersData = {
                 ctx.author.id : {
                     "Info" : [ctx.author.name, ctx.author.default_avatar_url],
-                    "Statistics" : [stats for stats in list(result)[:8]],
-                    "Dungeon" : [data for data in list(result)[8:]]
+                    "Statistics" : [stats for stats in list(result)[:9]],
+                    "Dungeon" : [data for data in list(result)[9:]]
                 }
             }
 
@@ -451,14 +496,15 @@ class Dungeon(commands.Cog):
                     return await ctx.send(embed=message)
 
                 cursor.execute(f"""
-                    SELECT p.main_class, 
-                        p.level, 
-                        p.experience, 
-                        p.currency, 
-                        p.health, 
-                        p.max_health, 
-                        p.attack, 
+                    SELECT p.main_class,
+                        p.level,
+                        p.experience,
+                        p.currency,
+                        p.health,
+                        p.max_health,
+                        p.attack,
                         p.defence,
+                        p.passive,
                         d.status,
                         d.level,
                         d.max_level
@@ -471,8 +517,8 @@ class Dungeon(commands.Cog):
                 data = {
                     user.id : {
                         "Info" : [user.name, user.default_avatar_url],
-                        "Statistics" : [stats for stats in list(result)[:8]],
-                        "Dungeon" : [data for data in list(result)[8:]]
+                        "Statistics" : [stats for stats in list(result)[:9]],
+                        "Dungeon" : [data for data in list(result)[9:]]
                     }
                 }
                 playersData.update(data)
@@ -493,14 +539,15 @@ class Dungeon(commands.Cog):
         else:
             # Solo play
             cursor.execute(f"""
-                SELECT p.main_class, 
-                        p.level, 
-                        p.experience, 
-                        p.currency, 
-                        p.health, 
-                        p.max_health, 
-                        p.attack, 
+                SELECT p.main_class,
+                        p.level,
+                        p.experience,
+                        p.currency,
+                        p.health,
+                        p.max_health,
+                        p.attack,
                         p.defence,
+                        p.passive,
                         d.status,
                         d.level,
                         d.max_level
@@ -514,8 +561,8 @@ class Dungeon(commands.Cog):
             playersData = {
                 ctx.author.id : {
                     "Info" : [ctx.author.name, ctx.author.default_avatar_url],
-                    "Statistics" : [stats for stats in list(result)[:8]],
-                    "Dungeon" : [data for data in list(result)[8:]]
+                    "Statistics" : [stats for stats in list(result)[:9]],
+                    "Dungeon" : [data for data in list(result)[9:]]
                 }
             }
 

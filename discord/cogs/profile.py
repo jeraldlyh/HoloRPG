@@ -25,8 +25,21 @@ class Profile(commands.Cog):
         if result is None:
             # Profile table
             sql = ("""
-                INSERT INTO profile(user_id, date_registered, main_class, sub_class, level, experience, currency, reputation, max_health, health, attack, defence)
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
+                INSERT INTO profile(
+                    user_id,
+                    date_registered,
+                    main_class,
+                    sub_class,
+                    passive,
+                    level,
+                    experience,
+                    currency,
+                    reputation,
+                    max_health,
+                    health,
+                    attack,
+                    defence)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
             """)
             time_now = datetime.datetime.now(tz=pytz.timezone("Asia/Singapore"))
             date_registered = time_now.strftime("%Y-%m-%d %H:%M:%S")
@@ -35,6 +48,7 @@ class Profile(commands.Cog):
                 date_registered,        # Date
                 "Jobless",              # Main Class
                 "Jobless",              # Sub Class
+                0,                      # Passive
                 1,                      # Level
                 0,                      # Experience
                 0,                      # Currency
