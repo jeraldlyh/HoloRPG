@@ -310,6 +310,7 @@ class Dungeon(commands.Cog):
                     color=color
                 )
                 battleEmbed.set_author(name=f"{monster.dungeonName}", icon_url=playerAvatar)
+                battleEmbed.set_footer(text="• Select skill based on skill number")
 
                 # Displays battle logs
                 battleEmbed.add_field(name="\u200b", value=battleText)
@@ -330,10 +331,12 @@ class Dungeon(commands.Cog):
                 try:
                     def check(message):
                         return message.author.id == playerID and \
-                        message.content.lower() in [skill.lower() for skill in list(skillsDict.keys())]
-
+                        int(message.content) in range(1, 1 + len(skillsDict))
+                        # message.content.lower() in [skill.lower() for skill in list(skillsDict.keys())]
                     message = await self.bot.wait_for("message", timeout=15, check=check)
-                    skill = skillsDict[message.content.capitalize()]
+
+                    index = int(message.content) - 1
+                    skill = skillsDict[list(skillsDict.keys())[index]]
                     chanceToHit = skill[0]
                     damageMultipler = skill[1]
 
@@ -554,8 +557,13 @@ class Dungeon(commands.Cog):
         level = result[0]
         maxLevel = result[1]
 
+        # Checks if player is already present at current selected level
+        if dungeonLevel == level:
+            message = command_error(description=f"{ctx.author.mention} You're already in **Level {dungeonLevel} - {Monsters(1, 0).dungeons[dungeonLevel]['Name']}**")
+            await ctx.send(embed=message)
+
         # Checks if selected level is below player"s maxLevel
-        if dungeonLevel < maxLevel:
+        elif dungeonLevel < maxLevel:
             sql = ("""
                 UPDATE dungeon
                 SET level = ?

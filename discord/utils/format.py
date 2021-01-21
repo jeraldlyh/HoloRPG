@@ -13,9 +13,9 @@ def format_skills_text(skillsDict):
             if len(skill) > longestString:
                 longestString = len(skill)
         
-        skillsText = "```\t" + " " * longestString + "CHANCE\t" + "DAMAGE\n"
-        for skill in skillsDict:
-            skillsText += f"{skill.upper()}\t"
+        skillsText = "```\t" + " " * (longestString + 2) + "CHANCE\t" + "DAMAGE\n"
+        for index, skill in enumerate(skillsDict):
+            skillsText += f"{index + 1}. {skill.upper()}\t"
             chanceToHit = skillsDict[skill][0]
             damage = skillsDict[skill][1]
 
