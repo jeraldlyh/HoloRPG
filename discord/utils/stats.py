@@ -11,7 +11,7 @@ class Statistics():
             1 : { 
                 "Monster" : {
                     "HP" : 7,
-                    "Attack" : 7,
+                    "Attack" : 5,
                     "Defence" : 5,
                     "Scaling" : 0.05
                 },
@@ -24,8 +24,8 @@ class Statistics():
             30 : {
                 "Monster" : {
                     "HP" : 15,
-                    "Attack" : 14,
-                    "Defence" : 5,
+                    "Attack" : 10,
+                    "Defence" : 10,
                     "Scaling" : 0.1
                 },
                 "Player" : {
@@ -37,7 +37,7 @@ class Statistics():
             60 : {
                 "Monster" : {
                     "HP" : 37,
-                    "Attack" : 28,
+                    "Attack" : 20,
                     "Defence" : 20,
                     "Scaling" : 0.2
                 },
@@ -50,7 +50,7 @@ class Statistics():
             90 : {
                 "Monster" : {
                     "HP" : 103,
-                    "Attack" : 56,
+                    "Attack" : 40,
                     "Defence" : 40,
                     "Scaling" : 0.4
                 },
@@ -98,8 +98,8 @@ class Statistics():
         Players who scales high defence will receive lesser damage from monster
         Computes damage dealt to player/monster
         """
-
         damage = (attack ** 2) / (attack + defence)
+        print(damage)
         lowerBound = damage * 0.75
         upperBound = damage * 1.25
         damageDealt = random.randint(int(lowerBound), int(upperBound))
@@ -108,8 +108,8 @@ class Statistics():
             totalDefence = 0
             for playerID in playersData:
                 totalDefence += playersData[playerID]["Statistics"][7]
-
-            percentageOfDefence = 1 - (playersData[targetID]["Statistics"][7] / totalDefence)
+            print(damageDealt)
+            percentageOfDefence = 1 - (playersData[targetID]["Statistics"][7] / totalDefence) if len(playersData) != 1 else 1
             return damageDealt * percentageOfDefence
 
         return damageDealt
