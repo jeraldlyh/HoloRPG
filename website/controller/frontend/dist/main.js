@@ -15,7 +15,7 @@
   \*******************************/
 /***/ (() => {
 
-eval("throw new Error(\"Module parse failed: Unexpected token (7:8)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n| function App() {\\n|     return (\\n>         <div>\\n|             <HomePage />\\n|         </div>\");\n\n//# sourceURL=webpack://frontend/./src/components/App.js?");
+eval("throw new Error(\"Module parse failed: Unexpected token (12:12)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n|     render() {\\n|         return (\\n>             <div>\\n|                 <HomePage />\\n|             </div>\");\n\n//# sourceURL=webpack://frontend/./src/components/App.js?");
 
 /***/ }),
 
