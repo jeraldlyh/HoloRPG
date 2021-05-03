@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('api.urls'))       # Redirects to urls.py in api folder
+    path("admin/", admin.site.urls),
+    path("", include("api.urls")),          # Permits URL links in backend
+    path("", include("frontend.urls")),     # Permits URL links in frontend
 ]
