@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from .models import Room
+from django.contrib.auth.models import User
+from .models import Lead
 
 
-class RoomSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Room
-        fields = ('id', 'code', 'host', 'can_pause', 'votes_to_skip', 'created_at')
+        model = User
+        fields = ("username", "password")
+class LeadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = "__all__"

@@ -38,10 +38,10 @@ const headerData = [
 ]
 
 export default function Header() {
-    const { appBar, logo, menuButton, toolBar } = useStyles()
+    const classes = useStyles()
 
     const getAppLogo = (
-        <Typography variant="h6" component="h1" className={logo}>
+        <Typography variant="h6" component="h1" className={classes.logo}>
             ZeusRPG
         </Typography>
     )
@@ -53,8 +53,8 @@ export default function Header() {
                         key: label,
                         color: "inherit",
                         to: href,
-                        component: RouterLink,
-                        className: menuButton,
+                        // component: RouterLink,
+                        className: classes.menuButton,
                     }}
                 >
                     {label}
@@ -64,15 +64,13 @@ export default function Header() {
     }
 
     return (
-        <header>
-            <AppBar className={appBar}>
-                <Toolbar className={toolBar}>
-                    {getAppLogo}
-                    <div>
-                        {getMenuButtons()}
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </header>
+        <AppBar className={classes.appBar}>
+            <Toolbar className={classes.toolBar}>
+                {getAppLogo}
+                <div>
+                    {getMenuButtons()}
+                </div>
+            </Toolbar>
+        </AppBar>
     )
 }

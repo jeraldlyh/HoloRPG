@@ -1,6 +1,10 @@
 from django.urls import path
-from .views import RoomView
+from rest_framework import routers
+from .views import LeadViewSet
 
-urlpatterns = [
-    path('home', RoomView.as_view()),
-]
+
+router = routers.DefaultRouter()
+router.register("api/leads", LeadViewSet, "leads")
+
+
+urlpatterns = router.urls
