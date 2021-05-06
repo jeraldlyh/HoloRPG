@@ -1,76 +1,33 @@
 import React from "react"
-import { AppBar, Toolbar, Typography, makeStyles, Button } from "@material-ui/core"
 import { Link as RouterLink } from "react-router-dom"
 
 
-const useStyles = makeStyles(() => ({
-    appBar: {
-        backgroundColor: "#1b1b1b",
-        position: "fixed",
-    },
-    logo: {
-        fontFamily: "Work Sans, sans-serif",
-        fontWeight: 600,
-        color: "#FFFEFE",
-        textAlign: "left",
-    },
-    menuButton: {
-        fontFamily: "Open Sans, sans-serif",
-        fontWeight: 700,
-        size: "18px",
-        marginLeft: "38px",
-    },
-    toolBar: {
-        display: "flex",
-        justifyContent: "space-between",
-    }
-}))
-
-const headerData = [
-    {
-        label: "FAQ",
-        href: "/faq",
-    },
-    {
-        label: "Login",
-        href: "/login",
-    },
-]
 
 export default function Header() {
-    const classes = useStyles()
-
-    const getAppLogo = (
-        <Typography variant="h6" component="h1" className={classes.logo}>
-            ZeusRPG
-        </Typography>
-    )
-    const getMenuButtons = () => {
-        return headerData.map(({ label, href }) => {
-            return (
-                <Button
-                    {...{
-                        key: label,
-                        color: "inherit",
-                        to: href,
-                        // component: RouterLink,
-                        className: classes.menuButton,
-                    }}
-                >
-                    {label}
-                </Button>
-            )
-        })
-    }
 
     return (
-        <AppBar className={classes.appBar}>
-            <Toolbar className={classes.toolBar}>
-                {getAppLogo}
-                <div>
-                    {getMenuButtons()}
+        <nav>
+            <div className="container mx-auto px-6 py-4 flex justify-between items-center bg-black">
+                <a className="font-bold text-2xl" href="/">
+                    HOLO
+                </a>
+                {/* Hidden for Large Screens */}
+                <div className="block lg:hidden">
+                    <button className="flex items-center px-3 border rounded border-gray-600 hover:text-gray-400 hover:border-teal-500 appearance-none focus:outline-none">
+                        test
+                    </button>
                 </div>
-            </Toolbar>
-        </AppBar>
+                {/* Hidden for Small Screens */}
+                <div className="hidden lg:block">
+                    <ul className="inline-flex">
+                        <li><a className="px-4 font-bold" href="#">FAQ</a></li>
+                        <li><a className="px-4 font-bold" href="#">COMMANDS</a></li>
+                        <li><a className="px-4 font-bold" href="#">LEADERBOARDS</a></li>
+                        <li><a className="px-4 font-bold" href="#">LOGIN</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
     )
 }
