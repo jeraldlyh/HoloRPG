@@ -7,13 +7,15 @@ import store from "../store"
 import Header from "./layout/Header"
 import Footer from "./layout/Footer"
 import HomePage from "./HomePage"
+import Login from "./Login"
 
 
 export default function App() {
     return (
         <div className="flex flex-col">
             <Header />
-            <HomePage />
+            {/* <HomePage /> */}
+            <Login />
             <Footer />
         </div>
     )

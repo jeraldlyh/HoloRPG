@@ -7,7 +7,7 @@ export default function Header() {
 
     return (
         <nav>
-            <div className="container mx-auto px-6 py-4 flex justify-between items-center bg-black">
+            <div className="container w-full px-6 py-4 flex justify-between items-center bg-black">
                 <a className="font-bold text-2xl" href="/">
                     HOLO
                 </a>
