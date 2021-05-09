@@ -13,19 +13,26 @@ export default function Header() {
                 </a>
                 {/* Hidden for Large Screens */}
                 <div className="block lg:hidden">
-                    <button className="flex items-center px-3 border rounded border-gray-600 hover:text-gray-400 hover:border-teal-500 appearance-none focus:outline-none">
-                        test
+                    <button className="px-4 font-bold hover:bg-red-800">
+                        LOGIN
                     </button>
                 </div>
                 {/* Hidden for Small Screens */}
                 <div className="hidden lg:block">
                     <ul className="inline-flex">
-                        <li><a className="px-4 font-bold" href="#">FAQ</a></li>
-                        <li><a className="px-4 font-bold" href="#">COMMANDS</a></li>
-                        <li><a className="px-4 font-bold" href="#">LEADERBOARDS</a></li>
-                        <li><a className="px-4 font-bold" href="#">LOGIN</a></li>
+                        <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
+                            <a className="px-4 py-0.5 font-bold" href="#">FAQ</a>
+                        </li>
+                        <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
+                            <a className="px-4 py-0.5 font-bold" href="#">COMMANDS</a>
+                        </li>
+                        <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
+                            <a className="px-4 py-0.5 font-bold" href="#">LEADERBOARDS</a>
+                        </li>
+                        <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
+                            <a className="px-4 font-bold" href="#">LOGIN</a>
+                        </li>
                     </ul>
-
                 </div>
             </div>
         </nav>
