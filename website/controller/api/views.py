@@ -1,21 +1,17 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
 from django.contrib.auth.models import User
+from rest_framework import viewsets
+from .models import Article
+from .serializers import ArticleSerializer, UserSerializer
 
-from .models import Lead
-from .serializers import LeadSerializer
 
 # Create your views here.
-class LeadViewSet(viewsets.ModelViewSet):
-    queryset = Lead.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = LeadSerializer
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     A viewset for viewing and editing user instances.
-#     """
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
