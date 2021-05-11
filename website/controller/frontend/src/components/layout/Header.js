@@ -1,5 +1,5 @@
 import React from "react"
-import { Link as RouterLink } from "react-router-dom"
+import { Redirect, Link } from "react-router-dom"
 
 
 
@@ -13,7 +13,7 @@ export default function Header() {
                 </a>
                 {/* Hidden for Large Screens */}
                 <div className="block lg:hidden">
-                    <button className="px-4 font-bold hover:bg-red-800">
+                    <button className="px-4 font-bold hover:bg-red-800" href="/login" type="submit">
                         LOGIN
                     </button>
                 </div>
@@ -30,7 +30,7 @@ export default function Header() {
                             <a className="px-4 py-0.5 font-bold" href="#">LEADERBOARDS</a>
                         </li>
                         <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                            <a className="px-4 font-bold" href="#">LOGIN</a>
+                            <a className="px-4 font-bold" href="/login">LOGIN</a>
                         </li>
                     </ul>
                 </div>
