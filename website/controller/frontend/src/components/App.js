@@ -1,25 +1,36 @@
 import React, { Component, Fragment } from "react"
 import ReactDOM from "react-dom"
-import { Route, BrowserRouter } from "react-router-dom"
+import { Route, BrowserRouter, Switch } from "react-router-dom"
+import { Provider } from "react-redux"
+import { PersistGate } from 'redux-persist/integration/react'
 
-import Header from "./layout/Header"
-import Footer from "./layout/Footer"
+import { configureStore } from "../storeConfig"
 import HomePage from "./HomePage"
-import Login from "./Login"
-import { CookiesProvider } from "react-cookie"
+import LoginForm from "./LoginForm"
+import RegisterForm from "./RegisterForm"
 
 
 export default function App() {
     return (
-        <CookiesProvider>
+        <Fragment>
             <BrowserRouter>
-                <Route exact path="/" component={HomePage}/>
-                <Route exact path="/login" component={Login}/>
+                <Switch>
+                    <Route exact path="/" component={HomePage}/>
+                    <Route exact path="/login" component={LoginForm}/>
+                    <Route exact path="/register" component={RegisterForm}/>
+                </Switch>
             </BrowserRouter>
-        </CookiesProvider>
+        </Fragment>
     )
     
 }
 
+const { store, persistor } = configureStore()
+
 const appDiv = document.getElementById("app");
-ReactDOM.render(<App />, appDiv)
+ReactDOM.render(
+    <Provider store={store}>
+        <PersistGate persistor={persistor}>
+            <App />
+        </PersistGate>
+    </Provider>, appDiv)
