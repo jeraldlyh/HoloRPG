@@ -1,10 +1,12 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
 from rest_framework import viewsets
-from .models import Article
-from .serializers import ArticleSerializer
+from .models import Article, UserAccount
+from .serializers import ArticleSerializer, UserAccountSerializer
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+
+class UserAccountViewSet(viewsets.ModelViewSet):
+    queryset = UserAccount.objects.all()
+    serializer_class = UserAccountSerializer
