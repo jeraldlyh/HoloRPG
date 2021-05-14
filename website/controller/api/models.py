@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.lookups import IsNull
 from django.utils.translation import gettext as _
 from django.conf import settings
 import string
@@ -21,44 +22,46 @@ import random
 #     return code
 
 # Create your models here.
-class Article(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
 
-    def __str__(self):
-        return self.title
 
-# class Skills(models.Model):
-#     class_name = 
-class UserAccount(models.Model):
-    WARRIOR = "Warrior"
-    ARCHER = "Archer"
-    MAGICIAN = "Magician"
-    ROGUE = "Rogue"
-    BEGINNER = "NULL"
+class Character(models.Model):
+    class Meta:
+        unique_together = (("main_class", "sub_class"))
 
-    CLASS_CHOICES = [
-        (WARRIOR, _("Dawn Warrior")),
-        (WARRIOR, _("Gladiator")),
-        (WARRIOR, _("Champion")),
-        (WARRIOR, _("Battle Master")),
-        (ARCHER, _("Hunter")),
-        (ARCHER, _("Ranger")),
-        (ARCHER, _("Arcane Archer")),
-        (ARCHER, _("Bow Master")),
-        (MAGICIAN, _("Battle Cleric")),
-        (MAGICIAN, _("Sorcerer")),
-        (MAGICIAN, _("Summoner")),
-        (MAGICIAN, _("Warlock")),
-        (ROGUE, _("Scout")),
-        (ROGUE, _("Assassin")),
-        (ROGUE, _("Trickster")),
-        (ROGUE, _("Phantom")),
-    ]
+    WARRIOR = 1
+    ARCHER = 2
+    MAGICIAN = 3
+    ROGUE = 4
+    DEFAULT = 0
+    
+    CLASS_CHOICES = (
+        (WARRIOR, _("Warrior")),
+        (ARCHER, _("Archer")),
+        (MAGICIAN, _("Magician")),
+        (ROGUE, _("Rogue")),
+        (DEFAULT, _("NONE"))
+    )
 
+    main_class = models.PositiveSmallIntegerField(
+        choices=CLASS_CHOICES,
+        default=DEFAULT,
+    )
+    sub_class = models.CharField(max_length=50)
+
+
+class Skill(models.Model):
+    class Meta:
+        unique_together = (("character", "name"))
+    
+    character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=50)
+    accuracy = models.IntegerField()
+    multiplier = models.IntegerField()
+
+class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_registered = models.DateTimeField(auto_now_add=True)
-    sub_class = models.CharField(max_length=32, choices=CLASS_CHOICES, default=None)
+    character = models.ForeignKey(Character, default=None, on_delete=models.DO_NOTHING)
     level = models.IntegerField()
     experience = models.IntegerField()
     currency = models.IntegerField()

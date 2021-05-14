@@ -1,12 +1,17 @@
 from rest_framework import viewsets
-from .models import Article, UserAccount
-from .serializers import ArticleSerializer, UserAccountSerializer
+from .models import Character, Skill, UserProfile
+from .serializers import CharacterSerializer, SkillSerializer, UserProfileSerializer
 
 
-class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
 
-class UserAccountViewSet(viewsets.ModelViewSet):
-    queryset = UserAccount.objects.all()
-    serializer_class = UserAccountSerializer
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class CharacterViewSet(viewsets.ModelViewSet):
+    queryset = Character.objects.all()
+    serializer_class = CharacterSerializer
+
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer

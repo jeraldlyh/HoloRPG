@@ -1,9 +1,13 @@
 from django.contrib import admin
-from .models import Article
+from django.apps import apps
+from .models import UserProfile, Skill, Character
 
 # Register your models here.
-
-@admin.register(Article)
-class ArticleModel(admin.ModelAdmin):
-    list_filter = ("title" , "description")
-    list_display = ("title" , "description")
+models = apps.get_models()
+for model in models:
+    try:
+        if model.__name__ == "AuthToken":
+            continue
+        admin.site.register(model)
+    except admin.sites.AlreadyRegistered:
+        pass

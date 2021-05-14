@@ -1,16 +1,23 @@
 from django.contrib.auth.models import User
+from django.db.models import fields
 
 from rest_framework import serializers
 from rest_framework.authtoken.views import Token
-from .models import Article, UserAccount
+from .models import Character, Skill, UserProfile
 
 
-class ArticleSerializer(serializers.ModelSerializer):
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Article
+        model = UserProfile
         fields = "__all__"
 
-class UserAccountSerializer(serializers.ModelSerializer):
+class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserAccount
+        model = Character
+        fields = "__all__"
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
         fields = "__all__"
