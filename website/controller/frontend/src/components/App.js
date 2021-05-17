@@ -5,9 +5,11 @@ import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { configureStore } from "../storeConfig"
+import Profile from "./Profile"
 import HomePage from "./HomePage"
 import LoginForm from "./LoginForm"
 import RegisterForm from "./RegisterForm"
+import PrivateRoute from "./PrivateRoute"
 
 
 export default function App() {
@@ -18,6 +20,7 @@ export default function App() {
                     <Route exact path="/" component={HomePage}/>
                     <Route exact path="/login" component={LoginForm}/>
                     <Route exact path="/register" component={RegisterForm}/>
+                    <PrivateRoute exact path="/profile" component={Profile}/>
                 </Switch>
             </BrowserRouter>
         </Fragment>

@@ -5,8 +5,6 @@ import { USER_LOADING, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOU
 
 export const tokenConfig = getState => {
     const token = getState().auth.token
-
-    // Headers
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -74,8 +72,6 @@ export const registerUser = ({username, email, password}) => async dispatch => {
             payload: response.data
         })
     } catch (error) {
-        console.log(error)
-        console.log("cmi")
         dispatch({
             type: REGISTER_FAIL
         })

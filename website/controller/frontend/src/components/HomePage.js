@@ -1,14 +1,11 @@
 import React, { Fragment } from "react"
 import Header from "./layout/Header"
 import Footer from "./layout/Footer"
-import ProfileCard from "./layout/ProfileCard"
-
 
 export default function HomePage() {
     return (
         <Fragment>
             <Header />
-            <ProfileCard />
             <div className="md:flex flex-col lg:grid grid-cols-3 grid-rows-4">
                 <div className="row-start-1 col-span-2 max-w py-4 px-8 mx-52 my-5 border border-green-300 rounded-lg">
                     <h2 className="font-bold">CLASSES</h2>

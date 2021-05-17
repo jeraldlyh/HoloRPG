@@ -1,6 +1,8 @@
-export const GET_LEADS = "GET_LEADS"
-export const DELETE_LEAD = "DELETE_LEAD"
-export const ADD_LEAD = "ADD_LEAD"
+// PROFILE ACTIONS
+export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS"
+export const LOAD_PROFILE_FAIL = "LOAD_PROFILE_FAIL"
+export const RECEIVE_DAMAGE = "RECEIVE_DAMAGE"
+export const HEAL = "HEAL"
 
 
 // ACCOUNT ACTIONS

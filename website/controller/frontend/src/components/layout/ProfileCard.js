@@ -1,48 +1,33 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { connect } from "react-redux"
+import { getProfile } from "../../actions/profile"
 
 
 function ProfileCard(props) {
     const { user } = props.auth
+    const [userDetails, setUserDetails] = useState("")
 
-    const [userDetails, setUserDetails] = useState({
-        username: "",
-        level: "",
-        experience: "",
-        currency: "",
-        reputation: "",
-        max_health: "",
-        current_health: "",
-        attack: "",
-        defence: ""
-    })
-
-    useEffect(async () => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        }
-        const response = await axios.get(`http://localhost:8000/api/profile/${user.username}`, config)
-            .then(setUserDetails(response.data))
-            .then(console.log(response))
-            .catch(error => console.log(error))
-    })
+    useEffect(() => {
+        props.getProfile(user.id)
+        setUserDetails(props.profile.profile)
+    }, [userDetails])
 
     return (
-        <div className="max-w py-4 px-8 my-20 bg-gray-900 shadow-lg rounded-lg">
-            <div>
-                <h2 className="font-bold">{userDetails.username}</h2>
-                <p className="mt-2">{userDetails.level}</p>
+        <div className="flex place-content-center">
+            <div className="rounded rounded-lg bg-gray-900 border-1 border-red-500 my-5 mx-10">
+                <div className="max-w-full">
+                    <h2 className="font-bold">{userDetails.level}aaaaaaa</h2>
+                    <p className="mt-2">{user.username}</p>
+                </div>
             </div>
         </div>
     )
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    profile: state.profile
 }) 
 
-export default connect(mapStateToProps)(ProfileCard)
+export default connect(mapStateToProps, { getProfile })(ProfileCard)

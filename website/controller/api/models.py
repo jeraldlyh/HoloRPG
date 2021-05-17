@@ -72,7 +72,7 @@ class Dungeon(models.Model):
         return f"Name: {self.name} | Level: {self.level}"
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile", on_delete=models.CASCADE, unique=True)
     date_registered = models.DateTimeField(auto_now_add=True, blank=True)
     character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
     level = models.IntegerField()
