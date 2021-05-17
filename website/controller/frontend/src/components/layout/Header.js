@@ -1,5 +1,4 @@
 import React, { Fragment } from "react"
-import { Redirect, Link } from "react-router-dom"
 import { connect } from "react-redux"
 import { logoutUser } from "../../actions/auth"
 
