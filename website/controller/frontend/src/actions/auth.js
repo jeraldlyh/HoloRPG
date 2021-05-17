@@ -34,7 +34,6 @@ export const loadUser = () => async(dispatch, getState) => {
             type: AUTH_ERROR
         })
     }
-    
 }
 
 // LOGIN USER
@@ -75,6 +74,8 @@ export const registerUser = ({username, email, password}) => async dispatch => {
             payload: response.data
         })
     } catch (error) {
+        console.log(error)
+        console.log("cmi")
         dispatch({
             type: REGISTER_FAIL
         })

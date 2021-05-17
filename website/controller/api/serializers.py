@@ -15,8 +15,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = "__all__"
-        lookup_field = "user.username"
-
+        
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character

@@ -4,11 +4,12 @@ from .views import CharacterViewSet, DungeonViewSet, UserProfileViewSet, UserVie
 
 
 router = DefaultRouter()
-router.register(r"useraccount", UserProfileViewSet, basename="useraccount")
+# router.register(r"profile", UserProfileViewSet, basename="profile")
 router.register(r"dungeon", DungeonViewSet, basename="dungeon")
 router.register(r"character", CharacterViewSet, basename="character")
 router.register(r"user", UserViewSet, basename="user")
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("user", include(UserProfileViewSet.as_view()))
 ]

@@ -13,7 +13,7 @@ function Header(props) {
             <div className="block lg:hidden">
                 <ul className="inline-flex">
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                            <button className="px-4 py-0.5 font-bold" type="button" onClick={props.logoutUser}>LOGOUT</button>
+                        <button className="px-4 py-0.5 font-bold" type="button" onClick={props.logoutUser}>LOGOUT</button>
                     </li>
                 </ul>
             </div>

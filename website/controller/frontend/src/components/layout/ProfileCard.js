@@ -21,12 +21,13 @@ function ProfileCard(props) {
     useEffect(async () => {
         const config = {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
             }
         }
-        const response = await axios.get(`http://localhost:8000/api/useraccount/${user.username}`, config)
-            .then(console.log(response))
+        const response = await axios.get(`http://localhost:8000/api/profile/${user.username}`, config)
             .then(setUserDetails(response.data))
+            .then(console.log(response))
             .catch(error => console.log(error))
     })
 
