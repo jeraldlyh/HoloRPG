@@ -62,8 +62,6 @@ class UserProfileViewSet(views.APIView):
         profile = self.get_object(pk)
         serializer = UserProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
 
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = Character.objects.all()

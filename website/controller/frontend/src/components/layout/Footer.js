@@ -4,7 +4,7 @@ export default function Footer() {
 
     return (
         <footer>
-            <div className="container fixed bottom-0 bg-black w-full mx-auto px-6 pt-5 pb-5">
+            <div className="container static bottom-0 bg-black w-full mx-auto px-6 pt-5 pb-5">
                 <div className="flex justify-center items-center">
                     <div className="text-center">
                         <h5 className="font-bold mb-4">SOCIALS</h5>

@@ -15,7 +15,7 @@ function ProfileCard(props) {
 
     return (
         <div className="flex place-content-center">
-            <div className="rounded rounded-lg bg-gray-900 border-1 border-red-500 my-5 mx-10">
+            <div className="rounded-lg bg-gray-900 border-1 border-red-500 my-5 mx-10">
                 <div className="max-w-full">
                     <h2 className="font-bold">{userDetails.level}aaaaaaa</h2>
                     <p className="mt-2">{user.username}</p>

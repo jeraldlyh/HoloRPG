@@ -81,9 +81,7 @@ function Header(props) {
             </div>
             {/* Hidden for Small Screens */}
             <div className="hidden lg:block">
-                <ul className="inline-flex">
-                    {isAuthenticated ? userNavBar : guestNavBar}
-                </ul>
+                {isAuthenticated ? userNavBar : guestNavBar}
             </div>
         </div>
     )

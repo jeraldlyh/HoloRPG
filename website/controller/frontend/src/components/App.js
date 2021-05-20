@@ -1,10 +1,6 @@
-import React, { Component, Fragment } from "react"
-import ReactDOM from "react-dom"
+import React, { Fragment } from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
-import { Provider } from "react-redux"
-import { PersistGate } from 'redux-persist/integration/react'
 
-import { configureStore } from "../storeConfig"
 import Profile from "./Profile"
 import HomePage from "./HomePage"
 import LoginForm from "./LoginForm"
@@ -27,13 +23,3 @@ export default function App() {
     )
     
 }
-
-const { store, persistor } = configureStore()
-
-const appDiv = document.getElementById("app");
-ReactDOM.render(
-    <Provider store={store}>
-        <PersistGate persistor={persistor}>
-            <App />
-        </PersistGate>
-    </Provider>, appDiv)
