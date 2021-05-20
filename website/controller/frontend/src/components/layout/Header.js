@@ -21,7 +21,7 @@ function Header(props) {
             <div className="hidden lg:block">
                 <ul className="inline-flex">
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                        <a href="#"><button className="px-4 py-0.5 font-bold" type="button">FAQ</button></a>
+                        <a href="/faq"><button className="px-4 py-0.5 font-bold" type="button">FAQ</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
                         <a href="#"><button className="px-4 py-0.5 font-bold" type="button">COMMANDS</button></a>
@@ -30,7 +30,7 @@ function Header(props) {
                         <a href="#"><button className="px-4 py-0.5 font-bold" type="button">LEADERBOARDS</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                        <a href="#"><button className="px-4 font-bold" type="button">PROFILE</button></a>
+                        <a href="#"><button className="px-4 py-0.5 font-bold" type="button">PROFILE</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
                         <button className="px-4 font-bold" type="button" onClick={props.logoutUser}>LOGOUT</button>
@@ -54,7 +54,7 @@ function Header(props) {
             <div className="hidden lg:block">
                 <ul className="inline-flex">
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                        <a href="#"><button className="px-4 py-0.5 font-bold">FAQ</button></a>
+                        <a href="/faq"><button className="px-4 py-0.5 font-bold">FAQ</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
                         <a href="#"><button className="px-4 py-0.5 font-bold">COMMANDS</button></a>
@@ -71,7 +71,7 @@ function Header(props) {
     )
 
     return (
-        <div className="container w-full px-6 py-4 flex justify-between items-center bg-black">
+        <div className="container sticky top-0 min-w-full px-6 py-4 flex justify-between items-center bg-black">
             <a className="font-bold text-2xl" href="/">
                 HOLO
             </a>

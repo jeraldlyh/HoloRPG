@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
+import { connect } from "react-redux"
+
 import FriendCard from "./FriendCard"
 
 function FriendBar(props) {
@@ -17,15 +19,24 @@ function FriendBar(props) {
         <button className="rounded-full font-bold focus:outline-none w-20 py-1 text-center bg-custom-orange" onClick={onClick}>Away</button>
     )
 
-
-    return (
-        <div className="flex flex-col h-screen w-60 border-2 border-red-300 items-center">
-            <p className="w-full text-center text-xl font-bold p-3">Friends</p>
-            {status ? online : away}
-            <hr className="mt-5 w-full border-t-2" />
-            <FriendCard name="testing" level="123" picture="asdlkas"/>
-        </div>
-    )
+    if (props.isAuthenticated) {
+        return (
+            <div className="sticky top-20 flex flex-col w-60 self-start place-items-center rounded-lg border-2 border-red-500 my-5 mx-10">
+                <p className="w-full text-center text-xl font-bold p-3">Friends</p>
+                {status ? online : away}
+                <hr className="mt-3 w-full border-t-2 border-custom-peach" />
+                <FriendCard name="testing" level="123" picture="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"/>
+                <FriendCard name="testing" level="123" picture="asdlkas"/>
+                <FriendCard name="testing" level="123" picture="asdlkas"/>
+                <FriendCard name="testing" level="123" picture="asdlkas"/>
+            </div>
+        )
+    }
+    return <div />
 }
 
-export default FriendBar
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps)(FriendBar)
