@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import constraints
 from django.db.models.lookups import IsNull
 from django.utils.translation import gettext as _
 from django.conf import settings
@@ -7,29 +8,31 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 import string
 import random
+import uuid
 
-# def generate_unique_code():
-#     """
-#         Filter the list of existing Room objects and checks if 
-#         a new generated code exists. If not, return the unique code
-#     """
+def generate_unique_code():
+    """
+        Filter the list of existing Room objects and checks if 
+        a new generated code exists. If not, return the unique code
+    """
 
-#     length = 6
-
-#     while True:
-#         code = ''.join(random.choices(string.ascii_lowercase, k=length))  # Generates a random ASCII string of length 6
+    length = 6
+    while True:
+        code = ''.join(random.choices(string.ascii_lowercase, k=length))  # Generates a random ASCII string of length 6
         
-#         if Room.objects.filter(code=code).count() == 0:
-#             break
+        if Room.objects.filter(code=code).count() == 0:
+            break
 
-#     return code
+    return code
 
 # Create your models here.
 
+class Room(models.Model):
+    id = models.CharField(max_length=6, primary_key=True, default=generate_unique_code)
 
 class Character(models.Model):
     class Meta:
-        unique_together = (("main_class", "sub_class"))
+        constraints = [models.UniqueConstraint(fields=["main_class", "sub_class"])]
 
     WARRIOR = "Warrior"
     ARCHER = "Archer"
@@ -57,7 +60,7 @@ class Character(models.Model):
 
 class Skill(models.Model):
     class Meta:
-        unique_together = (("character", "name"))
+        constraints = [models.UniqueConstraint(fields=["character", "name"])]
     
     character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=50, unique=True)
@@ -65,14 +68,15 @@ class Skill(models.Model):
     multiplier = models.IntegerField()
 
 class Dungeon(models.Model):
-    name = models.CharField(max_length=100)
-    level = models.IntegerField(unique=True)
+    name = models.CharField(max_length=100, primary_key=True)
+    level = models.IntegerField()
 
     def __str__(self):
         return f"Name: {self.name} | Level: {self.level}"
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile", on_delete=models.CASCADE, unique=True)
+    id = models.UUIDField(primary_key=True, defualt=uuid.uuid4, editable=False)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile", on_delete=models.CASCADE)
     date_registered = models.DateTimeField(auto_now_add=True, blank=True)
     character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
     level = models.IntegerField()
@@ -84,10 +88,10 @@ class UserProfile(models.Model):
     attack = models.IntegerField()
     defence = models.IntegerField()
     dungeon_status = models.CharField(max_length=32)
-    dungeon_level = models.ForeignKey(Dungeon, to_field="level", on_delete=models.DO_NOTHING)
+    dungeon = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return str(self.user)
+        return str(self.user.username)
         
 
     @receiver(post_save, sender=User)       # Listener for creation of profiles

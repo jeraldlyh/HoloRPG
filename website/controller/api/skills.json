@@ -3,22 +3,3 @@
         "model": "api."
     }
 ]
-
-CLASS_CHOICES = [
-    (WARRIOR, _("Dawn Warrior")),
-    (WARRIOR, _("Gladiator")),
-    (WARRIOR, _("Champion")),
-    (WARRIOR, _("Battle Master")),
-    (ARCHER, _("Hunter")),
-    (ARCHER, _("Ranger")),
-    (ARCHER, _("Arcane Archer")),
-    (ARCHER, _("Bow Master")),
-    (MAGICIAN, _("Battle Cleric")),
-    (MAGICIAN, _("Sorcerer")),
-    (MAGICIAN, _("Summoner")),
-    (MAGICIAN, _("Warlock")),
-    (ROGUE, _("Scout")),
-    (ROGUE, _("Assassin")),
-    (ROGUE, _("Trickster")),
-    (ROGUE, _("Phantom")),
-]

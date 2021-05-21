@@ -3,7 +3,5 @@ id_rsa.pub
 **/__pycache__
 debug.log
 /.vscode
-discord/config/config.ini
 discord/utils/updateDB.py
 website/controller/frontend/node_modules/*
-website/controller/controller/settings.py
