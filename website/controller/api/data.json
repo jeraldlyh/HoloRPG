@@ -1,0 +1,16 @@
+[
+    {
+        "model": "api.Dungeon",
+        "fields": {
+            "name": "Dungeon 1",
+            "level": "1"
+        }
+    },
+    {
+        "model": "api.Character",
+        "fields": {
+            "main_class": "Default",
+            "sub_class": "NULL"
+        }
+    }
+]

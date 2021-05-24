@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import constraints
+from django.db.models.fields import related
 from django.db.models.lookups import IsNull
 from django.utils.translation import gettext as _
 from django.conf import settings
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 import string
 import random
 import uuid
@@ -40,7 +41,7 @@ def generate_monster_stats(dungeon_level):
         3               20%
         4               40%
         
-        Returns a tuple of monster statistics
+        Returns a tuple of monster statistics (health, attack, defence)
     """
     number_of_players = 1               # TODO - CALCULATE BASED ON NUM OF PLAYERS
     baseStats = {
@@ -91,7 +92,7 @@ class Character(models.Model):
         REQUIRED FIELDS: main_class, sub_class
     """
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["main_class", "sub_class"])]
+        constraints = [models.UniqueConstraint(name="unique_character", fields=["main_class", "sub_class"])]
 
     WARRIOR = "Warrior"
     ARCHER = "Archer"
@@ -117,18 +118,18 @@ class Character(models.Model):
     def __str__(self):
         return f"{self.main_class} -> {self.sub_class}"
 
-class Skill(models.Model):
-    """
-        PRIMARY KEY: character, name
-        REQUIRED FIELDS: character, name, accuracy, multiplier
-    """
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=["character", "name"])]
+# class Skill(models.Model):
+#     """
+#         PRIMARY KEY: character, name
+#         REQUIRED FIELDS: character, name, accuracy, multiplier
+#     """
+#     class Meta:
+#         constraints = [models.UniqueConstraint(fields=["character", "name"])]
     
-    character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
-    name = models.CharField(max_length=50, unique=True)
-    accuracy = models.IntegerField()
-    multiplier = models.IntegerField()
+#     character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
+#     name = models.CharField(max_length=50, unique=True)
+#     accuracy = models.IntegerField()
+#     multiplier = models.IntegerField()
 
 class Dungeon(models.Model):
     """
@@ -161,10 +162,10 @@ class UserProfile(models.Model):
             status
             dungeon
     """
-    id = models.UUIDField(primary_key=True, defualt=uuid.uuid4, editable=False, blank=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_registered = models.DateTimeField(auto_now_add=True, blank=True)
-    character = models.ForeignKey(Character, on_delete=models.SET_NULL)
+    character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
     level = models.IntegerField()
     experience = models.IntegerField()
     currency = models.IntegerField()
@@ -174,16 +175,11 @@ class UserProfile(models.Model):
     attack = models.IntegerField()
     defence = models.IntegerField()
     status = models.CharField(max_length=10)
-    dungeon_name = models.ForeignKey(Dungeon, on_delete=models.SET_NULL)
+    dungeon_name = models.ForeignKey(Dungeon, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.user.username)
-        
 
-    @receiver(post_save, sender=User)       # Listener for creation of profiles
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            UserProfile.objects.create(user=instance, character=Character.objects.get(main_class="Default"), level=1, experience=0, currency=0, reputation=0, max_health=100, current_health=100, attack=1, defence=1, dungeon_status="IDLE", dungeon_level=Dungeon.objects.get(level=1))
 
 class Monster(models.Model):
     """
@@ -191,7 +187,7 @@ class Monster(models.Model):
         REQUIRED FIELDS: name, dungeon_name
     """
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["name", "dungeon"])]
+        constraints = [models.UniqueConstraint(name="unique_monster", fields=["name", "dungeon_name"])]
 
     name = models.CharField(max_length=50)
     dungeon_name = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
@@ -216,18 +212,50 @@ class Room(models.Model):
             player_four
     """
     dungeon_name  = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
-    host = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING)
+    host = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, related_name="%(class)s_host")
 
     id = models.CharField(max_length=6, primary_key=True, default=generate_unique_code, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     monster_name = models.ForeignKey(Monster, on_delete=models.DO_NOTHING, blank=True)
-    monster_attack = models.IntegerField(default=generate_monster_stats(Dungeon.objects.get(name=dungeon_name)[0].level)[1], blank=True)
-    monster_defence = models.IntegerField(default=generate_monster_stats(Dungeon.objects.get(name=dungeon_name)[0].level)[2], blank=True)
-    monster_current_health = models.IntegerField(default=generate_monster_stats(dungeon)[0], blank=True)
-    monster_max_health = models.IntegerField(default=generate_monster_stats(Dungeon.objects.get(name=dungeon_name)[0].level)[0], blank=True)
-    player_two = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True)
-    player_three = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True)
-    player_four = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True)
+    monster_attack = models.IntegerField(blank=True)
+    monster_defence = models.IntegerField(blank=True)
+    monster_current_health = models.IntegerField(blank=True)
+    monster_max_health = models.IntegerField(blank=True)
+    player_two = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="%(class)s_p2")
+    player_three = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="%(class)s_p3")
+    player_four = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="%(class)s_p4")
 
     def __str__(self):
         return self.id
+
+
+@receiver(pre_save, sender=Room)
+def create_room(sender, instance, **kwargs):
+    monster_stats = generate_monster_stats(instance.dungeon_name)
+
+    Room.objects.create(
+        monster_name=get_monster_name(instance.dungeon_name),
+        monster_attack=generate_monster_stats(monster_stats)[1],
+        monster_defence=generate_monster_stats(monster_stats)[2],
+        monster_current_health=generate_monster_stats(monster_stats)[0],
+        monster_max_health=generate_monster_stats(monster_stats)[0]
+    )
+
+
+@receiver(post_save, sender=User)                               # Listener for creation of profiles
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(
+            user=instance,
+            character=Character.objects.get(main_class="Default"),
+            level=1,
+            experience=0,
+            currency=0,
+            reputation=0,
+            max_health=100,
+            current_health=100,
+            attack=1,
+            defence=1,
+            status="IDLE",
+            dungeon_name=Dungeon.objects.get(level=1)
+        )

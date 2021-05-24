@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.apps import apps
-from .models import UserProfile, Skill, Character
+from .models import UserProfile, Character
 
 # Register your models here.
 models = apps.get_models()
