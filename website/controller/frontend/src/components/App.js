@@ -1,9 +1,8 @@
 import React, { Fragment, useEffect } from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
-import { connect } from "react-redux"
-import { loadUser } from "../actions/auth"
 import HomePage from "./HomePage"
 import LoginForm from "./LoginForm"
+import Room from "./Room"
 import RegisterForm from "./RegisterForm"
 import AuthRoute from "./AuthRoute"
 import FAQ from "./FAQ"
@@ -11,21 +10,16 @@ import Header from "./layout/Header"
 import Footer from "./layout/Footer"
 
 
-function App(props) {
-    useEffect(() => {
-        props.authenticateUser()
-    }, [])
-
+function App() {
     return (
         <Fragment>
             <Header />
                 <BrowserRouter>
                     <Switch>
-                        <AuthRoute exact path="/" component={HomePage} />
+                        <AuthRoute exact path="/" component={Room} />
                         <Route exact path="/faq" component={FAQ} />
                         <Route exact path="/login" component={LoginForm} />
                         <Route exact path="/register" component={RegisterForm} />
-                        <AuthRoute exact path="/profile" component={Profile} />
                     </Switch>
                 </BrowserRouter>
             <Footer />
@@ -34,10 +28,6 @@ function App(props) {
 }
 
 
-const mapDispatchToProps = dispatch => {
-    return {
-        authenticateUser: () => dispatch(loadUser()),
-    }
-}
 
-export default connect(null, mapDispatchToProps)(App)
+
+export default App

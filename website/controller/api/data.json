@@ -12,5 +12,12 @@
             "main_class": "Default",
             "sub_class": "NULL"
         }
+    },
+    {
+        "model": "api.Monster",
+        "fields": {
+            "name": "Monster 1",
+            "dungeon_name": "Dungeon 1"
+        }
     }
 ]
