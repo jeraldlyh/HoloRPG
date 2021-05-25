@@ -18,10 +18,10 @@ export const tokenConfig = getState => {
 
 
 // GET PROFILE
-export const getProfile = (user_id) => async(dispatch, getState) => {
+export const getProfile = (username) => async(dispatch, getState) => {
 
     try {
-        const response = await axios.get(`/api/profile/${user_id}`, tokenConfig(getState))
+        const response = await axios.get(`/api/profile/${username}`, tokenConfig(getState))
         dispatch({
             type: LOAD_PROFILE_SUCCESS,
             payload: response.data

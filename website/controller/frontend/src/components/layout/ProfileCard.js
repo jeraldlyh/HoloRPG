@@ -7,18 +7,24 @@ import logo from "../../assets/power-button.jpeg"
 
 function ProfileCard(props) {
     const { user, isAuthenticated } = props.auth
+    const { profile } = props.profile
     const [userDetails, setUserDetails] = useState("")
 
-    useEffect(() => {
+    useEffect(() => {           // componentDidMount -> Retrieves profile data
         if (isAuthenticated) {
-            props.getProfile(user.id)
-            setUserDetails(props.profile.profile)
+            props.getProfile(user.username)
         }
     }, [])
 
-    if (isAuthenticated) {
+    useEffect(() => {           // componentDidUpdate -> Sets profile data
+        if (profile) {
+            setUserDetails(profile)
+        }
+    }, [profile])
+
+    if (isAuthenticated && userDetails) {
         return (
-            <div className="sticky top-20 flex flex-col w-60 h-96 rounded-lg bg-gray-900 border-2 border-custom-pink my-5 mx-10">
+            <div className="sticky top-20 flex flex-col w-60 h-96 rounded-lg border-2 border-custom-pink my-5 mx-10">
                 <div className="p-3">
                     <img src={logo} alt={user.username} />
                     <p className="text-xl py-2 font-bold text-center">{user.username}</p>

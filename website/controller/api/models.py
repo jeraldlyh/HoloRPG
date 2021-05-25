@@ -160,7 +160,7 @@ class UserProfile(models.Model):
             dungeon
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE)
     date_registered = models.DateTimeField(auto_now_add=True, blank=True)
     character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
     level = models.IntegerField()
@@ -200,6 +200,7 @@ class Room(models.Model):
             host
         GENERATED FIELDS:
             id
+            status
             create_at
             monster_name
             monster_attack
@@ -211,19 +212,28 @@ class Room(models.Model):
             player_three
             player_four
     """
-    dungeon  = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
-    host = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, related_name="%(class)s_host")
+    DEFAULT = "WAITING"
+    STARTED = "STARTED"
+    
+    STATUS_CHOICES = (
+        (DEFAULT, _("Waiting")),
+        (STARTED, _("Started"))
+    )
 
+    dungeon  = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
+    host = models.OneToOneField(User, on_delete=models.DO_NOTHING, to_field="username", related_name="%(class)s_host")
+    status = models.CharField()
     id = models.CharField(max_length=6, primary_key=True, default=generate_unique_code, blank=True, editable=False)
+    status = models.CharField(choices=STATUS_CHOICES, default=DEFAULT, max_length=7)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     monster = models.ForeignKey(Monster, on_delete=models.DO_NOTHING, blank=True)
     monster_attack = models.IntegerField(blank=True)
     monster_defence = models.IntegerField(blank=True)
     monster_current_health = models.IntegerField(blank=True)
     monster_max_health = models.IntegerField(blank=True)
-    player_two = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="%(class)s_p2")
-    player_three = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="%(class)s_p3")
-    player_four = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="%(class)s_p4")
+    player_two = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True, to_field="username", related_name="%(class)s_p2")
+    player_three = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True, to_field="username", related_name="%(class)s_p3")
+    player_four = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True, to_field="username", related_name="%(class)s_p4")
 
     def __str__(self):
         return self.id

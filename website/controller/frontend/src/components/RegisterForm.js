@@ -23,9 +23,8 @@ function RegisterForm(props) {
 
     return (
         <Layout>
-            <Header />
             <div className="container flex justify-center">
-                <form className="flex flex-col w-96 p-8 mt-5 bg-gray-700 bg-opacity-25 items-center">
+                <form className="flex flex-col w-96 h-96 p-8 mt-5 bg-gray-700 bg-opacity-25 items-center">
                     <p className="font-bold text-2xl pb-3 text-opacity-75">
                         REGISTRATION
                     </p>
@@ -50,7 +49,6 @@ function RegisterForm(props) {
                     <button className="mt-2 py-3 w-10/12 bg-black bg-opacity-50" type="button" onClick={onSubmit}>SIGN UP</button>
                 </form>
             </div>
-            <Footer />
         </Layout>
     )
 }

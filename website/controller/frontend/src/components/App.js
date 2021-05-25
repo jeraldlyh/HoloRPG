@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect } from "react"
+import React, { Fragment } from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
-import HomePage from "./HomePage"
 import LoginForm from "./LoginForm"
 import Room from "./Room"
 import RegisterForm from "./RegisterForm"
