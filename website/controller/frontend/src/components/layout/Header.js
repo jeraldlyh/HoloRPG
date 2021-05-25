@@ -77,7 +77,7 @@ function Header(props) {
             </a>
             {/* Hidden for Large Screens */}
             <div className="block lg:hidden">
-                    {isAuthenticated ? userNavBar : guestNavBar}
+                {isAuthenticated ? userNavBar : guestNavBar}
             </div>
             {/* Hidden for Small Screens */}
             <div className="hidden lg:block">

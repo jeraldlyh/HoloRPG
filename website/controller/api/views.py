@@ -68,7 +68,7 @@ class DungeonViewSet(viewsets.ViewSet):
 
 class RoomViewSet(viewsets.ViewSet):
     def create(self, request):
-        
+        pass
 
     def list(self, request):
         queryset = Room.objects.all()

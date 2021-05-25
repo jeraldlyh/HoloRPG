@@ -14,7 +14,7 @@ function ProfileCard(props) {
             props.getProfile(user.id)
             setUserDetails(props.profile.profile)
         }
-    }, [user])
+    }, [])
 
     if (isAuthenticated) {
         return (

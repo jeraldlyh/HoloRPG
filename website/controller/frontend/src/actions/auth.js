@@ -25,7 +25,7 @@ export const loadUser = () => async(dispatch, getState) => {
         const response = await axios.get("/auth/user", tokenConfig(getState))
         dispatch({
             type: USER_LOADED,
-            payload: response.payload
+            payload: response.data
         })
     } catch (error) {
         dispatch({

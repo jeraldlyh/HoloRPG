@@ -1,11 +1,12 @@
-import React, { Fragment, useState } from "react"
+import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import { FaUser, FaUnlockAlt, FaEnvelope } from "react-icons/fa"
 import { registerUser } from "../actions/auth"
 import { connect } from "react-redux"
-
 import Header from "./layout/Header"
 import Footer from "./layout/Footer"
+import Layout from "./Layout"
+
 
 function RegisterForm(props) {
     const [username, setUsername] = useState("")
@@ -17,11 +18,11 @@ function RegisterForm(props) {
     }
 
     if (props.isAuthenticated) {
-        return <Redirect to="/"/>
+        return <Redirect from="/register" to="/"/>
     }
 
     return (
-        <Fragment>
+        <Layout>
             <Header />
             <div className="container flex justify-center">
                 <form className="flex flex-col w-96 p-8 mt-5 bg-gray-700 bg-opacity-25 items-center">
@@ -50,7 +51,7 @@ function RegisterForm(props) {
                 </form>
             </div>
             <Footer />
-        </Fragment>
+        </Layout>
     )
 }
 
