@@ -1,12 +1,7 @@
-from django.db.models import query
-from django.http.response import Http404
-from rest_framework import generics, permissions
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, SAFE_METHODS
-from rest_framework import viewsets, mixins, status, views
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from rest_framework.serializers import Serializer
 
 from .models import Character, Dungeon, UserProfile, Room
 from .serializers import CharacterSerializer, DungeonSerializer, RoomSerializer, UserProfileSerializer, UserSerializer
@@ -67,8 +62,16 @@ class DungeonViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class RoomViewSet(viewsets.ViewSet):
+    # permission_classes = [IsAuthenticated]
+    serializer_class = RoomSerializer
+
     def create(self, request):
-        pass
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            Room.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"Bad Request": "Invalid data specified"}, status=status.HTTP_400_BAD_REQUEST)
+
 
     def list(self, request):
         queryset = Room.objects.all()

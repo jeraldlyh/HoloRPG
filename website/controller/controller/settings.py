@@ -147,4 +147,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_TRUE = True
 
-REST_KNOX = {'TOKEN_TTL': timedelta(hours=2)}
+REST_KNOX = {
+    'TOKEN_TTL': timedelta(hours=2),
+    'EXPIRY_DATETIME_FORMAT': api_settings.DATETIME_FORMAT
+}
