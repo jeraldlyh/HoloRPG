@@ -105,11 +105,7 @@ class Character(models.Model):
         (DEFAULT, _("Beginner"))
     )
 
-    main_class = models.CharField(
-        choices=CLASS_CHOICES,
-        default=DEFAULT,
-        max_length=32
-    )
+    main_class = models.CharField(choices=CLASS_CHOICES, default=DEFAULT, max_length=32)
     sub_class = models.CharField(max_length=50)
 
     def __str__(self):
@@ -141,10 +137,7 @@ class Dungeon(models.Model):
 
 class UserProfile(models.Model):
     """
-        Model is created upon creation of user entity through a receiver listener
-
         PRIMARY KEY: id
-
         GENERATED FIELDS:
             user
             character
@@ -172,7 +165,6 @@ class UserProfile(models.Model):
     attack = models.IntegerField()
     defence = models.IntegerField()
     status = models.CharField(max_length=10)
-    dungeon_name = models.ForeignKey(Dungeon, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.user.username
@@ -214,15 +206,15 @@ class Room(models.Model):
     """
     DEFAULT = "WAITING"
     STARTED = "STARTED"
-    
+
     STATUS_CHOICES = (
         (DEFAULT, _("Waiting")),
         (STARTED, _("Started"))
     )
 
-    dungeon  = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
+    dungeon = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
     host = models.OneToOneField(User, on_delete=models.DO_NOTHING, to_field="username", related_name="%(class)s_host")
-    status = models.CharField()
+    status = models.CharField(choices=STATUS_CHOICES, default=DEFAULT, blank=True, max_length=7)
     id = models.CharField(max_length=6, primary_key=True, default=generate_unique_code, blank=True, editable=False)
     status = models.CharField(choices=STATUS_CHOICES, default=DEFAULT, max_length=7)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
@@ -238,6 +230,23 @@ class Room(models.Model):
     def __str__(self):
         return self.id
 
+class Relationship(models.Model):
+    FRIEND = "FRIEND"
+    FAMILY = "FAMILY"
+
+    RELATIONSHIP_CHOICES = (
+        (FRIEND, _("Friend")),
+        (FAMILY, _("Family"))
+    )
+    
+    name = models.CharField(choices=RELATIONSHIP_CHOICES, max_length=10)
+class UserRelationship(models.Model):
+    class Meta:
+        constraints = [models.UniqueConstraint(name="unique_relationship", fields=["user_from", "user_to"])]
+
+    user_from = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="%(class)s_from")
+    user_to = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="%(class)s_to")
+    relationship = models.ForeignKey(Relationship, on_delete=models.DO_NOTHING)
 
 @receiver(pre_save, sender=Room)
 def create_room(sender, instance, **kwargs):
@@ -264,5 +273,4 @@ def create_user_profile(sender, instance, created, **kwargs):
             attack=1,
             defence=1,
             status="IDLE",
-            dungeon_name=Dungeon.objects.get(level=1)
         )

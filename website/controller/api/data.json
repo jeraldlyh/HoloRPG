@@ -19,5 +19,17 @@
             "name": "Monster 1",
             "dungeon_name": "Dungeon 1"
         }
+    },
+    {
+        "model": "api.Relationship",
+        "fields": {
+            "name": "Friend"
+        }
+    },
+    {
+        "model": "api.Relationship",
+        "fields": {
+            "name": "Family"
+        }
     }
 ]
