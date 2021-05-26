@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import { GiLifeBar, GiMoneyStack, GiProgression, GiCrossedSwords, GiEdgedShield, GiAlliedStar } from "react-icons/gi"
 import { getProfile } from "../../actions/profile"
-import logo from "../../assets/power-button.jpeg"
+import logo from "../../assets/1.jpeg"
 
 
 function ProfileCard(props) {

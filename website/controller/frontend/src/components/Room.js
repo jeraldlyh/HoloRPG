@@ -28,9 +28,24 @@ function Room(props) {
         return count
     })
 
+    const getProfilePics = (room) => {
+        const pictures = []
+        room.profile_pictures.length !== 0 ?
+        room.profile_pictures.forEach((picture, index) => {
+            const image = require(`../assets/${picture}.jpeg`).default
+            pictures.push(<img key={index + 100} src={image}></img>)
+        })
+        : null
+        return pictures
+    }
+
     return (
         <Layout>
-            <div className="flex justify-center min-w-screen border-2 border-custom-green">
+            <div className="flex flex-col min-w-screen border-2 border-custom-green">
+                <div className="flex justify-around mx-6 mt-3">
+                    <button className="text-lg w-28 font-bold uppercase px-2 border-2 border-white">Create</button>
+                    <button className="text-lg w-28 font-bold uppercase px-2 border-2 border-white">Join</button>
+                </div>
                 <div className="m-3">
                     <table className="">
                         <thead>
@@ -67,14 +82,13 @@ function Room(props) {
                                                 <span>{room.status}</span>
                                             </td>
                                             <td className="py-3 px-6 border-2 border-white text-center">
-                                                <span>TBC</span>
+                                                <span>{getProfilePics(room)}</span>
                                             </td>
                                         </tr>
                                     )
                                 })
                                 : null
                             }
-
                         </tbody>
                     </table>
                 </div>

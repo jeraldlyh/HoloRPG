@@ -1,5 +1,5 @@
 import React from "react"
-import logo from "../../assets/power-button.jpeg"
+import logo from "../../assets/1.jpeg"
 
 function FriendCard(props) {
     return (
