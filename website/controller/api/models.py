@@ -20,7 +20,6 @@ def generate_unique_code():
         if Room.objects.filter(id=code).count() == 0:
             return code
 
-
 def get_monster_name(dungeon_name):
     monsters = list(Monster.objects.all().filter(dungeon_name=dungeon_name))
     # monster_names = [getattr(monster, "name") for monster in monsters]
@@ -239,7 +238,7 @@ class Relationship(models.Model):
         (FAMILY, _("Family"))
     )
     
-    name = models.CharField(choices=RELATIONSHIP_CHOICES, max_length=10)
+    name = models.CharField(choices=RELATIONSHIP_CHOICES, max_length=10, primary_key=True)
 class UserRelationship(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(name="unique_relationship", fields=["user_from", "user_to"])]
