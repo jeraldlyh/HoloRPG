@@ -3,5 +3,6 @@ pytz
 mysqlclient
 django
 djangorestframework
+djangorestframework_simplejwt
 django-cors-headers
-django-rest-knox
+# django-rest-knox

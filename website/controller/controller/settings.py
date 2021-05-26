@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-from rest_framework.settings import api_settings
-
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,9 +43,14 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'accounts.apps.AccountsConfig',
     'rest_framework',
-    'knox',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,6 +131,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# JWT
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -138,16 +144,5 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'knox.auth.TokenAuthentication',
-    ),
-    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
-}
-
+# CORS
 CORS_ORIGIN_ALLOW_TRUE = True
-
-REST_KNOX = {
-    'TOKEN_TTL': timedelta(hours=2),
-    'EXPIRY_DATETIME_FORMAT': api_settings.DATETIME_FORMAT
-}

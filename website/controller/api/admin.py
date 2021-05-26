@@ -6,7 +6,7 @@ from .models import UserProfile, Character
 models = apps.get_models()
 for model in models:
     try:
-        if model.__name__ == "AuthToken":
+        if model.__name__ in ["OutstandingToken", "BlacklistedToken"]:
             continue
         admin.site.register(model)
     except admin.sites.AlreadyRegistered:

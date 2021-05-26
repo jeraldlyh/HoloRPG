@@ -72,7 +72,6 @@ class RoomViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"Bad Request": "Invalid data specified"}, status=status.HTTP_400_BAD_REQUEST)
 
-
     def list(self, request):
         queryset = Room.objects.all()
         serializer = RoomSerializer(queryset, many=True)

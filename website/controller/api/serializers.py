@@ -3,7 +3,7 @@ from django.db.models import fields
 
 from rest_framework import serializers
 from rest_framework.authtoken.views import Token
-from .models import Character, Dungeon, UserProfile, Room
+from .models import Character, Dungeon, UserProfile, Room, UserRelationship
 
 
 
@@ -35,4 +35,9 @@ class DungeonSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
+        fields = "__all__"
+
+class UserRelationshipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRelationship
         fields = "__all__"
