@@ -3,7 +3,7 @@ import Layout from "./Layout"
 import axiosInstance from "../axios"
 
 
-function Room(props) {
+function Room() {
     const [rooms, setRooms] = useState([])
 
     useEffect(() => {

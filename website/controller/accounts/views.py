@@ -28,5 +28,6 @@ class BlacklistTokenView(APIView):
             token = RefreshToken(refresh_token)
             token.blacklist()
             return Response(status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             return Response(status=status.HTTP_400_BAD_REQUEST)

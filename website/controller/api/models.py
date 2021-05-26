@@ -213,7 +213,7 @@ class Room(models.Model):
     """
     @property
     def get_profile_pictures(self):
-        profile_pictures = []
+        profile_pictures = [UserProfile.objects.get(user=self.host).image]
         if self.player_two is not None:
             profile_pictures.append(UserProfile.objects.get(user=self.player_two).image)
         if self.player_three is not None:
