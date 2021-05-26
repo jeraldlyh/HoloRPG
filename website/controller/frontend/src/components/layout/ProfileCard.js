@@ -9,15 +9,18 @@ function ProfileCard(props) {
     const { user, isAuthenticated } = props.auth
     const { profile } = props.profile
     const [userDetails, setUserDetails] = useState("")
+    var isMounted = true
 
     useEffect(() => {           // componentDidMount -> Retrieves profile data
         if (isAuthenticated) {
-            props.getProfile(user.username)
+            props.getProfile(user)
+            setUserDetails(profile)
         }
+        return () => { isMounted = false }      // componentWillUnmount
     }, [])
 
     useEffect(() => {           // componentDidUpdate -> Sets profile data
-        if (profile) {
+        if (isMounted && profile) {
             setUserDetails(profile)
         }
     }, [profile])

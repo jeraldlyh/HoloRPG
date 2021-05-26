@@ -3,8 +3,7 @@ import { USER_LOADING, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOU
 const initialState = {
     isLoading: false,
     isAuthenticated: false,
-    user: null,
-    token: localStorage.getItem("token")
+    user: null
 }
 
 export default function(state=initialState, action) {
@@ -14,33 +13,26 @@ export default function(state=initialState, action) {
                 ...state,
                 isLoading: true
             }
-        case USER_LOADED:
-            return {
-                ...state,
-                isLoading: false,
-                isAuthenticated: true,
-                user: action.payload
-            }
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
-            localStorage.setItem("token", action.payload.token)
+            localStorage.setItem("access_token", action.payload.access)
+            localStorage.setItem("refresh_token", action.payload.refresh)
             return {
                 ...state,
                 isLoading: false,
                 isAuthenticated: true,
-                ...action.payload
+                user: action.payload.username
             }
-        case AUTH_ERROR:
         case REGISTER_FAIL:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
-            localStorage.removeItem("token")
+            localStorage.removeItem("access_token")
+            localStorage.removeItem("refresh_token")
             return {
                 ...state,
                 isLoading: false,
                 isAuthenticated: false,
-                user: null,
-                token: null
+                user: null
             }
         default:
             return state

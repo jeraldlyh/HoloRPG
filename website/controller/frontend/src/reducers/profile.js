@@ -13,7 +13,6 @@ export default function(state=initialState, action) {
             }
         case LOGOUT_SUCCESS:
         case LOAD_PROFILE_FAIL:
-            localStorage.removeItem("token")
             return {
                 ...state,
                 profile: null

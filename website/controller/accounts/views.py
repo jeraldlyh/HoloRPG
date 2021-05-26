@@ -13,13 +13,6 @@ class RegisterAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # serializer.is_valid(raise_exception=True)
-        # user = serializer.save()
-        # return Response({
-        #     "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        #     "token": AuthToken.objects.create(user)[1]
-        # })
-
 
 class LoginAPIView(APIView):
     def post(self, request):
@@ -27,16 +20,13 @@ class LoginAPIView(APIView):
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # user = serializer.validated_data
-        # return Response({
-        #     "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        #     "token": AuthToken.objects.create(user)[1]
-        # })
+
 class BlacklistTokenView(APIView):
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
             token.blacklist()
+            return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

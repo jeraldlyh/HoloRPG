@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
 import Layout from "./Layout"
-import { URL } from "./tempURL"
+import axiosInstance from "../axios"
 
 
 function Room(props) {
     const [rooms, setRooms] = useState([])
 
     useEffect(() => {
-        axios.get(URL + "/api/room")
+        axiosInstance.get("/api/room")
             .then(response => {
                 const data = []
                 response.data.forEach(room => {
@@ -83,6 +82,5 @@ function Room(props) {
         </Layout>
     )
 }
-
 
 export default Room
