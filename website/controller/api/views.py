@@ -1,8 +1,7 @@
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-
 from .models import Character, Dungeon, UserProfile, Room
 from .serializers import CharacterSerializer, DungeonSerializer, RoomSerializer, UserProfileSerializer, UserSerializer
 

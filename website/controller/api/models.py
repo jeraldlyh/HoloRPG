@@ -151,8 +151,16 @@ class UserProfile(models.Model):
             status
             dungeon
     """
+    DEFAULT = 1
+    BUTTON = 2
+    IMAGE_CHOICES = (
+        (DEFAULT, "Default"),
+        (BUTTON, "Button"),
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE)
+    image = models.IntegerField(default=1, blank=True)
     date_registered = models.DateTimeField(auto_now_add=True, blank=True)
     character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
     level = models.IntegerField()
@@ -203,6 +211,17 @@ class Room(models.Model):
             player_three
             player_four
     """
+    @property
+    def get_profile_pictures(self):
+        profile_pictures = []
+        if self.player_two is not None:
+            profile_pictures.append(UserProfile.objects.get(user=self.player_two).image)
+        if self.player_three is not None:
+            profile_pictures.append(UserProfile.objects.get(user=self.player_three).image)
+        if self.player_four is not None:
+            profile_pictures.append(UserProfile.objects.get(user=self.player_four).image)
+        return profile_pictures
+
     DEFAULT = "WAITING"
     STARTED = "STARTED"
 
@@ -215,13 +234,13 @@ class Room(models.Model):
     host = models.OneToOneField(User, on_delete=models.DO_NOTHING, to_field="username", related_name="%(class)s_host")
     status = models.CharField(choices=STATUS_CHOICES, default=DEFAULT, blank=True, max_length=7)
     id = models.CharField(max_length=6, primary_key=True, default=generate_unique_code, blank=True, editable=False)
-    status = models.CharField(choices=STATUS_CHOICES, default=DEFAULT, max_length=7)
+    status = models.CharField(choices=STATUS_CHOICES, default=DEFAULT, max_length=7, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    monster = models.ForeignKey(Monster, on_delete=models.DO_NOTHING, blank=True)
-    monster_attack = models.IntegerField(blank=True)
-    monster_defence = models.IntegerField(blank=True)
-    monster_current_health = models.IntegerField(blank=True)
-    monster_max_health = models.IntegerField(blank=True)
+    monster = models.ForeignKey(Monster, on_delete=models.DO_NOTHING, blank=True, editable=False)
+    monster_attack = models.IntegerField(blank=True, editable=False)
+    monster_defence = models.IntegerField(blank=True, editable=False)
+    monster_current_health = models.IntegerField(blank=True, editable=False)
+    monster_max_health = models.IntegerField(blank=True, editable=False)
     player_two = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True, to_field="username", related_name="%(class)s_p2")
     player_three = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True, to_field="username", related_name="%(class)s_p3")
     player_four = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True, to_field="username", related_name="%(class)s_p4")

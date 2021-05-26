@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ("level", "experience", "currency", "reputation", "max_health", "current_health", "attack", "defence", "status")
+        fields = ("level", "experience", "currency", "reputation", "max_health", "current_health", "attack", "defence", "status", "image")
         
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,6 +36,8 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = "__all__"
+
+    profile_pictures = serializers.ReadOnlyField(source="get_profile_pictures")
 
 class UserRelationshipSerializer(serializers.ModelSerializer):
     class Meta:
