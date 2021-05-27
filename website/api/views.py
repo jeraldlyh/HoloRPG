@@ -30,9 +30,9 @@ class UserProfileViewSet(viewsets.ViewSet):
 
     def get_object(self, pk):
         if pk.isdigit():
-            return UserProfile.objects.get(user_id=pk)
-        user = User.objects.get(username=pk)
-        return UserProfile.objects.get(user=user)
+            user = User.objects.get(id=pk)
+            return UserProfile.objects.get(user=user)
+        return UserProfile.objects.get(user=pk)
 
     def retrieve(self, request, pk=None):
         if pk is not None:
@@ -43,6 +43,12 @@ class UserProfileViewSet(viewsets.ViewSet):
             except (UserProfile.DoesNotExist, User.DoesNotExist):
                 return Response({"Profile Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"Bad Request": "Username parameter not specified"})
+
+    def list(self, request):
+        queryset = UserProfile.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class CharacterViewSet(viewsets.ViewSet):
     def list(self, request):
@@ -61,7 +67,7 @@ class DungeonViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class RoomViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = RoomSerializer
 
     def create(self, request):

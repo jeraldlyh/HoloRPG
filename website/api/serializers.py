@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ("level", "experience", "currency", "reputation", "max_health", "current_health", "attack", "defence", "status", "image")
+        fields = ("level", "experience", "currency", "reputation", "max_health", "current_health", "attack", "defence", "status", "image", "user_id")
         
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:

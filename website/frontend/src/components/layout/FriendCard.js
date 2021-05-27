@@ -1,5 +1,5 @@
 import React from "react"
-import logo from "../../assets/1.jpeg"
+import logo from "../../assets/1.svg"
 
 function FriendCard(props) {
     return (

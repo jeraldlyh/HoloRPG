@@ -1,9 +1,9 @@
 import React, { Fragment } from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
-import Login from "./components/Login"
-import Room from "./components/Room"
-import Register from "./components/Register"
-import FAQ from "./components/FAQ"
+import Login from "./pages/Login"
+import Room from "./pages/Room"
+import Register from "./pages/Register"
+import FAQ from "./pages/FAQ"
 import Header from "./components/layout/Header"
 import Footer from "./components/layout/Footer"
 

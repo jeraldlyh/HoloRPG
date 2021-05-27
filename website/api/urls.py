@@ -9,7 +9,6 @@ router.register(r"profile", UserProfileViewSet, basename="profile")
 router.register(r"dungeon", DungeonViewSet, basename="dungeon")
 router.register(r"character", CharacterViewSet, basename="character")
 router.register(r"room", RoomViewSet, basename="room")
-# router.register(r"user", UserViewSet, basename="user")
 
 urlpatterns = [
     path("", include(router.urls)),

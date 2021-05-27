@@ -22,7 +22,7 @@ function FriendBar(props) {
     if (isAuthenticated) {
         return (
             <div className="sticky top-20 flex flex-col w-60 self-start place-items-center rounded-lg border-2 border-red-500 my-5 mx-10">
-                <p className="w-full text-center text-xl font-bold p-3">Friends</p>
+                <p className="w-full text-center text-xl font-bold p-3 uppercase">Friends</p>
                 {status ? online : away}
                 <hr className="mt-3 w-full border-t-2 border-custom-peach" />
                 <FriendCard name="testing" level="123" picture="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"/>
