@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
                         .then((response) => {
                             if (response.status === 200) {
                                 localStorage.setItem("access_token", response.data.access)
-                                localStorage.setItem("refresh_token", response.data.refresh)
+                                // localStorage.setItem("refresh_token", response.data.refresh)
 
                                 axiosInstance.defaults.headers["Authorization"] = "Bearer" + response.data.access
                                 originalRequest.headers["Authorization"] = "Bearer" + response.data.access
