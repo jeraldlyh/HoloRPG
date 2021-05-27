@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
@@ -61,7 +61,7 @@ class DungeonViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class RoomViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = RoomSerializer
 
     def create(self, request):

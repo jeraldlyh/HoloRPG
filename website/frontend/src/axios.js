@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
     timeout: 5000,
     headers: {
         "Authorization": localStorage.getItem("access_token") 
-            ? "Bearer" + localStorage.getItem("access_token") 
+            ? "Bearer " + localStorage.getItem("access_token") 
             : null,
         "Content-Type": "application/json",
         "accept": "application/json",
@@ -30,6 +30,7 @@ axiosInstance.interceptors.response.use(
         }
 
         if (
+            error.response.data.code === 'token_not_valid' &&
             error.response.status === 401 &&
             error.response.statusText === "Unauthorized"
         ) {
@@ -42,14 +43,14 @@ axiosInstance.interceptors.response.use(
 				console.log(tokenParts.exp)
 
                 if (tokenParts.exp > now) {
-                    axiosInstance.post("/api/token/refresh/", { refresh_token: refreshToken })
+                    axiosInstance.post("/api/token/refresh/", { refresh: refreshToken })
                         .then((response) => {
-                            if (response.status === 201) {
+                            if (response.status === 200) {
                                 localStorage.setItem("access_token", response.data.access)
                                 localStorage.setItem("refresh_token", response.data.refresh)
 
                                 axiosInstance.defaults.headers["Authorization"] = "Bearer" + response.data.access
-                                originalRequest.defaults.headers["Authorization"] = "Bearer" + response.data.access
+                                originalRequest.headers["Authorization"] = "Bearer" + response.data.access
                                 console.log("Refreshed token")
 
                                 return axiosInstance(originalRequest)
