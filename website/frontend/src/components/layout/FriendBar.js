@@ -41,7 +41,7 @@ function FriendBar(props) {
                         return (
                             <Fragment key={index}>
                                 <FriendCard 
-                                    name={friend.user_id}
+                                    name={friend.user}
                                     level={friend.level}
                                     image={friend.image}
                                     status={friend.status}

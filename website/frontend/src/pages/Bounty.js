@@ -41,16 +41,12 @@ function Bounty(props) {
                         bounties.length !== 0
                             ? bounties.map((bounty, index) => {
                                 return (
-                                    <tr key={index} className="hover:bg-gray-900">
+                                    <tr key={index} className="hover:bg-gray-900 border-2 border-transparent hover:border-custom-green">
                                         <td className="py-3 px-6 text-center">
-                                            <span className="flex items-center">
-                                                <span>{bounty.target}</span>
-                                            </span>
+                                            <span>{bounty.target}</span>
                                         </td>
                                         <td className="py-3 px-6 text-center">
-                                            <span className="flex items-center">
-                                                <span>{bounty.placed_by}</span>
-                                            </span>
+                                            <span>{bounty.placed_by}</span>
                                         </td>
                                         <td className="py-3 px-6 text-center">
                                             <span>{bounty.value}</span>
