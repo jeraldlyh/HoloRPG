@@ -4,9 +4,14 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework.serializers import Serializer
-from .models import Character, Dungeon, UserProfile, Room, UserRelationship
-from .serializers import CharacterSerializer, DungeonSerializer, RoomSerializer, UserProfileSerializer, UserRelationshipSerializer
+from .models import UserProfile, Character, Dungeon         # FIRST MIGRATION
+from .serializers import UserProfileSerializer, CharacterSerializer
 
+from .models import Bounty, Room, UserRelationship          # SECOND MIGRATION
+from .serializers import DungeonSerializer, RoomSerializer, BountySerializer, UserRelationshipSerializer
+
+
+# FIRST MIGRATION
 class UserProfileViewSet(viewsets.ViewSet):
     serializer_class = UserProfileSerializer
 
@@ -31,7 +36,6 @@ class UserProfileViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 class CharacterViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = Character.objects.all()
@@ -42,6 +46,7 @@ class CharacterViewSet(viewsets.ViewSet):
 #     queryset = Skill.objects.all()
 #     serializer_class = SkillSerializer
 
+# SECOND MIGRATION
 class DungeonViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = Dungeon.objects.all()
@@ -61,7 +66,7 @@ class RoomViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = Room.objects.all()
-        serializer = RoomSerializer(queryset, many=True)
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserRelationshipViewSet(viewsets.ViewSet):
@@ -69,7 +74,7 @@ class UserRelationshipViewSet(viewsets.ViewSet):
 
     def create(self, request):
         if request.data["user_from"][0] == request.data["user_to"][0]:
-            return Response({"Bad Request": "Unable to befriend the same user"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Bad Request": "Unable to befriend yourself"}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -88,3 +93,34 @@ class UserRelationshipViewSet(viewsets.ViewSet):
             except:
                 return Response({"Relationships Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"Bad Request": "Username parameter not specified"})
+
+class BountyViewSet(viewsets.ViewSet):
+    serializer_class = BountySerializer
+
+    def create(self, request):
+        print(request.data)
+        request_copy = request.data.copy()
+        placed_by = request.data["placed_by"]
+        target = request.data["target"]
+
+        if placed_by == target:
+            return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
+
+        bounty_value = 100                          # To be computed by a formula to determine player's net worth
+        player_currency = UserProfile.objects.get(user_id=placed_by).currency
+        print(player_currency)
+
+        if player_currency > bounty_value:
+            request_copy["value"] = bounty_value                        # Insert bounty value in request data
+            serializer = self.serializer_class(data=request_copy)
+
+            if serializer.is_valid():
+                Bounty.objects.create(**serializer.validated_data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Bad Request": f"Insufficient currency to place bounty on {target}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def list(self, request):
+        queryset = Bounty.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

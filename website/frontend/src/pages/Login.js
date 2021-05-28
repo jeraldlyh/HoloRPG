@@ -20,7 +20,7 @@ function LoginForm(props) {
 
     return (
         <Layout>
-            <div className="container flex justify-center max-h-96">
+            <div className="container flex justify-center max-h-96 self-start">
                 <form className="flex flex-col w-96 p-8 bg-gray-700 bg-opacity-25 items-center">
                     <span className="font-bold text-2xl pb-3 text-opacity-75">
                         USER LOGIN

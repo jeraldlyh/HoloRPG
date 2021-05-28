@@ -9,10 +9,12 @@ function FriendBar(props) {
     const [friends, setFriends] = useState([])
 
     useEffect(() => {
-        axiosInstance.get(`/api/relationship/${username}`)
-            .then(response => {
-                setFriends(response.data)
-            })
+        if (isAuthenticated) {
+            axiosInstance.get(`/api/relationship/${username}`)
+                .then(response => {
+                    setFriends(response.data)
+                })
+        }
     }, [])
 
     const onClick = () => {
@@ -59,7 +61,7 @@ function FriendBar(props) {
             </div>
         )
     }
-    return <div />
+    return null
 }
 
 const mapStateToProps = state => ({

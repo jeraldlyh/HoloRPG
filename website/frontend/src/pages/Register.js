@@ -21,7 +21,7 @@ function RegisterForm(props) {
 
     return (
         <Layout>
-            <div className="container flex justify-center">
+            <div className="container flex justify-center self-start">
                 <form className="flex flex-col w-96 h-96 p-8 mt-5 bg-gray-700 bg-opacity-25 items-center">
                     <p className="font-bold text-2xl pb-3 text-opacity-75">
                         REGISTRATION
