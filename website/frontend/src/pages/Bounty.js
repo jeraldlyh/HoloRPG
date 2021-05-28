@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Fragment } from "react"
+import { connect } from "react-redux"
 import axiosInstance from "../axios"
 import Layout from "../components/layout/Layout"
 
 
-function Bounty() {
+function Bounty(props) {
+    const { username } = props
     const [bounties, setBounties] = useState([])
 
     useEffect(() => {
@@ -13,17 +15,25 @@ function Bounty() {
             })
     }, [])
 
+    const attackPlayer = (index) => {
+        const body = {
+            target: bounties[index],
+            user: username
+        }
+        console.log(body)
+    }
+
     return (
         <Layout>
             <div className="sticky top-20 self-start my-5 min-w-screen border-2 border-custom-green">
-                <table className="m-3">
+                <table className="m-3 table-fixed">
                     <thead>
                         <tr className="uppercase">
-                            <th className="py-3 px-6 border-2 border-white text-center">Target</th>
-                            <th className="py-3 px-6 border-2 border-white text-center">Paid by</th>
-                            <th className="py-3 px-6 border-2 border-white text-center">Bounty</th>
-                            <th className="py-3 px-6 border-2 border-white text-center">Placed at</th>
-                            <th className="py-3 px-6 border-2 border-white text-center">Action</th>
+                            <th className="py-3 px-6 text-center">Target</th>
+                            <th className="py-3 px-6 text-center">Paid by</th>
+                            <th className="py-3 px-6 text-center">Bounty</th>
+                            <th className="py-3 px-6 text-center">Placed at</th>
+                            <th className="py-3 px-6 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,24 +42,26 @@ function Bounty() {
                             ? bounties.map((bounty, index) => {
                                 return (
                                     <tr key={index} className="hover:bg-gray-900">
-                                        <td className="py-3 px-6 border-2 border-white text-left">
+                                        <td className="py-3 px-6 text-center">
                                             <span className="flex items-center">
                                                 <span>{bounty.target}</span>
                                             </span>
                                         </td>
-                                        <td className="py-3 px-6 border-2 border-white text-left">
+                                        <td className="py-3 px-6 text-center">
                                             <span className="flex items-center">
                                                 <span>{bounty.placed_by}</span>
                                             </span>
                                         </td>
-                                        <td className="py-3 px-6 border-2 border-white text-center">
+                                        <td className="py-3 px-6 text-center">
                                             <span>{bounty.value}</span>
                                         </td>
-                                        <td className="py-3 px-6 border-2 border-white text-center">
+                                        <td className="py-3 px-6 text-center">
                                             <span>{bounty.placed_at}</span>
                                         </td>
-                                        <td className="py-3 px-6 border-2 border-white text-center">
-                                            <button>DO STH</button>
+                                        <td className="py-3 px-6 text-center">
+                                            <div className="border-2 border-custom-blue rounded-lg">
+                                                <button className="p-1" type="button" onClick={() => attackPlayer(index)}>Attack</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 )
@@ -68,4 +80,9 @@ function Bounty() {
     )
 }
 
-export default Bounty
+const mapStateToProps = state => ({
+    username: state.auth.user
+})
+
+
+export default connect(mapStateToProps)(Bounty)
