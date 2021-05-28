@@ -27,8 +27,7 @@ function ProfileCard(props) {
 
     if (isAuthenticated && userDetails) {
         return (
-            <div className="my-5 mx-10">
-                <div className="flex flex-col sticky top-20 p-3 items-center w-60 rounded-lg border-2 border-custom-pink">
+                <div className="sticky top-20 flex flex-col p-3 self-start items-center w-60 rounded-lg border-2 border-custom-pink my-5 mx-10">
                     <img className="w-36 h-36" src={logo} alt={user} />
                     <p className="text-xl py-0.5 font-bold text-center">{user}</p>
                     <div className="grid grid-cols-2 gap-y-3 gap-x-2 px-3">
@@ -59,7 +58,6 @@ function ProfileCard(props) {
                         <p className="col-span-2">EXP bar maybe - {userDetails.experience}</p>
                     </div>
                 </div>
-            </div>
         )
     }
     return null

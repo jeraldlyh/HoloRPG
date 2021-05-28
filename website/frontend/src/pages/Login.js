@@ -22,9 +22,9 @@ function LoginForm(props) {
         <Layout>
             <div className="container flex justify-center max-h-96">
                 <form className="flex flex-col w-96 p-8 bg-gray-700 bg-opacity-25 items-center">
-                    <p className="font-bold text-2xl pb-3 text-opacity-75">
+                    <span className="font-bold text-2xl pb-3 text-opacity-75">
                         USER LOGIN
-                    </p>
+                    </span>
                     <div className="flex flex-row w-full items-center">
                         <span className="h-full p-2 bg-white bg-opacity-25">
                             <FaUser style={{fontSize: "20px", margin: "5px"}}/>

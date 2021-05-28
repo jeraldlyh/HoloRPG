@@ -66,7 +66,7 @@ function Room() {
 
     return (
         <Layout>
-            <div className="relative min-w-screen border-2 border-custom-green">
+            <div className="relative self-start sticky top-20 my-5 min-w-screen border-2 border-custom-green">
                 <Modal show={showModal} handleToggle={toggleModal}>
                     <div className="mt-16 w-full px-3">
                         <input className="w-full h-10 placeholder text-center" placeholder="Search for username..."></input>
