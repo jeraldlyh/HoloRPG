@@ -30,11 +30,11 @@ function FriendBar(props) {
     if (isAuthenticated) {
         return (
             <div className="sticky top-20 flex flex-col w-60 self-start items-center rounded-lg border-2 border-red-500 my-5 mx-10">
-                <p className="w-full text-center text-xl font-bold p-3 uppercase">Friends</p>
+                <span className="w-full text-center text-xl font-bold p-3 uppercase">Friends</span>
                 {status ? online : away}
                 <hr className="mt-3 w-full border-t-2 border-red-500" />
                 {
-                    friends !== 0
+                    friends.length !== 0
                     ? friends.map((friend, index) => {
                         return (
                             <Fragment key={index}>
@@ -52,7 +52,9 @@ function FriendBar(props) {
                             </Fragment>
                         )
                     })
-                    : null
+                    : <div className="flex h-64 items-center">
+                        <span className="text-sm">You currently have no friends</span>
+                    </div>
                 }
             </div>
         )
