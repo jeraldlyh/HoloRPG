@@ -139,6 +139,8 @@ class UserProfile(models.Model):
         PRIMARY KEY: id
         GENERATED FIELDS:
             user
+            image
+            date_registered
             character
             level
             experience
@@ -149,18 +151,10 @@ class UserProfile(models.Model):
             attack
             defence
             status
-            dungeon
     """
-    DEFAULT = 1
-    BUTTON = 2
-    IMAGE_CHOICES = (
-        (DEFAULT, "Default"),
-        (BUTTON, "Button"),
-    )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE)
-    image = models.IntegerField(default=1, blank=True)
+    image = models.CharField(default="https://svgshare.com/i/Xd6.svg", max_length=100)
     date_registered = models.DateTimeField(auto_now_add=True, blank=True)
     character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
     level = models.IntegerField()
@@ -256,11 +250,11 @@ class Relationship(models.Model):
         (FRIEND, _("Friend")),
         (FAMILY, _("Family"))
     )
-    
+
     name = models.CharField(choices=RELATIONSHIP_CHOICES, max_length=10, primary_key=True)
 class UserRelationship(models.Model):
     class Meta:
-        constraints = [models.UniqueConstraint(name="unique_relationship", fields=["user_from", "user_to"])]
+        constraints = [models.UniqueConstraint(fields=["user_from", "user_to"], name="unique_relationship")]
 
     user_from = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="%(class)s_from")
     user_to = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="%(class)s_to")
