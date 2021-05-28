@@ -14,22 +14,12 @@ function Room() {
     useEffect(() => {
         axiosInstance.get("/api/room")
             .then(response => {
-                const roomData = []
-                response.data.forEach(room => {
-                    roomData.push(room)
-                })
-                setRooms(roomData)
-                console.log(response.data)
+                setRooms(response.data)
             })
             .then(() => {
                 axiosInstance.get("/api/profile")
                     .then(response => {
-                        const profileData = []
-                        response.data.forEach(profile => {
-                            profileData.push(profile)
-                        })
-                        setUsers(profileData)
-                        console.log(response.data)
+                        setUsers(response.data)
                     })
             })
             .catch(error => {
@@ -77,52 +67,50 @@ function Room() {
                     <button className="text-lg w-28 font-bold uppercase px-2 border-2 border-white" onClick={toggleModal}>Create</button>
                     <button className="text-lg w-28 font-bold uppercase px-2 border-2 border-white">Join</button>
                 </div>
-                <div className="m-3">
-                    <table>
-                        <thead>
-                            <tr className="uppercase">
-                                <th className="py-3 px-6 border-2 border-white text-left">Room</th>
-                                <th className="py-3 px-6 border-2 border-white text-left">Host</th>
-                                <th className="py-3 px-6 border-2 border-white text-center">Users</th>
-                                <th className="py-3 px-6 border-2 border-white text-center">Status</th>
-                                <th className="py-3 px-6 border-2 border-white text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            rooms.length !== 0 ?
-                                rooms.map((room, index) => {
-                                    return (
-                                        <tr key={index} className="hover:bg-gray-900">
-                                            <td className="py-3 px-6 border-2 border-white text-left">
-                                                <div className="flex items-center">
-                                                    <span>{room.dungeon}</span>
-                                                </div>
-                                            </td>
-                                            <td className="py-3 px-6 border-2 border-white text-left">
-                                                <div className="flex items-center">
-                                                    <span>{room.host}</span>
-                                                </div>
-                                            </td>
-                                            <td className="py-3 px-6 border-2 border-white text-left">
-                                                <div className="flex items-center w-max">
-                                                    {getProfilePics(room)}
-                                                </div>
-                                            </td>
-                                            <td className="py-3 px-6 border-2 border-white text-center">
-                                                <span>{room.status}</span>
-                                            </td>
-                                            <td className="py-3 px-6 border-2 border-white text-center">
-                                                <span>TBC</span>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            : null
-                        }
-                        </tbody>
-                    </table>
-                </div>
+                <table className="m-3">
+                    <thead>
+                        <tr className="uppercase">
+                            <th className="py-3 px-6 border-2 border-white text-left">Room</th>
+                            <th className="py-3 px-6 border-2 border-white text-left">Host</th>
+                            <th className="py-3 px-6 border-2 border-white text-center">Users</th>
+                            <th className="py-3 px-6 border-2 border-white text-center">Status</th>
+                            <th className="py-3 px-6 border-2 border-white text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        rooms.length !== 0 ?
+                            rooms.map((room, index) => {
+                                return (
+                                    <tr key={index} className="hover:bg-gray-900">
+                                        <td className="py-3 px-6 border-2 border-white text-left">
+                                            <div className="flex items-center">
+                                                <span>{room.dungeon}</span>
+                                            </div>
+                                        </td>
+                                        <td className="py-3 px-6 border-2 border-white text-left">
+                                            <div className="flex items-center">
+                                                <span>{room.host}</span>
+                                            </div>
+                                        </td>
+                                        <td className="py-3 px-6 border-2 border-white text-left">
+                                            <div className="flex items-center w-max">
+                                                {getProfilePics(room)}
+                                            </div>
+                                        </td>
+                                        <td className="py-3 px-6 border-2 border-white text-center">
+                                            <span>{room.status}</span>
+                                        </td>
+                                        <td className="py-3 px-6 border-2 border-white text-center">
+                                            <span>TBC</span>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        : null
+                    }
+                    </tbody>
+                </table>
             </div>
         </Layout>
     )

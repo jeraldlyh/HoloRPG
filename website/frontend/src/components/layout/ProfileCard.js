@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import { GiLifeBar, GiMoneyStack, GiProgression, GiCrossedSwords, GiEdgedShield, GiAlliedStar } from "react-icons/gi"
 import { getProfile } from "../../actions/profile"
-import logo from "../../assets/1.svg"
 
 
 function ProfileCard(props) {
@@ -28,7 +27,7 @@ function ProfileCard(props) {
     if (isAuthenticated && userDetails) {
         return (
                 <div className="sticky top-20 flex flex-col p-3 self-start items-center w-60 rounded-lg border-2 border-custom-pink my-5 mx-10">
-                    <img className="w-36 h-36" src={logo} alt={user} />
+                    <img className="w-36 h-36" src={userDetails.image} alt={user} />
                     <p className="text-xl py-0.5 font-bold text-center">{user}</p>
                     <div className="grid grid-cols-2 gap-y-3 gap-x-2 px-3">
                         <div className="flex gap-x-1 items-center">

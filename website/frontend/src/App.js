@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
 import Login from "./pages/Login"
 import Room from "./pages/Room"
+import Bounty from "./pages/Bounty"
 import Register from "./pages/Register"
 import FAQ from "./pages/FAQ"
 import Header from "./components/layout/Header"
@@ -14,7 +15,8 @@ function App() {
             <Header />
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path="/" component={Room} />
+                        <Route exact path="/" component={Bounty} />
+                        <Route exact path="/room" component={Room} />
                         <Route exact path="/faq" component={FAQ} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/register" component={Register} />

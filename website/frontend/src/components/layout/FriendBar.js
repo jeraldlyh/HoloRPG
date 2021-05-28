@@ -1,11 +1,19 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, Fragment } from "react"
 import { connect } from "react-redux"
-
+import axiosInstance from "../../axios"
 import FriendCard from "./FriendCard"
 
 function FriendBar(props) {
-    const { isAuthenticated } = props
+    const { isAuthenticated, username } = props
     const [status, setStatus] = useState(true)
+    const [friends, setFriends] = useState([])
+
+    useEffect(() => {
+        axiosInstance.get(`/api/relationship/${username}`)
+            .then(response => {
+                setFriends(response.data)
+            })
+    }, [])
 
     const onClick = () => {
         setStatus(!status)
@@ -24,11 +32,28 @@ function FriendBar(props) {
             <div className="sticky top-20 flex flex-col w-60 self-start items-center rounded-lg border-2 border-red-500 my-5 mx-10">
                 <p className="w-full text-center text-xl font-bold p-3 uppercase">Friends</p>
                 {status ? online : away}
-                <hr className="mt-3 w-full border-t-2 border-custom-peach" />
-                <FriendCard name="testing" level="123" picture="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"/>
-                <FriendCard name="testing" level="123" picture="asdlkas"/>
-                <FriendCard name="testing" level="123" picture="asdlkas"/>
-                <FriendCard name="testing" level="123" picture="asdlkas"/>
+                <hr className="mt-3 w-full border-t-2 border-red-500" />
+                {
+                    friends !== 0
+                    ? friends.map((friend, index) => {
+                        return (
+                            <Fragment key={index}>
+                                <FriendCard 
+                                    name={friend.user_id}
+                                    level={friend.level}
+                                    image={friend.image}
+                                    status={friend.status}
+                                />
+                                {
+                                    index !== friends.length - 1
+                                    ? <hr className="w-2/3 border-t-2 border-red-500"/>
+                                    : null
+                                }  
+                            </Fragment>
+                        )
+                    })
+                    : null
+                }
             </div>
         )
     }
@@ -36,7 +61,8 @@ function FriendBar(props) {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    username: state.auth.user
 })
 
 export default connect(mapStateToProps)(FriendBar)

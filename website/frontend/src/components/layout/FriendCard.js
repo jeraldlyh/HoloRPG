@@ -1,16 +1,15 @@
 import React from "react"
-import logo from "../../assets/1.svg"
 
 function FriendCard(props) {
     return (
-        <div className="flex flex-row w-full h-16 mb-3 px-2">
-            <div className="w-24 flex items-center justify-center">
-                <img src={logo} alt={props.name} />
+        <div className="flex flex-row w-full mb-1.5 px-1 items-center">
+            <div className="flex w-1/5">
+                <img src={props.image} alt={props.name} />
             </div>
-            <div className="flex flex-col w-full p-2 space-y-px">
-                <p className="font-bold">{props.name}</p>
-                <p className="mt-2">{props.status}</p>
-                <p className="mt-2">{props.level}</p>
+            <div className="flex flex-col w-4/5 p-2">
+                <span className="font-bold">{props.name}</span>
+                <div><span className="mt-1 font-bold">Level: </span>{props.level}</div>
+                <div><span className="font-bold">Status: </span>{props.status}</div>
             </div>
         </div>
     )
