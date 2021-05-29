@@ -84,14 +84,9 @@ function Bounty(props) {
                                 </Fragment>
                             )
                         })
-                    : null
+                    : <div className="col-span-6 h-64 w-full justify-center items-center text-sm">There's currently no bounties placed</div>
                 }
             </div>
-            { 
-                bounties.length === 0 
-                ? <div className="flex h-64 w-full justify-center items-center text-sm">There's currently no bounties placed</div>
-                : null
-            }
         </Layout>
     )
 }

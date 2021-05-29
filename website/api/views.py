@@ -102,6 +102,12 @@ class BountyViewSet(viewsets.ViewSet):
 
         if placed_by == target:
             return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if Bounty.objects.filter(target=target, status="UNCLAIMED").count() != 0:
+            return Response({"Bad Request": f"{target} currently has an existing bounty"})
+        
+        if UserProfile.objects.get(user_id=target).current_health == 0:
+            return Response({"Bad Request": f"{target} is currently dead"})
 
         bounty_value = 100                          # To be computed by a formula to determine player's net worth
         player_currency = UserProfile.objects.get(user_id=placed_by).currency
@@ -117,14 +123,15 @@ class BountyViewSet(viewsets.ViewSet):
         return Response({"Bad Request": f"Insufficient currency to place bounty on {target}"}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
-        queryset = Bounty.objects.all()
+        queryset = Bounty.objects.filter(status="UNCLAIMED")
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def partial_update(self, request, pk=None):
         if pk is not None:
             data = request.data
-            target = Bounty.objects.get(id=pk).target
+            bounty = Bounty.objects.get(id=pk)
+            target = bounty.target
             
             if target.current_health != 0:
                 attacker = UserProfile.objects.get(user_id=data["attacker"])
@@ -133,8 +140,9 @@ class BountyViewSet(viewsets.ViewSet):
                     target.current_health = F("current_health") - damage
                 else:
                     target.current_health = 0
+                    bounty.status = "CLAIMED"
+                bounty.save()
                 target.save()
-                target.refresh_from_db()
                 return Response({"Success": "{} has been dealt to {}".format(damage, target)}, status=status.HTTP_200_OK)
             return Response({"Bad Request": "Bounty on {} has already been claimed".format(data["bounty"]["target"])}, status=status.HTTP_200_OK)
         return Response({"Bad Request": "Bounty not specified"})
