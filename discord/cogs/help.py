@@ -18,7 +18,6 @@ class Help(commands.Cog):
         for cog in cogs:
             currentcog = self.bot.get_cog(cog)
             commands = currentcog.get_commands()
-            commandList = ""
             
             for command in commands:
                 if command.hidden != True:
