@@ -196,6 +196,7 @@ class Bounty(models.Model):
     target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_target")
     value = models.IntegerField(blank=True)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
+    status = models.CharField(max_length=10, blank=True, editable=False, default="UNCLAIMED")
 
     @property
     def get_target_health(self):
