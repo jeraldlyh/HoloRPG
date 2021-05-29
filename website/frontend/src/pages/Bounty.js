@@ -8,70 +8,90 @@ function Bounty(props) {
     const { username } = props
     const [bounties, setBounties] = useState([])
 
-    useEffect(() => {
+    const fetchBountyData = () => {
         axiosInstance.get("/api/bounty")
             .then(response => {
                 setBounties(response.data)
+                console.log(response.data)
             })
+    }
+
+    useEffect(() => {
+        fetchBountyData()
     }, [])
 
     const attackPlayer = (index) => {
         const body = {
-            target: bounties[index],
-            user: username
+            bounty: bounties[index],
+            attacker: username
         }
-        console.log(body)
+        axiosInstance.patch(`/api/bounty/${bounties[index].id}/`, body)
+            .then(response => {
+                fetchBountyData()               // Option 1
+                // window.location.reload()        // Option 2
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
     }
 
     return (
         <Layout>
-            <div className="sticky top-20 self-start my-5 min-w-screen border-2 border-custom-green">
-                <table className="m-3 table-fixed">
-                    <thead>
-                        <tr className="uppercase">
-                            <th className="py-3 px-6 text-center">Target</th>
-                            <th className="py-3 px-6 text-center">Paid by</th>
-                            <th className="py-3 px-6 text-center">Bounty</th>
-                            <th className="py-3 px-6 text-center">Placed at</th>
-                            <th className="py-3 px-6 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        bounties.length !== 0
-                            ? bounties.map((bounty, index) => {
-                                return (
-                                    <tr key={index} className="hover:bg-gray-900 border-2 border-transparent hover:border-custom-green">
-                                        <td className="py-3 px-6 text-center">
-                                            <span>{bounty.target}</span>
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            <span>{bounty.placed_by}</span>
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            <span>{bounty.value}</span>
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            <span>{bounty.placed_at}</span>
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            <div className="border-2 border-custom-blue rounded-lg">
-                                                <button className="p-1" type="button" onClick={() => attackPlayer(index)}>Attack</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                        : null
-                    }
-                    </tbody>
-                </table>
-                { 
-                    bounties.length === 0 
-                    ? <div className="flex h-64 w-full justify-center items-center text-sm">There's currently no bounties placed</div>
+            <div className="sticky top-20 self-start grid grid-cols-6 my-5 mx-10 border-2 border-custom-green">
+                <span className="pt-3 px-6 text-center uppercase font-bold col-span-2">Target</span>
+                <span className="pt-3 px-6 text-center uppercase font-bold col-span-2">Paid by</span>
+                <span className="py-3 px-6 text-center uppercase font-bold row-span-2 self-end">Placed at</span>
+                <span className="py-3 px-6 text-center uppercase font-bold row-span-2 self-end">Action</span>
+                <span className="py-3 px-6 text-center uppercase font-bold">User</span>
+                <span className="py-3 px-6 text-center uppercase font-bold">HP</span>
+                <span className="py-3 px-6 text-center uppercase font-bold">User</span>
+                <span className="py-3 px-6 text-center uppercase font-bold">Bounty</span>
+                {
+                    bounties.length !== 0
+                        ? bounties.map((bounty, index) => {
+                            return (
+                                <Fragment key={index}>
+                                <div className="grid grid-cols-6 col-span-6 items-center hover:bg-gray-900">
+                                    <div className="py-3 px-6 text-center">
+                                        <span>{bounty.target}</span>
+                                    </div>
+                                    <div className="py-3 px-6 text-center">
+                                    <span>{bounty.target_health.current_health}/{bounty.target_health.max_health}</span>
+                                    </div>
+                                    <div className="py-3 px-6 text-center">
+                                        <span>{bounty.placed_by}</span>
+                                    </div>
+                                    <div className="py-3 px-6 text-center">
+                                        <span>{bounty.value}</span>
+                                    </div>
+                                    <div className="py-3 px-6 text-center">
+                                        <span>{bounty.placed_at.substr(bounty.placed_at.indexOf(" "))}</span>
+                                    </div>
+                                    <div className="py-3 px-6 text-center">
+                                        <div className="border-2 border-custom-blue rounded-lg">
+                                            <button className="p-1 focus:outline-none" type="button" onClick={() => attackPlayer(index)}>Attack</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* {
+                                    index !== bounties.length - 1
+                                    ? <div className="col-span-5 flex justify-center">
+                                        <hr className="w-5/6 border-t-2 border-custom-green"/>
+                                    </div>
+                                    : null
+                                } */}
+                                </Fragment>
+                            )
+                        })
                     : null
                 }
             </div>
+            { 
+                bounties.length === 0 
+                ? <div className="flex h-64 w-full justify-center items-center text-sm">There's currently no bounties placed</div>
+                : null
+            }
         </Layout>
     )
 }

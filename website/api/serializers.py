@@ -42,4 +42,6 @@ class UserRelationshipSerializer(serializers.ModelSerializer):
 class BountySerializer(serializers.ModelSerializer):
     class Meta:
         model = Bounty
-        exclude = ["id"]
+        fields = "__all__"
+
+    target_health = serializers.ReadOnlyField(source="get_target_health")

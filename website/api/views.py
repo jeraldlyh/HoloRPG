@@ -1,11 +1,11 @@
-from rest_framework import serializers
+from django.db.models.expressions import F, Value
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .models import UserProfile, Character, Dungeon         # FIRST MIGRATION
 from .serializers import UserProfileSerializer, CharacterSerializer
-
+from .formulas.battle import damage_dealt
 from .models import Bounty, Room, UserRelationship          # SECOND MIGRATION
 from .serializers import DungeonSerializer, RoomSerializer, BountySerializer, UserRelationshipSerializer
 
@@ -84,8 +84,7 @@ class UserRelationshipViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         if pk is not None:
             try:
-                user_profile_id = UserProfile.objects.filter(user__username=pk)[0].id
-                relationships = UserRelationship.objects.filter(user_from=user_profile_id).values_list("user_to")
+                relationships = UserRelationship.objects.filter(user_from__user_id=pk).values_list("user_to")
                 friend_profiles = UserProfile.objects.filter(id__in=relationships)
                 serializer = UserProfileSerializer(friend_profiles, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -97,7 +96,6 @@ class BountyViewSet(viewsets.ViewSet):
     serializer_class = BountySerializer
 
     def create(self, request):
-        print(request.data)
         request_copy = request.data.copy()
         placed_by = request.data["placed_by"]
         target = request.data["target"]
@@ -107,7 +105,6 @@ class BountyViewSet(viewsets.ViewSet):
 
         bounty_value = 100                          # To be computed by a formula to determine player's net worth
         player_currency = UserProfile.objects.get(user_id=placed_by).currency
-        print(player_currency)
 
         if player_currency > bounty_value:
             request_copy["value"] = bounty_value                        # Insert bounty value in request data
@@ -123,3 +120,21 @@ class BountyViewSet(viewsets.ViewSet):
         queryset = Bounty.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def partial_update(self, request, pk=None):
+        if pk is not None:
+            data = request.data
+            target = Bounty.objects.get(id=pk).target
+            
+            if target.current_health != 0:
+                attacker = UserProfile.objects.get(user_id=data["attacker"])
+                damage = damage_dealt(attacker.attack, attacker.defence)
+                if target.current_health - damage > 0:
+                    target.current_health = F("current_health") - damage
+                else:
+                    target.current_health = 0
+                target.save()
+                target.refresh_from_db()
+                return Response({"Success": "{} has been dealt to {}".format(damage, target)}, status=status.HTTP_200_OK)
+            return Response({"Bad Request": "Bounty on {} has already been claimed".format(data["bounty"]["target"])}, status=status.HTTP_200_OK)
+        return Response({"Bad Request": "Bounty not specified"})

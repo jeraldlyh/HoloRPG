@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
-from .utils import generate_unique_code, get_monster_name, generate_monster_stats
+from .formulas.models import generate_unique_code, get_monster_name, generate_monster_stats
 
 # FIRST MIGRATION
 class Character(models.Model):
@@ -87,8 +87,8 @@ class UserProfile(models.Model):
     experience = models.IntegerField()
     currency = models.IntegerField()
     reputation = models.IntegerField()
-    max_health = models.IntegerField()
     current_health = models.IntegerField()
+    max_health = models.IntegerField()
     attack = models.IntegerField()
     defence = models.IntegerField()
     status = models.CharField(max_length=10)
@@ -196,6 +196,15 @@ class Bounty(models.Model):
     target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_target")
     value = models.IntegerField(blank=True)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
+
+    @property
+    def get_target_health(self):
+        current_health = UserProfile.objects.get(user__username=self.target).current_health
+        max_health = UserProfile.objects.get(user__username=self.target).max_health
+        return {
+            "current_health": current_health,
+            "max_health": max_health
+        }
 
 
 # List of receivers
