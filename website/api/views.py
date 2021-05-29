@@ -104,10 +104,10 @@ class BountyViewSet(viewsets.ViewSet):
             return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
         
         if Bounty.objects.filter(target=target, status="UNCLAIMED").count() != 0:
-            return Response({"Bad Request": f"{target} currently has an existing bounty"})
+            return Response({"Bad Request": f"{target} currently has an existing bounty"}, status=status.HTTP_400_BAD_REQUEST)
         
         if UserProfile.objects.get(user_id=target).current_health == 0:
-            return Response({"Bad Request": f"{target} is currently dead"})
+            return Response({"Bad Request": f"{target} is currently dead"}, status=status.HTTP_400_BAD_REQUEST)
 
         bounty_value = 100                          # To be computed by a formula to determine player's net worth
         player_currency = UserProfile.objects.get(user_id=placed_by).currency
@@ -144,5 +144,5 @@ class BountyViewSet(viewsets.ViewSet):
                 bounty.save()
                 target.save()
                 return Response({"Success": "{} has been dealt to {}".format(damage, target)}, status=status.HTTP_200_OK)
-            return Response({"Bad Request": "Bounty on {} has already been claimed".format(data["bounty"]["target"])}, status=status.HTTP_200_OK)
-        return Response({"Bad Request": "Bounty not specified"})
+            return Response({"Bad Request": "Bounty on {} has already been claimed".format(data["bounty"]["target"])}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Bad Request": "Bounty not specified"}, status=status.HTTP_400_BAD_REQUEST)
