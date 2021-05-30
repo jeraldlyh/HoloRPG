@@ -1,4 +1,6 @@
 import uuid
+import pytz
+from datetime import date, datetime, timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
@@ -95,6 +97,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+    @property
+    def get_account_age(self):
+        registered = self.date_registered
+        today = datetime.today()
+        return (today - registered).days
 
 class Monster(models.Model):
     """
@@ -132,17 +140,6 @@ class Room(models.Model):
             player_three
             player_four
     """
-    @property
-    def get_profile_pictures(self):
-        profile_pictures = [UserProfile.objects.get(user=self.host).image]
-        if self.player_two is not None:
-            profile_pictures.append(UserProfile.objects.get(user=self.player_two).image)
-        if self.player_three is not None:
-            profile_pictures.append(UserProfile.objects.get(user=self.player_three).image)
-        if self.player_four is not None:
-            profile_pictures.append(UserProfile.objects.get(user=self.player_four).image)
-        return profile_pictures
-
     DEFAULT = "WAITING"
     STARTED = "STARTED"
 
@@ -168,6 +165,17 @@ class Room(models.Model):
 
     def __str__(self):
         return self.id
+    
+    @property
+    def get_profile_pictures(self):
+        profile_pictures = [UserProfile.objects.get(user=self.host).image]
+        if self.player_two is not None:
+            profile_pictures.append(UserProfile.objects.get(user=self.player_two).image)
+        if self.player_three is not None:
+            profile_pictures.append(UserProfile.objects.get(user=self.player_three).image)
+        if self.player_four is not None:
+            profile_pictures.append(UserProfile.objects.get(user=self.player_four).image)
+        return profile_pictures
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"

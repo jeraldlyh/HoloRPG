@@ -40,13 +40,13 @@ function Bounty(props) {
         <Layout>
             <div className="sticky top-20 self-start grid grid-cols-6 my-5 mx-10 border-2 border-custom-green">
                 <span className="pt-3 px-6 text-center uppercase font-bold col-span-2">Target</span>
-                <span className="pt-3 px-6 text-center uppercase font-bold col-span-2">Paid by</span>
-                <span className="py-3 px-6 text-center uppercase font-bold row-span-2 self-end">Placed at</span>
+                <span className="pt-3 px-6 text-center uppercase font-bold col-span-3">Paid by</span>
                 <span className="py-3 px-6 text-center uppercase font-bold row-span-2 self-end">Action</span>
                 <span className="py-3 px-6 text-center uppercase font-bold">User</span>
                 <span className="py-3 px-6 text-center uppercase font-bold">HP</span>
                 <span className="py-3 px-6 text-center uppercase font-bold">User</span>
                 <span className="py-3 px-6 text-center uppercase font-bold">Bounty</span>
+                <span className="py-3 px-6 text-center uppercase font-bold">Placed at</span>
                 {
                     bounties.length !== 0
                         ? bounties.map((bounty, index) => {
@@ -84,7 +84,7 @@ function Bounty(props) {
                                 </Fragment>
                             )
                         })
-                    : <div className="col-span-6 h-64 w-full justify-center items-center text-sm">There's currently no bounties placed</div>
+                    : <div className="col-span-6 h-64 flex justify-center items-center text-sm">There's currently no bounties placed</div>
                 }
             </div>
         </Layout>

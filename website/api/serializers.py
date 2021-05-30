@@ -10,7 +10,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         exclude = ["id"]
-        
+
+    account_age = serializers.ReadOnlyField(source="get_account_age")
+
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
