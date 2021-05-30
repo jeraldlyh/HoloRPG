@@ -1,6 +1,9 @@
 import axios from "axios"
+import { configureStore } from "./storeConfig"
+import { logoutUser } from "./actions/auth"
 
 const baseURL = "http://127.0.0.1:8000"
+const { store } = configureStore()
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -40,7 +43,6 @@ axiosInstance.interceptors.response.use(
                 const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]))         // Retrieves the time of the token
                 
                 const now = Math.ceil(Date.now() / 1000)
-				console.log(tokenParts.exp)
 
                 if (tokenParts.exp > now) {
                     axiosInstance.post("/api/token/refresh/", { refresh: refreshToken })
@@ -60,6 +62,7 @@ axiosInstance.interceptors.response.use(
                             console.log(error)
                         })
                 } else {
+                    store.dispatch(logoutUser())
                     console.log("Refresh token is expired", tokenParts.exp, now)
                 }
             } else {
