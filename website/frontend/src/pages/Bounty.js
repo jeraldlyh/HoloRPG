@@ -7,17 +7,12 @@ import Layout from "../components/layout/Layout"
 function Bounty(props) {
     const { username } = props
     const [bounties, setBounties] = useState([])
-
-    const fetchBountyData = () => {
+    
+    useEffect(() => {
         axiosInstance.get("/api/bounty")
             .then(response => {
                 setBounties(response.data)
-                console.log(response.data)
             })
-    }
-
-    useEffect(() => {
-        fetchBountyData()
     }, [])
 
     const attackPlayer = (index) => {
@@ -27,8 +22,8 @@ function Bounty(props) {
         }
         axiosInstance.patch(`/api/bounty/${bounties[index].id}/`, body)
             .then(response => {
-                fetchBountyData()               // Option 1
-                // window.location.reload()        // Option 2
+                console.log(response.data.bounty)
+                setBounties(response.data.bounty)
             })
             .catch(error => {
                 console.log(error)
@@ -51,8 +46,7 @@ function Bounty(props) {
                     bounties.length !== 0
                         ? bounties.map((bounty, index) => {
                             return (
-                                <Fragment key={index}>
-                                <div className="grid grid-cols-6 col-span-6 items-center hover:bg-gray-900">
+                                <div key={index} className="grid grid-cols-6 col-span-6 items-center hover:bg-gray-900">
                                     <div className="py-3 px-6 text-center">
                                         <span>{bounty.target}</span>
                                     </div>
@@ -74,17 +68,9 @@ function Bounty(props) {
                                         </div>
                                     </div>
                                 </div>
-                                {/* {
-                                    index !== bounties.length - 1
-                                    ? <div className="col-span-5 flex justify-center">
-                                        <hr className="w-5/6 border-t-2 border-custom-green"/>
-                                    </div>
-                                    : null
-                                } */}
-                                </Fragment>
                             )
                         })
-                    : <div className="col-span-6 h-64 flex justify-center items-center text-sm">There's currently no bounties placed</div>
+                        : <div className="col-span-6 h-64 flex justify-center items-center text-sm">There's currently no bounties placed</div>
                 }
             </div>
         </Layout>

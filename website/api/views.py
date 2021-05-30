@@ -1,4 +1,5 @@
-from django.db.models.expressions import F, Value
+from collections import OrderedDict
+from django.db.models.expressions import F
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -143,6 +144,13 @@ class BountyViewSet(viewsets.ViewSet):
                     bounty.status = "CLAIMED"
                 bounty.save()
                 target.save()
-                return Response({"Success": "{} has been dealt to {}".format(damage, target)}, status=status.HTTP_200_OK)
+
+                bounty_queryset = Bounty.objects.filter(status="UNCLAIMED")
+                bounty_serializer = BountySerializer(bounty_queryset, many=True)
+                bounty_dict = [dict(OrderedDict(bounty)) for bounty in bounty_serializer.data]
+                return Response({
+                    "Success": "{} has been dealt to {}".format(damage, target),
+                    "bounty": bounty_dict
+                }, status=status.HTTP_200_OK)
             return Response({"Bad Request": "Bounty on {} has already been claimed".format(data["bounty"]["target"])}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Bounty not specified"}, status=status.HTTP_400_BAD_REQUEST)
