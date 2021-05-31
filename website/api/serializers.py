@@ -9,9 +9,11 @@ from .models import Bounty, Room, UserRelationship
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        exclude = ["id"]
+        exclude = ["id", "character"]
 
     account_age = serializers.ReadOnlyField(source="get_account_age")
+    character_class = serializers.ReadOnlyField(source="get_character_class")
+    rank = serializers.ReadOnlyField(source="get_rank")
 
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:

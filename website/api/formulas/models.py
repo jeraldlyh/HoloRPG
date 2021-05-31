@@ -5,6 +5,8 @@ from django.db.models import Model
 
 def generate_unique_code(room: Model) -> str:
     """
+        [room] - A room model object
+
         Filter the list of existing Room objects and checks if 
         a new generated code exists. If not, return the unique code
     """
@@ -16,6 +18,13 @@ def generate_unique_code(room: Model) -> str:
             return code
 
 def get_monster_name(dungeon_name, monster: Model) -> Model:
+    """
+        [dungeon_name] - A string to represent dungeon name
+        [monster] - A monster model object
+
+        Randomly selects a monster name based on the dungeon specified
+    """
+
     monsters = list(monster.objects.all().filter(dungeon_name=dungeon_name))
     return random.choice(monsters) if len(monsters) > 1 else monsters[0]
 
@@ -23,13 +32,13 @@ def generate_monster_stats(dungeon_level) -> tuple:
     """
         [dungeon_level] - An integer to represent monster level
         [number_of_players] - An integer to represent number of players to enhance monster stats
-        
+
         # of players    Multiplier
         1               5%
         2               10%
         3               20%
         4               40%
-        
+
         Returns a tuple of monster statistics (health, attack, defence)
     """
 

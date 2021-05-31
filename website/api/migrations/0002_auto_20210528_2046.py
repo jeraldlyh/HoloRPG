@@ -63,7 +63,8 @@ class Migration(migrations.Migration):
                 ('placed_at', models.DateTimeField(auto_now_add=True)),
                 ('placed_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bounty_placed_by', to='api.userprofile', to_field='user_id')),
                 ('target', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bounty_target', to='api.userprofile', to_field='user_id')),
-                ('status', models.CharField(blank=True, default='UNCLAIMED', editable=False, max_length=10))
+                ('status', models.CharField(blank=True, default='UNCLAIMED', editable=False, max_length=10)),
+                ('claimed_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='bounty_claimed_by', to='api.userprofile', to_field='user_id')),
             ],
         ),
         migrations.AddConstraint(
@@ -73,9 +74,5 @@ class Migration(migrations.Migration):
         migrations.AddConstraint(
             model_name='skill',
             constraint=models.UniqueConstraint(fields=('character', 'name'), name='unique_skill'),
-        ),
-        migrations.AddConstraint(
-            model_name='bounty',
-            constraint=models.UniqueConstraint(fields=('placed_by', 'target'), name='unique_bounty'),
         ),
     ]

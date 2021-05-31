@@ -111,11 +111,13 @@ class BountyViewSet(viewsets.ViewSet):
             return Response({"Bad Request": f"{target} is currently dead"}, status=status.HTTP_400_BAD_REQUEST)
 
         bounty_value = 100                          # To be computed by a formula to determine player's net worth
-        player_currency = UserProfile.objects.get(user_id=placed_by).currency
+        player = UserProfile.objects.get(user_id=placed_by)
 
-        if player_currency > bounty_value:
+        if player.currency > bounty_value:
             request_copy["value"] = bounty_value                        # Insert bounty value in request data
             serializer = self.serializer_class(data=request_copy)
+            player.currency = F("currency") - bounty_value
+            player.save()
 
             if serializer.is_valid():
                 Bounty.objects.create(**serializer.validated_data)
@@ -142,6 +144,7 @@ class BountyViewSet(viewsets.ViewSet):
                 else:
                     target.current_health = 0
                     bounty.status = "CLAIMED"
+                    bounty.claimed_by = attacker
                 bounty.save()
                 target.save()
 

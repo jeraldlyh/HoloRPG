@@ -19,22 +19,8 @@ class Character(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(name="unique_character", fields=["main_class", "sub_class"])]
 
-    WARRIOR = "Warrior"
-    ARCHER = "Archer"
-    MAGICIAN = "Magician"
-    ROGUE = "Rogue"
-    DEFAULT = "Default"
-    
-    CLASS_CHOICES = (
-        (WARRIOR, _("Warrior")),
-        (ARCHER, _("Archer")),
-        (MAGICIAN, _("Magician")),
-        (ROGUE, _("Rogue")),
-        (DEFAULT, _("Beginner"))
-    )
-
-    main_class = models.CharField(choices=CLASS_CHOICES, default=DEFAULT, max_length=32)
-    sub_class = models.CharField(max_length=50)
+    main_class = models.CharField(default="DEFAULT", max_length=32)
+    sub_class = models.CharField(default="NULL", max_length=50)
 class Skill(models.Model):
     """
         PRIMARY KEY: character, name
@@ -104,6 +90,11 @@ class UserProfile(models.Model):
     @property
     def get_character_class(self) -> tuple:
         return (self.character.main_class, self.character.sub_class)
+    
+    @property
+    def get_rank(self) -> int:
+        all_levels = list(UserProfile.objects.values_list("level", flat=True))[::-1]
+        return all_levels.index(self.level) + 1
 
 class Monster(models.Model):
     """
@@ -198,13 +189,11 @@ class UserRelationship(models.Model):
     relationship = models.ForeignKey(Relationship, on_delete=models.DO_NOTHING)
 
 class Bounty(models.Model):
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=["placed_by", "target"], name="unique_bounty")]
-    
     placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_placed_by")
     target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_target")
     value = models.IntegerField(blank=True)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
+    claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_claimed_by", null=True, editable=False)
     status = models.CharField(max_length=10, blank=True, editable=False, default="UNCLAIMED")
 
     @property
