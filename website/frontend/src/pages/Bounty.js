@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react"
+import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import axiosInstance from "../axios"
 import Layout from "../components/layout/Layout"
@@ -28,7 +28,6 @@ function Bounty(props) {
             .catch(error => {
                 console.log(error)
             })
-
     }
 
     return (
@@ -44,33 +43,21 @@ function Bounty(props) {
                 <span className="py-3 px-6 text-center uppercase font-bold">Placed at</span>
                 {
                     bounties.length !== 0
-                        ? bounties.map((bounty, index) => {
-                            return (
-                                <div key={index} className="grid grid-cols-6 col-span-6 items-center hover:bg-gray-900">
-                                    <div className="py-3 px-6 text-center">
-                                        <span>{bounty.target}</span>
-                                    </div>
-                                    <div className="py-3 px-6 text-center">
-                                    <span>{bounty.target_health.current_health}/{bounty.target_health.max_health}</span>
-                                    </div>
-                                    <div className="py-3 px-6 text-center">
-                                        <span>{bounty.placed_by}</span>
-                                    </div>
-                                    <div className="py-3 px-6 text-center">
-                                        <span>{bounty.value}</span>
-                                    </div>
-                                    <div className="py-3 px-6 text-center">
-                                        <span>{bounty.placed_at.substr(bounty.placed_at.indexOf(" "))}</span>
-                                    </div>
-                                    <div className="py-3 px-6 text-center">
-                                        <div className="border-2 border-custom-blue rounded-lg">
-                                            <button className="p-1 focus:outline-none" type="button" onClick={() => attackPlayer(index)}>Attack</button>
-                                        </div>
-                                    </div>
+                    ? bounties.map((bounty, index) => {
+                        return (
+                            <div key={index} className="grid grid-cols-6 col-span-6 items-center hover:bg-gray-900">
+                                <span className="py-3 px-6 text-center">{bounty.target}</span>
+                                <span className="py-3 px-6 text-center">{bounty.target_health.current_health}/{bounty.target_health.max_health}</span>
+                                <span className="py-3 px-6 text-center">{bounty.placed_by}</span>
+                                <span className="py-3 px-6 text-center">{bounty.value}</span>
+                                <span className="py-3 px-6 text-center">{bounty.placed_at.substr(bounty.placed_at.indexOf(" "))}</span>
+                                <div className="py-3 px-6 text-center">
+                                    <button className="border-2 border-custom-blue rounded-lg p-1 focus:outline-none" type="button" onClick={() => attackPlayer(index)}>Attack</button>
                                 </div>
-                            )
-                        })
-                        : <div className="col-span-6 h-64 flex justify-center items-center text-sm">There's currently no bounties placed</div>
+                            </div>
+                        )
+                    })
+                    : <div className="col-span-6 h-64 flex justify-center items-center text-sm">There's currently no bounties placed</div>
                 }
             </div>
         </Layout>
