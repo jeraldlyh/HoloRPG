@@ -1,3 +1,4 @@
+from typing import Tuple
 import uuid
 import pytz
 from datetime import date, datetime, timezone
@@ -34,10 +35,6 @@ class Character(models.Model):
 
     main_class = models.CharField(choices=CLASS_CHOICES, default=DEFAULT, max_length=32)
     sub_class = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"{self.main_class} -> {self.sub_class}"
-
 class Skill(models.Model):
     """
         PRIMARY KEY: character, name
@@ -99,10 +96,14 @@ class UserProfile(models.Model):
         return self.user.username
     
     @property
-    def get_account_age(self):
+    def get_account_age(self) -> int:
         registered = self.date_registered
         today = datetime.today()
         return (today - registered).days
+    
+    @property
+    def get_character_class(self) -> tuple:
+        return (self.character.main_class, self.character.sub_class)
 
 class Monster(models.Model):
     """
@@ -115,7 +116,7 @@ class Monster(models.Model):
     name = models.CharField(max_length=50)
     dungeon_name = models.ForeignKey(Dungeon, on_delete=models.DO_NOTHING)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 # SECOND MIGRATION
@@ -167,14 +168,14 @@ class Room(models.Model):
         return self.id
     
     @property
-    def get_profile_pictures(self):
-        profile_pictures = [UserProfile.objects.get(user=self.host).image]
+    def get_profile_pictures(self) -> list:
+        profile_pictures = [self.host.image]
         if self.player_two is not None:
-            profile_pictures.append(UserProfile.objects.get(user=self.player_two).image)
+            profile_pictures.append(self.player_two.image)
         if self.player_three is not None:
-            profile_pictures.append(UserProfile.objects.get(user=self.player_three).image)
+            profile_pictures.append(self.player_three.image)
         if self.player_four is not None:
-            profile_pictures.append(UserProfile.objects.get(user=self.player_four).image)
+            profile_pictures.append(self.player_four.image)
         return profile_pictures
 
 class Relationship(models.Model):
@@ -207,9 +208,9 @@ class Bounty(models.Model):
     status = models.CharField(max_length=10, blank=True, editable=False, default="UNCLAIMED")
 
     @property
-    def get_target_health(self):
-        current_health = UserProfile.objects.get(user__username=self.target).current_health
-        max_health = UserProfile.objects.get(user__username=self.target).max_health
+    def get_target_health(self) -> dict:
+        current_health = self.target.current_health
+        max_health =self.target.max_health
         return {
             "current_health": current_health,
             "max_health": max_health
