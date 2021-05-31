@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
             name='Character',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('main_class', models.CharField(choices=[('Warrior', 'Warrior'), ('Archer', 'Archer'), ('Magician', 'Magician'), ('Rogue', 'Rogue'), ('Default', 'Beginner')], default='Default', max_length=32)),
-                ('sub_class', models.CharField(max_length=50)),
+                ('main_class', models.CharField(default='DEFAULT', max_length=32)),
+                ('sub_class', models.CharField(default='NULL', max_length=50)),
             ],
         ),
         migrations.CreateModel(

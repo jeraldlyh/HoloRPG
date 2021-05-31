@@ -63,6 +63,7 @@ class Migration(migrations.Migration):
                 ('placed_at', models.DateTimeField(auto_now_add=True)),
                 ('placed_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bounty_placed_by', to='api.userprofile', to_field='user_id')),
                 ('target', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bounty_target', to='api.userprofile', to_field='user_id')),
+                ('status', models.CharField(blank=True, default='UNCLAIMED', editable=False, max_length=10))
             ],
         ),
         migrations.AddConstraint(
