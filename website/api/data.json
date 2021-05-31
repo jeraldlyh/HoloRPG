@@ -59,5 +59,14 @@
             "main_class": "Magician",
             "sub_class": "Battle Cleric"
         }
+    },
+    {
+        "model": "api.Entity",
+        "fields": {
+            "name": "Mine",
+            "income": "100",
+            "upkeep": "50",
+            "cost": "250"
+        }
     }
 ]

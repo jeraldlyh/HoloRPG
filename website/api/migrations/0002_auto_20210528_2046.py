@@ -67,6 +67,24 @@ class Migration(migrations.Migration):
                 ('claimed_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='bounty_claimed_by', to='api.userprofile', to_field='user_id')),
             ],
         ),
+        migrations.CreateModel(
+            name='Entity',
+            fields=[
+                ('name', models.CharField(max_length=50, primary_key=True, serialize=False)),
+                ('upkeep', models.IntegerField()),
+                ('income', models.IntegerField()),
+                ('cost', models.IntegerField()),
+            ],
+        ),
+        migrations.CreateModel(
+            name='UserEntity',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('quantity', models.IntegerField()),
+                ('entity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.entity')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.userprofile')),
+            ],
+        ),
         migrations.AddConstraint(
             model_name='userrelationship',
             constraint=models.UniqueConstraint(fields=('user_from', 'user_to'), name='unique_relationship'),
