@@ -11,4 +11,5 @@ urlpatterns = [
     path("home/", index),
     path("profile/", index),
     path("room/", index),
+    path("leaderboard/", index),
 ]

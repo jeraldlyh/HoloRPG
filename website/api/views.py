@@ -145,6 +145,8 @@ class BountyViewSet(viewsets.ViewSet):
                     target.current_health = 0
                     bounty.status = "CLAIMED"
                     bounty.claimed_by = attacker
+                    attacker.currency = F("currency") + bounty.value
+                    attacker.save()
                 bounty.save()
                 target.save()
 

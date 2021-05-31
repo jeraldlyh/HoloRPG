@@ -46,12 +46,12 @@ function Bounty(props) {
                     ? bounties.map((bounty, index) => {
                         return (
                             <div key={index} className="grid grid-cols-6 col-span-6 items-center hover:bg-gray-900">
-                                <span className="py-3 px-6 text-center">{bounty.target}</span>
-                                <span className="py-3 px-6 text-center">{bounty.target_health.current_health}/{bounty.target_health.max_health}</span>
-                                <span className="py-3 px-6 text-center">{bounty.placed_by}</span>
-                                <span className="py-3 px-6 text-center">{bounty.value}</span>
-                                <span className="py-3 px-6 text-center">{bounty.placed_at.substr(bounty.placed_at.indexOf(" "))}</span>
-                                <div className="py-3 px-6 text-center">
+                                <span className="py-3 px-3 text-center">{bounty.target}</span>
+                                <span className="py-3 px-3 text-center">{bounty.target_health.current_health}/{bounty.target_health.max_health}</span>
+                                <span className="py-3 px-3 text-center">{bounty.placed_by}</span>
+                                <span className="py-3 px-3 text-center">{bounty.value}</span>
+                                <span className="py-3 px-3 text-center">{bounty.placed_at.substr(bounty.placed_at.indexOf(" "))}</span>
+                                <div className="py-3 px-3 text-center">
                                     <button className="border-2 border-custom-blue rounded-lg p-1 focus:outline-none" type="button" onClick={() => attackPlayer(index)}>Attack</button>
                                 </div>
                             </div>
