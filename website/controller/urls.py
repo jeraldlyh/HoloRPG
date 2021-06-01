@@ -4,10 +4,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("frontend.urls")),          # Permits URL links in frontend
-    path("api/", include("api.urls")),           # Permits URL links in backend
-    path("api/", include("entity.urls")),        # Permits URL links for income generating entities
-    path("auth/", include("accounts.urls")),     # Permits URL links in accounts
+    path("", include("frontend.urls")),               # Permits URL links in frontend
+    path("api/", include("api.user.urls")),           # Permits URL links in user
+    path("api/", include("api.room.urls")),           # Permits URL links in room
+    path("api/", include("api.entity.urls")),         # Permits URL links for income generating entities
+    path("auth/", include("accounts.urls")),          # Permits URL links in accounts
     path("api/token/", TokenObtainPairView.as_view()),
     path("api/token/refresh/", TokenRefreshView.as_view()),
 ]

@@ -1,7 +1,7 @@
 from django.db import models
-from ..api.models import UserProfile
+from ..user.models import UserProfile
 
-# Create your models here.
+
 class Entity(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
     upkeep = models.IntegerField()

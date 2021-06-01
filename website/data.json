@@ -1,67 +1,67 @@
 [
     {
-        "model": "api.Dungeon",
+        "model": "room.Dungeon",
         "fields": {
             "name": "Dungeon 1",
             "level": "1"
         }
     },
     {
-        "model": "api.Character",
-        "fields": {
-            "main_class": "Default",
-            "sub_class": "NULL"
-        }
-    },
-    {
-        "model": "api.Monster",
+        "model": "room.Monster",
         "fields": {
             "name": "Monster 1",
             "dungeon_name": "Dungeon 1"
         }
     },
     {
-        "model": "api.Relationship",
+        "model": "user.Relationship",
         "fields": {
             "name": "Friend"
         }
     },
     {
-        "model": "api.Relationship",
+        "model": "user.Relationship",
         "fields": {
             "name": "Family"
         }
     },
     {
-        "model": "api.Character",
+        "model": "user.Character",
+        "fields": {
+            "main_class": "Default",
+            "sub_class": "NULL"
+        }
+    },
+    {
+        "model": "user.Character",
         "fields": {
             "main_class": "Warrior",
             "sub_class": "Dawn Warrior"
         }
     },
     {
-        "model": "api.Character",
+        "model": "user.Character",
         "fields": {
             "main_class": "Archer",
             "sub_class": "Hunter"
         }
     },
     {
-        "model": "api.Character",
+        "model": "user.Character",
         "fields": {
             "main_class": "Rogue",
             "sub_class": "Scout"
         }
     },
     {
-        "model": "api.Character",
+        "model": "user.Character",
         "fields": {
             "main_class": "Magician",
             "sub_class": "Battle Cleric"
         }
     },
     {
-        "model": "api.Entity",
+        "model": "entity.Entity",
         "fields": {
             "name": "Mine",
             "income": "100",

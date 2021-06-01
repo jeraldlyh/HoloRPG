@@ -44,30 +44,10 @@ def generate_monster_stats(dungeon_level) -> tuple:
 
     number_of_players = 1               # TODO - CALCULATE BASED ON NUM OF PLAYERS
     baseStats = {
-        1: { 
-            "HP" : 7,
-            "Attack" : 5,
-            "Defence" : 5,
-            "Scaling" : 0.05
-        },
-        30: {
-            "HP" : 15,
-            "Attack" : 10,
-            "Defence" : 10,
-            "Scaling" : 0.1
-        },
-        60 : {
-            "HP" : 37,
-            "Attack" : 20,
-            "Defence" : 20,
-            "Scaling" : 0.2
-        },
-        90 : {
-            "HP" : 103,
-            "Attack" : 40,
-            "Defence" : 40,
-            "Scaling" : 0.4
-        }
+        1: { "HP" : 7, "Attack" : 5, "Defence" : 5, "Scaling" : 0.05 },
+        30: { "HP" : 15, "Attack" : 10, "Defence" : 10, "Scaling" : 0.1 },
+        60 : { "HP" : 37, "Attack" : 20, "Defence" : 20, "Scaling" : 0.2 },
+        90 : { "HP" : 103, "Attack" : 40, "Defence" : 40, "Scaling" : 0.4 }
     }
 
     index = 0

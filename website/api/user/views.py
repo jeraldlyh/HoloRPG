@@ -4,14 +4,16 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .models import UserEntity, UserProfile, Character, Dungeon         # FIRST MIGRATION
-from .serializers import UserEntitySerializer, UserProfileSerializer, CharacterSerializer
-from .formulas.battle import damage_dealt
-from .models import Bounty, Room, UserRelationship          # SECOND MIGRATION
-from .serializers import DungeonSerializer, RoomSerializer, BountySerializer, UserRelationshipSerializer
+from .models import UserProfile, Bounty, UserRelationship, Character
+from .serializers import UserProfileSerializer, CharacterSerializer, BountySerializer, UserRelationshipSerializer
+from ..formulas.battle import damage_dealt
 
+class CharacterViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Character.objects.all()
+        serializer = CharacterSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-# FIRST MIGRATION
 class UserProfileViewSet(viewsets.ViewSet):
     serializer_class = UserProfileSerializer
 
@@ -33,39 +35,6 @@ class UserProfileViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = UserProfile.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-class CharacterViewSet(viewsets.ViewSet):
-    def list(self, request):
-        queryset = Character.objects.all()
-        serializer = CharacterSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-# class SkillViewSet(viewsets.ModelViewSet):
-#     queryset = Skill.objects.all()
-#     serializer_class = SkillSerializer
-
-# SECOND MIGRATION
-class DungeonViewSet(viewsets.ViewSet):
-    def list(self, request):
-        queryset = Dungeon.objects.all()
-        serializer = DungeonSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-class RoomViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated]
-    serializer_class = RoomSerializer
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            Room.objects.create(**serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
-
-    def list(self, request):
-        queryset = Room.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

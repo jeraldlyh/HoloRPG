@@ -1,11 +1,7 @@
-from django.contrib.auth.models import User
-from django.db.models import fields
-
 from rest_framework import serializers
-from .models import Character, UserProfile, Dungeon, Skill
-from .models import Bounty, Room, UserRelationship
+from .models import UserProfile, Character, Skill
+from .models import Bounty, UserRelationship
 
-# FIRST MIGRATION
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -20,23 +16,11 @@ class CharacterSerializer(serializers.ModelSerializer):
         model = Character
         fields = "__all__"
 
-# SECOND MIGRATION
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = "__all__"
 
-class DungeonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Dungeon
-        fields = "__all__"
-
-class RoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Room
-        fields = "__all__"
-
-    profile_pictures = serializers.ReadOnlyField(source="get_profile_pictures")
 
 class UserRelationshipSerializer(serializers.ModelSerializer):
     class Meta:
