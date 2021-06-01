@@ -39,14 +39,15 @@ export const registerUser = ({username, email, password}) => async dispatch => {
                 .then((response) => {
                     Object.assign(responseData, response.data)
                 })
-        })
-        .then(() => {
-            dispatch({
-                type: REGISTER_SUCCESS,
-                payload: responseData
-            })
+                .then(() => {
+                    dispatch({
+                        type: REGISTER_SUCCESS,
+                        payload: responseData
+                    })
+                })
         })
         .catch(error => {
+            console.log(error)
             dispatch({
                 type: REGISTER_FAIL
             })
