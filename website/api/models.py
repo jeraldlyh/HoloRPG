@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
-from .formulas.models import generate_unique_code, get_monster_name, generate_monster_stats
+from ..formulas.models import generate_unique_code, get_monster_name, generate_monster_stats
 
 # FIRST MIGRATION
 class Character(models.Model):
@@ -205,16 +205,6 @@ class Bounty(models.Model):
             "max_health": max_health
         }
 
-class Entity(models.Model):
-    name = models.CharField(max_length=50, primary_key=True)
-    upkeep = models.IntegerField()
-    income = models.IntegerField()
-    cost = models.IntegerField()
-
-class UserEntity(models.Model):
-    entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
 
 # List of receivers
 @receiver(pre_save, sender=Room)

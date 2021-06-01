@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models import fields
 
 from rest_framework import serializers
-from .models import Character, UserEntity, UserProfile, Dungeon, Skill
+from .models import Character, UserProfile, Dungeon, Skill
 from .models import Bounty, Room, UserRelationship
 
 # FIRST MIGRATION
@@ -49,8 +49,3 @@ class BountySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     target_health = serializers.ReadOnlyField(source="get_target_health")
-
-class UserEntitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserEntity
-        fields = "__all__"

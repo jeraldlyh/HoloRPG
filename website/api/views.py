@@ -4,8 +4,8 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .models import UserProfile, Character, Dungeon         # FIRST MIGRATION
-from .serializers import UserProfileSerializer, CharacterSerializer
+from .models import UserEntity, UserProfile, Character, Dungeon         # FIRST MIGRATION
+from .serializers import UserEntitySerializer, UserProfileSerializer, CharacterSerializer
 from .formulas.battle import damage_dealt
 from .models import Bounty, Room, UserRelationship          # SECOND MIGRATION
 from .serializers import DungeonSerializer, RoomSerializer, BountySerializer, UserRelationshipSerializer
