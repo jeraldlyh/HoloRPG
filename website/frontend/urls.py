@@ -12,4 +12,5 @@ urlpatterns = [
     path("profile/", index),
     path("room/", index),
     path("leaderboard/", index),
+    path("shop/", index),
 ]

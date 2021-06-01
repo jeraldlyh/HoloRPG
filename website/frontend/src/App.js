@@ -6,6 +6,7 @@ import Bounty from "./pages/Bounty"
 import Register from "./pages/Register"
 import FAQ from "./pages/FAQ"
 import Leaderboard from "./pages/Leaderboard"
+import Shop from "./pages/Shop"
 import Header from "./components/layout/Header"
 import Footer from "./components/layout/Footer"
 
@@ -22,6 +23,7 @@ function App() {
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/register" component={Register} />
                         <Route exact path="/leaderboard" component={Leaderboard} />
+                        <Route exact path="/shop" component={Shop} />
                     </Switch>
                 </BrowserRouter>
             <Footer />

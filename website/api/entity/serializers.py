@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from .models import UserEntity
+from .models import Entity, UserEntity
+
+class EntitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entity
+        fields = "__all__"
 
 class UserEntitySerializer(serializers.ModelSerializer):
     class Meta:

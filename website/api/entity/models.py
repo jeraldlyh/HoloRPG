@@ -8,7 +8,11 @@ class Entity(models.Model):
     income = models.IntegerField()
     cost = models.IntegerField()
 
+
 class UserEntity(models.Model):
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["entity", "user"], name="unique_user_entity")]
+
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id")
     quantity = models.IntegerField()

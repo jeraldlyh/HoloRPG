@@ -8,10 +8,6 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 class Character(models.Model):
-    """
-        PRIMARY KEY: main_class, sub_class
-        REQUIRED FIELDS: main_class, sub_class
-    """
     class Meta:
         constraints = [models.UniqueConstraint(name="unique_character", fields=["main_class", "sub_class"])]
 
@@ -19,10 +15,6 @@ class Character(models.Model):
     sub_class = models.CharField(default="NULL", max_length=50)
 
 class Skill(models.Model):
-    """
-        PRIMARY KEY: character, name
-        REQUIRED FIELDS: character, name, accuracy, multiplier
-    """
     class Meta:
         constraints = [models.UniqueConstraint(fields=["character", "name"], name="unique_skill")]
     
@@ -32,23 +24,6 @@ class Skill(models.Model):
     multiplier = models.IntegerField()
 
 class UserProfile(models.Model):
-    """
-        PRIMARY KEY: id
-        GENERATED FIELDS:
-            user
-            image
-            date_registered
-            character
-            level
-            experience
-            currency
-            reputation
-            max_health
-            current_health
-            attack
-            defence
-            status
-    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE)
     image = models.CharField(default="https://svgshare.com/i/Xd6.svg", max_length=100)
@@ -117,7 +92,6 @@ class Bounty(models.Model):
             "current_health": current_health,
             "max_health": max_health
         }
-
 
 @receiver(post_save, sender=User)                               # Listener for creation of profiles
 def create_user_profile(sender, instance, created, **kwargs):

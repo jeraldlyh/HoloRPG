@@ -32,7 +32,7 @@ function Bounty(props) {
 
     return (
         <Layout>
-            <div className="sticky top-20 self-start grid grid-cols-6 my-5 mx-10 border-2 border-custom-green">
+            <div className="self-start grid grid-cols-6 my-5 mx-10 border-2 border-custom-green">
                 <span className="pt-3 px-6 text-center uppercase font-bold col-span-2">Target</span>
                 <span className="pt-3 px-6 text-center uppercase font-bold col-span-3">Paid by</span>
                 <span className="py-3 px-6 text-center uppercase font-bold row-span-2 self-end">Action</span>

@@ -27,6 +27,9 @@ function Header(props) {
                         <a href="#"><button className="px-4 py-0.5 font-bold uppercase" type="button">Commands</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
+                        <a href="/shop"><button className="px-4 py-0.5 font-bold uppercase" type="button">Shop</button></a>
+                    </li>
+                    <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
                         <a href="/leaderboard"><button className="px-4 py-0.5 font-bold uppercase" type="button">Leaderboards</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">

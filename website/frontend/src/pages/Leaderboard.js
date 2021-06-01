@@ -3,6 +3,7 @@ import { BiSort } from "react-icons/bi"
 import axiosInstance from "../axios"
 import Layout from "../components/layout/Layout"
 import useSortableData from "../components/hooks/Sortable"
+import PageHeader from "../components/layout/PageHeader"
 
 
 function Leaderboard() {
@@ -27,8 +28,8 @@ function Leaderboard() {
 
     return (
         <Layout>
-            <div className="flex flex-col self-start px-5">
-                <span className="text-2xl text-left font-bold uppercase mb-3">Leaderboards</span>
+            <div className="flex flex-col self-start">
+                <PageHeader header="Leaderboards"/>
                 <div className="grid grid-cols-7 border-2 border-custom-green items-center">
                     <div className="flex p-3 justify-center items-center gap-x-2">
                         <span className="text-center uppercase font-bold">Rank</span>

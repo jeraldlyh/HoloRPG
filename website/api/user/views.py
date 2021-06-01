@@ -4,8 +4,8 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .models import UserProfile, Bounty, UserRelationship, Character
-from .serializers import UserProfileSerializer, CharacterSerializer, BountySerializer, UserRelationshipSerializer
+from .models import Skill, UserProfile, Bounty, UserRelationship, Character
+from .serializers import SkillSerializer, UserProfileSerializer, CharacterSerializer, BountySerializer, UserRelationshipSerializer
 from ..formulas.battle import damage_dealt
 
 class CharacterViewSet(viewsets.ViewSet):
@@ -19,8 +19,7 @@ class UserProfileViewSet(viewsets.ViewSet):
 
     def get_object(self, pk):
         if pk.isdigit():
-            user = User.objects.get(id=pk)
-            return UserProfile.objects.get(user=user)
+            return UserProfile.objects.get(user__id=pk)
         return UserProfile.objects.get(user=pk)
 
     def retrieve(self, request, pk=None):
@@ -61,6 +60,17 @@ class UserRelationshipViewSet(viewsets.ViewSet):
             except:
                 return Response({"Relationships Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"Bad Request": "Username parameter not specified"})
+
+class SkillViewSet(viewsets.ViewSet):
+    serializer_class = SkillSerializer
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print(serializer.validated_data)
+            Skill.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
 
 class BountyViewSet(viewsets.ViewSet):
     serializer_class = BountySerializer
