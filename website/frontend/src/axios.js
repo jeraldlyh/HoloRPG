@@ -24,7 +24,7 @@ axiosInstance.interceptors.response.use(
     async function (error) {
         const originalRequest = error.config
 
-        if (  // Prevent it from going into infite loop
+        if (  // Prevent it from going into infinite loop
 			error.response.status === 401 &&
 			originalRequest.url === baseURL + '/api/token/refresh/'
 		) {
