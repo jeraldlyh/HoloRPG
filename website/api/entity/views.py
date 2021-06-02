@@ -37,6 +37,15 @@ class UserEntityViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            UserEntity.objects.create(**serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            data = request.data
+            result, created = UserEntity.objects.update_or_create(
+                entity=serializer.validated_data["entity"], user=serializer.validated_data["user"],
+                defaults={
+                    "quantity": data["quantity"]
+                }
+            )
+
+            updated_entities = UserEntity.objects.filter(user=serializer.validated_data["user"])
+            serialized_data = self.serializer_class(updated_entities, many=True)
+            return Response(serialized_data.data, status=status.HTTP_200_OK)
         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
