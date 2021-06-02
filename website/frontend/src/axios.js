@@ -1,9 +1,11 @@
 import axios from "axios"
+import { createBrowserHistory } from "history"
 import { configureStore } from "./storeConfig"
 import { logoutUser } from "./actions/auth"
 
 const baseURL = "http://127.0.0.1:8000"
 const { store } = configureStore()
+const router = createBrowserHistory()
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -29,6 +31,7 @@ axiosInstance.interceptors.response.use(
 			originalRequest.url === baseURL + '/api/token/refresh/'
 		) {
             console.log("Refresh token is no longer valid")
+            router.push("/login")
             return Promise.reject(error)
         }
 
@@ -69,6 +72,7 @@ axiosInstance.interceptors.response.use(
                 console.log("Refresh token not available")
             }
         }
+        router.push("/login")
         return Promise.reject(error)
     }
 )

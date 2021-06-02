@@ -50,8 +50,6 @@ function Shop(props) {
         axiosInstance.post("/api/userentity/", body)
             .then(response => {
                 setPlayerEntities(response.data)
-            })
-            .then(() => {
                 document.getElementById(entityName).value = 0       // Resets input field after submission
             })
             .catch(error => {
@@ -62,14 +60,12 @@ function Shop(props) {
     const increaseQuantity = (index) => {
         const oldEntities = [...entities]
         oldEntities[index].quantity += 1
-        console.log(oldEntities)
         setEntities(oldEntities)
     }
 
     const decreaseQuantity = (index) => {
         const oldEntities = [...entities]
         oldEntities[index].quantity === 0 ? oldEntities[index].quantity : oldEntities[index].quantity -= 1
-        console.log(oldEntities)
         setEntities(oldEntities)
     }
 
@@ -80,9 +76,6 @@ function Shop(props) {
     }
 
     const hasInsufficientCurrency = (cost, quantity) => {
-        console.log(cost, quantity)
-        console.log(currency)
-        console.log((cost * quantity) > currency)
         return (cost * quantity) > currency
     }
 
