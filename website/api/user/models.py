@@ -7,7 +7,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-from .utils import get_duration
+from .utils import get_duration, clamp
 
 class Character(models.Model):
     class Meta:
@@ -71,7 +71,7 @@ class UserProfile(models.Model):
             sum_of_entities_income += get_sum_income_by_entity_quantity(entity, quantity)
 
         last_collected = self.income_collected
-        hours = get_duration(last_collected, interval="hours") if get_duration(last_collected, interval="hours") <= 24 else 24
+        hours = clamp(get_duration(last_collected, interval="hours"), 0, 24)
         return hours * sum_of_entities_income
 
 class Relationship(models.Model):

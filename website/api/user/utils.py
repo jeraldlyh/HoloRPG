@@ -1,6 +1,9 @@
 from datetime import datetime
 
 def get_duration(then, now = datetime.now(), interval="Default"):
+    """
+        Returns the various time formats based on a specified time
+    """
     duration = now - then
     duration_in_s = duration.total_seconds()
     
@@ -38,3 +41,9 @@ def get_duration(then, now = datetime.now(), interval="Default"):
         'seconds': int(seconds()),
         'default': totalDuration()
     }[interval]
+
+def clamp(number, lower, upper):
+    """
+        Limits the range of a number with a specified boundary
+    """
+    return max(min(number, upper), lower)
