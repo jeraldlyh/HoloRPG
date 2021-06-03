@@ -5,4 +5,6 @@ django
 djangorestframework
 djangorestframework_simplejwt
 django-cors-headers
-# django-rest-knox
+django-q
+redis
+python-dotenv
