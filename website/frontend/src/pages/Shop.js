@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
-import axiosInstance from "../axios"
 import { connect } from "react-redux"
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi"
+import axiosInstance from "../axios"
+import { getProfile } from "../actions/profile"
 import Layout from "../components/layout/Layout"
 import PageHeader from "../components/layout/PageHeader"
-import profile from "../reducers/profile"
 
 
 function Shop(props) {
@@ -39,6 +39,7 @@ function Shop(props) {
                 return playerEntities[i].quantity
             }
         }
+        return 0
     }
 
     const purchaseEntity = (entityName, quantity) => {
@@ -50,7 +51,15 @@ function Shop(props) {
         axiosInstance.post("/api/userentity/", body)
             .then(response => {
                 setPlayerEntities(response.data)
+
+                for (var i = 0; i < entities.length; i++) {         // Resets state after submission
+                    if (entities[i].name === entityName) {
+                        entities[i].quantity = 0
+                        break
+                    }
+                }
                 document.getElementById(entityName).value = 0       // Resets input field after submission
+                props.getProfile(user)                              // Renders store after purchasing
             })
             .catch(error => {
                 console.log(error)
@@ -71,7 +80,7 @@ function Shop(props) {
 
     const onManualEdit = (e, index) => {
         const oldEntities = [...entities]
-        oldEntities[index].quantity = parseInt(e.target.value) >= 0 ? parseInt(e.target.value) : oldEntities[index].quantity
+        oldEntities[index].quantity = e.target.value === "" ? 0 : parseInt(e.target.value)
         setEntities(oldEntities)
     }
 
@@ -127,4 +136,4 @@ const mapStateToProps = state => ({
     profile: state.profile.profile
 }) 
 
-export default connect(mapStateToProps)(Shop)
+export default connect(mapStateToProps, { getProfile })(Shop)

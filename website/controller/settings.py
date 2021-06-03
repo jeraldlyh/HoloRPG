@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    'django_q',
 ]
 
 REST_FRAMEWORK = {
@@ -150,21 +149,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ORIGIN_ALLOW_TRUE = True
-
-# Django-Q
-Q_CLUSTER = {
-    'name': 'website',
-    'workers': 8,
-    'recycle': 500,
-    'timeout': 60,
-    'compress': True,
-    'save_limit': 250,
-    'queue_limit': 500,
-    'cpu_affinity': 1,
-    'label': 'Django Q',
-    'redis': {
-        'host': config('REDIS_URL'),
-        'port': config('REDIS_PORT'),
-        'db': 0,
-    }
-}

@@ -25,7 +25,7 @@ class UserProfileViewSet(viewsets.ViewSet):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except (UserProfile.DoesNotExist, User.DoesNotExist):
                 return Response({"Profile Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
-        return Response({"Bad Request": "Username parameter not specified"})
+        return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
         serializer = self.serializer_class(get_all_users(), many=True)
@@ -53,7 +53,7 @@ class UserRelationshipViewSet(viewsets.ViewSet):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except:
                 return Response({"Relationships Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
-        return Response({"Bad Request": "Username parameter not specified"})
+        return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
 class SkillViewSet(viewsets.ViewSet):
     serializer_class = SkillSerializer
