@@ -12,9 +12,9 @@ function ProfileCard(props) {
 
     useEffect(() => {                       // componentDidMount -> Retrieves profile data
         if (isAuthenticated) {
-            if (!profile) {
+            // if (!profile) {
                 props.getProfile(user)
-            }
+            // }
         }
         return () => { isMounted = false }      // componentWillUnmount
     }, [])
