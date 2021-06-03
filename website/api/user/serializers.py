@@ -10,6 +10,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     account_age = serializers.ReadOnlyField(source="get_account_age")
     character_class = serializers.ReadOnlyField(source="get_character_class")
     rank = serializers.ReadOnlyField(source="get_rank")
+    income_stacked = serializers.ReadOnlyField(source="get_income_stacked")
 
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:

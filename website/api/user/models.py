@@ -7,6 +7,8 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
+from .utils import get_duration
+
 class Character(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(name="unique_character", fields=["main_class", "sub_class"])]
@@ -24,20 +26,21 @@ class Skill(models.Model):
     multiplier = models.IntegerField()
 
 class UserProfile(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE)
     image = models.CharField(default="https://svgshare.com/i/Xd6.svg", max_length=100)
-    date_registered = models.DateTimeField(auto_now_add=True, blank=True)
+    date_registered = models.DateTimeField(auto_now_add=True)
     character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
-    level = models.IntegerField()
-    experience = models.IntegerField()
-    currency = models.IntegerField()
-    reputation = models.IntegerField()
-    current_health = models.IntegerField()
-    max_health = models.IntegerField()
-    attack = models.IntegerField()
-    defence = models.IntegerField()
-    status = models.CharField(max_length=10)
+    level = models.IntegerField(default=1)
+    experience = models.IntegerField(default=0)
+    currency = models.IntegerField(default=0)
+    reputation = models.IntegerField(default=0)
+    current_health = models.IntegerField(default=100)
+    max_health = models.IntegerField(default=100)
+    attack = models.IntegerField(default=1)
+    defence = models.IntegerField(default=1)
+    status = models.CharField(max_length=10, default="IDLE")
+    income_collected = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
@@ -45,8 +48,8 @@ class UserProfile(models.Model):
     @property
     def get_account_age(self) -> int:
         registered = self.date_registered
-        today = datetime.today()
-        return (today - registered).days
+        
+        return get_duration(registered, interval="days")
     
     @property
     def get_character_class(self) -> tuple:
@@ -56,6 +59,17 @@ class UserProfile(models.Model):
     def get_rank(self) -> int:
         all_levels = list(UserProfile.objects.values_list("level", flat=True))[::-1]
         return all_levels.index(self.level) + 1
+    
+    @property
+    def get_income_stacked(self) -> int:
+        from ..entity.selectors import get_user_entities_by_username, get_sum_income_by_entity_name_list
+
+        player_entities = list(get_user_entities_by_username(self.user).values_list("entity", flat=True))
+        sum_of_entities_income = get_sum_income_by_entity_name_list(player_entities)["income__sum"]
+
+        last_collected = self.income_collected
+        hours = get_duration(last_collected, interval="hours") if get_duration(last_collected, interval="hours") <= 24 else 24
+        return hours * sum_of_entities_income
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"
@@ -99,13 +113,4 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(
             user=instance,
             character=Character.objects.get(main_class="Default"),
-            level=1,
-            experience=0,
-            currency=0,
-            reputation=0,
-            max_health=100,
-            current_health=100,
-            attack=1,
-            defence=1,
-            status="IDLE",
         )
