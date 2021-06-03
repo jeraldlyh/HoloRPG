@@ -3,6 +3,9 @@ from django.db.models.query_utils import Q
 
 from .models import Bounty, UserProfile, UserRelationship
 
+def get_all_users() -> QuerySet:
+    return UserProfile.objects.all()
+
 def get_user_by_username(username: str) -> UserProfile:
     query = Q(user_id=username)
     return UserProfile.objects.get(query)
@@ -14,6 +17,9 @@ def get_user_by_abstract_id(id: str) -> UserProfile:
 def get_users_by_relationships(relationships: QuerySet) -> QuerySet:
     query = Q(id__in=relationships)
     return UserProfile.objects.filter(query)
+
+def get_all_bounties() -> QuerySet:
+    return Bounty.objects.all()
 
 def get_bounty_by_id(id: str) -> Bounty:
     query = Q(id=id)

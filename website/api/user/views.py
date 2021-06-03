@@ -3,11 +3,11 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
-from .models import Skill, UserProfile, Bounty, UserRelationship
+from .models import Skill, UserProfile
 from .serializers import SkillSerializer, UserProfileSerializer, BountySerializer, UserRelationshipSerializer
 from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_unclaimed_bounties
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
-from .selectors import get_list_of_relationships_by_username, get_user_by_abstract_id, get_user_by_username, get_users_by_relationships
+from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_abstract_id, get_user_by_username, get_users_by_relationships
 
 class UserProfileViewSet(viewsets.ViewSet):
     serializer_class = UserProfileSerializer
@@ -28,8 +28,7 @@ class UserProfileViewSet(viewsets.ViewSet):
         return Response({"Bad Request": "Username parameter not specified"})
 
     def list(self, request):
-        queryset = UserProfile.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(get_all_users(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserRelationshipViewSet(viewsets.ViewSet):
@@ -91,8 +90,7 @@ class BountyViewSet(viewsets.ViewSet):
         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
-        queryset = Bounty.objects.filter(status="UNCLAIMED")
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(get_bounties_by_status("UNCLAIMED"), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def partial_update(self, request, pk=None):
