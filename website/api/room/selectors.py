@@ -1,5 +1,6 @@
-from .models import Room, Dungeon
 from django.db.models.query import QuerySet
+
+from .models import Room, Dungeon
 
 
 def get_all_rooms() -> QuerySet:

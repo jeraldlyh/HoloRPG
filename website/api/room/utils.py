@@ -2,11 +2,8 @@ import random
 import string
 from django.db.models import Model
 
-
 def generate_unique_code(room: Model) -> str:
     """
-        [room] - A room model object
-
         Filter the list of existing Room objects and checks if 
         a new generated code exists. If not, return the unique code
     """
@@ -19,9 +16,6 @@ def generate_unique_code(room: Model) -> str:
 
 def get_monster_name(dungeon_name, monster: Model) -> Model:
     """
-        [dungeon_name] - A string to represent dungeon name
-        [monster] - A monster model object
-
         Randomly selects a monster name based on the dungeon specified
     """
 
@@ -30,9 +24,6 @@ def get_monster_name(dungeon_name, monster: Model) -> Model:
 
 def generate_monster_stats(dungeon_level) -> tuple:
     """
-        [dungeon_level] - An integer to represent monster level
-        [number_of_players] - An integer to represent number of players to enhance monster stats
-
         # of players    Multiplier
         1               5%
         2               10%

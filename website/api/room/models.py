@@ -3,7 +3,7 @@ from django.db.models.signals import pre_save
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import gettext as _
 from ..user.models import UserProfile
-from ..formulas.models import generate_unique_code, get_monster_name, generate_monster_stats
+from .utils import generate_unique_code, get_monster_name, generate_monster_stats
 
 class Dungeon(models.Model):
     """
