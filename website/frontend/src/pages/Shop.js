@@ -75,7 +75,7 @@ function Shop(props) {
         setEntities(oldEntities)
     }
 
-    const hasInsufficientCurrency = (cost, quantity) => {
+    const hasInsufficientCurrencyError = (cost, quantity) => {
         return (cost * quantity) > currency
     }
 
@@ -110,7 +110,7 @@ function Shop(props) {
                                         <button className="focus:outline-none hover:outline-none hover:text-custom-green" onClick={() => increaseQuantity(index)}><FiPlusCircle size={28}/></button>
                                     </div>
                                     <span className="text-center">Currently owned: {getEntityOwned(entity.name)}</span>
-                                    <button className="border-2 rounded-full border-white focus:outline-none disabled:bg-red-500 " onClick={() => purchaseEntity(entity.name, entity.quantity)} disabled={hasInsufficientCurrency(entity.cost, entity.quantity)}>Buy</button>
+                                    <button className="border-2 rounded-full border-white focus:outline-none disabled:bg-red-500 " onClick={() => purchaseEntity(entity.name, entity.quantity)} disabled={hasInsufficientCurrencyError(entity.cost, entity.quantity)}>Buy</button>
                                 </div>
                             </div>
                         )

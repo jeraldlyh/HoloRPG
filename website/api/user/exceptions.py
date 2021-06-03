@@ -1,14 +1,14 @@
 class BountyClaimed(Exception):
     pass
 
-class InsufficientHealth(Exception):
+class InsufficientHealthError(Exception):
     pass
 
-class InsufficientCurrency(Exception):
+class InsufficientCurrencyError(Exception):
     pass
 
-class BountyOnSameUser(Exception):
+class SameUserError(Exception):
     pass
 
-class BountyExist(Exception):
+class BountyExistError(Exception):
     pass
