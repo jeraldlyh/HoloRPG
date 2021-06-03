@@ -68,5 +68,14 @@
             "upkeep": "50",
             "cost": "250"
         }
+    },
+    {
+        "model": "entity.Entity",
+        "fields": {
+            "name": "Farm",
+            "income": "50",
+            "upkeep": "50",
+            "cost": "50"
+        }
     }
 ]

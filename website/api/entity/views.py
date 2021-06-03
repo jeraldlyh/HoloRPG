@@ -1,17 +1,15 @@
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from ..user.models import UserProfile
-from .models import Entity, UserEntity
 from .serializers import EntitySerializer, UserEntitySerializer
-from .services import create_entity, update_or_create_user_entity
+from .services import create_entity, update_or_create_user_entity, claim_income
 from .selectors import get_all_entities, get_user_entities_by_username
 
 class EntityViewSet(viewsets.ViewSet):
     serializer_class = EntitySerializer
 
     def list(self, request):
-        queryset = Entity.objects.all()
         serializer = self.serializer_class(get_all_entities(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -41,3 +39,10 @@ class UserEntityViewSet(viewsets.ViewSet):
             serialized_data = self.serializer_class(updated_entities, many=True)
             return Response(serialized_data.data, status=status.HTTP_200_OK)
         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def claim_stacked_income(request):
+    if request.data["user"] and request.data["amount"]:
+        claim_income(request.data["user"], int(request.data["amount"]))
+        return Response(status=status.HTTP_200_OK)
+    return Response({"Bad Request": "User or amount is not specified"}, status=status.HTTP_400_BAD_REQUEST)

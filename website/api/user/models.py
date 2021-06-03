@@ -62,10 +62,13 @@ class UserProfile(models.Model):
     
     @property
     def get_income_stacked(self) -> int:
-        from ..entity.selectors import get_user_entities_by_username, get_sum_income_by_entity_name_list
+        from ..entity.selectors import get_user_entities_by_username, get_sum_income_by_entity_quantity
 
-        player_entities = list(get_user_entities_by_username(self.user).values_list("entity", flat=True))
-        sum_of_entities_income = get_sum_income_by_entity_name_list(player_entities)["income__sum"]
+        player_entities = list(get_user_entities_by_username(self.user).values_list("entity", "quantity"))
+
+        sum_of_entities_income = 0
+        for entity, quantity in player_entities:
+            sum_of_entities_income += get_sum_income_by_entity_quantity(entity, quantity)
 
         last_collected = self.income_collected
         hours = get_duration(last_collected, interval="hours") if get_duration(last_collected, interval="hours") <= 24 else 24

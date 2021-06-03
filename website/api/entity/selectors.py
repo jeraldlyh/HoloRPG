@@ -15,6 +15,6 @@ def get_user_entities_by_username(username: str) -> QuerySet:
     query = Q(user__user_id=username)
     return UserEntity.objects.filter(query)
 
-def get_sum_income_by_entity_name_list(entity_name: list):
-    query = Q(name__in=entity_name)
-    return Entity.objects.aggregate(Sum("income"))
+def get_sum_income_by_entity_quantity(entity_name: str, quantity: str):
+    query = Q(name=entity_name)
+    return Entity.objects.get(query).income * quantity
