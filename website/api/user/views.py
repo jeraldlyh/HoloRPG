@@ -1,18 +1,12 @@
-from collections import OrderedDict
 from django.db.models.expressions import F
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .models import Skill, UserProfile, Bounty, UserRelationship, Character
-from .serializers import SkillSerializer, UserProfileSerializer, CharacterSerializer, BountySerializer, UserRelationshipSerializer
-from ..formulas.battle import damage_dealt
-
-class CharacterViewSet(viewsets.ViewSet):
-    def list(self, request):
-        queryset = Character.objects.all()
-        serializer = CharacterSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+from .models import Skill, UserProfile, Bounty, UserRelationship
+from .serializers import SkillSerializer, UserProfileSerializer, BountySerializer, UserRelationshipSerializer
+from .services import attack_player_on_bounty, attack_target, claim_bounty, create_bounty, deduct_player_currency, get_unclaimed_bounties
+from .exceptions import BountyExist, BountyOnSameUser, InsufficientCurrency, InsufficientHealth
 
 class UserProfileViewSet(viewsets.ViewSet):
     serializer_class = UserProfileSerializer
@@ -67,7 +61,6 @@ class SkillViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            print(serializer.validated_data)
             Skill.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
@@ -77,32 +70,24 @@ class BountyViewSet(viewsets.ViewSet):
 
     def create(self, request):
         request_copy = request.data.copy()
-        placed_by = request.data["placed_by"]
-        target = request.data["target"]
+        target_name = request.data["target"]
+        bounty_value = 100                              # To be computed by a formula to determine player's net worth
+        request_copy["value"] = bounty_value
 
-        if placed_by == target:
-            return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if Bounty.objects.filter(target=target, status="UNCLAIMED").count() != 0:
-            return Response({"Bad Request": f"{target} currently has an existing bounty"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if UserProfile.objects.get(user_id=target).current_health == 0:
-            return Response({"Bad Request": f"{target} is currently dead"}, status=status.HTTP_400_BAD_REQUEST)
-
-        bounty_value = 100                          # To be computed by a formula to determine player's net worth
-        player = UserProfile.objects.get(user_id=placed_by)
-
-        if player.currency > bounty_value:
-            request_copy["value"] = bounty_value                        # Insert bounty value in request data
+        try:
             serializer = self.serializer_class(data=request_copy)
-            player.currency = F("currency") - bounty_value
-            player.save()
-
             if serializer.is_valid():
-                Bounty.objects.create(**serializer.validated_data)
+                create_bounty(serializer.validated_data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": f"Insufficient currency to place bounty on {target}"}, status=status.HTTP_400_BAD_REQUEST)
+        except BountyOnSameUser:
+            return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
+        except BountyExist:
+            return Response({"Bad Request": f"{target_name} currently has an existing bounty".format}, status=status.HTTP_400_BAD_REQUEST)
+        except InsufficientHealth:
+            return Response({"Bad Request": f"{target_name} is currently dead"}, status=status.HTTP_400_BAD_REQUEST)
+        except InsufficientCurrency:
+            return Response({"Bad Request": f"Insufficient currency to place bounty on {target_name}"}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
         queryset = Bounty.objects.filter(status="UNCLAIMED")
@@ -111,30 +96,15 @@ class BountyViewSet(viewsets.ViewSet):
     
     def partial_update(self, request, pk=None):
         if pk is not None:
-            data = request.data
-            bounty = Bounty.objects.get(id=pk)
-            target = bounty.target
-            
-            if target.current_health != 0:
-                attacker = UserProfile.objects.get(user_id=data["attacker"])
-                damage = damage_dealt(attacker.attack, attacker.defence)
-                if target.current_health - damage > 0:
-                    target.current_health = F("current_health") - damage
-                else:
-                    target.current_health = 0
-                    bounty.status = "CLAIMED"
-                    bounty.claimed_by = attacker
-                    attacker.currency = F("currency") + bounty.value
-                    attacker.save()
-                bounty.save()
-                target.save()
+            try:
+                player_name = request.data["attacker"]
+                bounty_id = pk
+                damage, target = attack_player_on_bounty(player_name, bounty_id)
 
-                bounty_queryset = Bounty.objects.filter(status="UNCLAIMED")
-                bounty_serializer = BountySerializer(bounty_queryset, many=True)
-                bounty_dict = [dict(OrderedDict(bounty)) for bounty in bounty_serializer.data]
                 return Response({
-                    "Success": "{} has been dealt to {}".format(damage, target),
-                    "bounty": bounty_dict
-                }, status=status.HTTP_200_OK)
-            return Response({"Bad Request": "Bounty on {} has already been claimed".format(data["bounty"]["target"])}, status=status.HTTP_400_BAD_REQUEST)
+                "Success": "{} has been dealt to {}".format(damage, target),
+                "bounty": get_unclaimed_bounties()
+            }, status=status.HTTP_200_OK)
+            except InsufficientHealth:
+                return Response({"Bad Request": "Bounty has already been claimed"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Bounty not specified"}, status=status.HTTP_400_BAD_REQUEST)
