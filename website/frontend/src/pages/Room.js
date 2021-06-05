@@ -40,9 +40,9 @@ function Room() {
         const pictures = []
         room.profile_pictures.length !== 0 ?
         room.profile_pictures.forEach((picture, index) => {
-            const image = require(`../assets/${picture}.svg`).default
+            // const image = require(`../assets/${picture}.svg`).default
             pictures.push(
-                <img key={index} className="w-6 h-6 rounded-full transform hover:scale-125 z-0" src={image}></img>
+                <img key={index} className="w-6 h-6 rounded-full transform hover:scale-125 z-0" src={picture}></img>
             )
         })
         : null

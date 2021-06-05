@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .models import Room, Dungeon, create_room
+from .models import Room, Dungeon
+from .service import create_room
 from .serializers import RoomSerializer, DungeonSerializer
 from .selectors import get_all_dungeons, get_all_rooms
 
