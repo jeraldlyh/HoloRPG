@@ -71,6 +71,8 @@ class UserProfile(models.Model):
 
         last_collected = self.income_collected
         hours = clamp(get_duration(last_collected, interval="hours"), 0, 24)
+
+        print(f"{self.user} - Total Income - {sum_of_entities_income} | Total Hours - {hours}")
         return hours * sum_of_entities_income
     
     @property

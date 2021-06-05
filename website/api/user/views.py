@@ -99,10 +99,15 @@ class BountyViewSet(viewsets.ViewSet):
             try:
                 player_name = request.data["attacker"]
                 bounty_id = pk
-                damage, target = attack_player_on_bounty(player_name, bounty_id)
+                damage, currency, exp, target = attack_player_on_bounty(player_name, bounty_id)
 
                 return Response({
-                "Success": "{} has been dealt to {}".format(damage, target),
+                "battle": {
+                    "target": target,
+                    "damage": damage,
+                    "currency": currency,
+                    "experience": exp
+                },
                 "bounty": get_unclaimed_bounties()
             }, status=status.HTTP_200_OK)
             except InsufficientHealthError:
