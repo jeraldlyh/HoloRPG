@@ -5,7 +5,7 @@ from django.db.models.expressions import F
 from ..user.models import UserProfile
 from ..user.services import deduct_player_currency
 from ..user.selectors import get_user_by_username
-from .selectors import get_user_entities_by_username, get_user_entity_by_username_entityname
+from .selectors import get_entity_income, get_user_entities_by_username, get_user_entity_by_username_entityname
 from .models import Entity, UserEntity
 
 

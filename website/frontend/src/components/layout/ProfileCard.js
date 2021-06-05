@@ -44,7 +44,7 @@ function ProfileCard(props) {
     }
 
     const hasStackedIncome = () => {
-        return userDetails.income_stacked === 0
+        return userDetails.income_accumulated === 0
     }
 
     if (isAuthenticated && userDetails) {
@@ -80,8 +80,8 @@ function ProfileCard(props) {
                         <div className="col-span-2 w-full">
                             <div className="flex gap-x-1 items-center w-full">
                                 <GiBank size={32} />
-                                <p className="px-1">{userDetails.income_stacked}</p>
-                                <button className="rounded-full ml-4 p-1 text-center border-2 border-custom-pink focus:outline-none disabled:bg-red-500 bg-custom-green"  disabled={hasStackedIncome()} onClick={() => claimIncome(userDetails.income_stacked)}>Collect</button>
+                                <p className="px-1">{userDetails.income_accumulated}</p>
+                                <button className="rounded-full ml-4 p-1 text-center border-2 border-custom-pink focus:outline-none disabled:bg-red-500 bg-custom-green"  disabled={hasStackedIncome()} onClick={() => claimIncome(userDetails.income_accumulated)}>Collect</button>
                             </div>
                         </div>
                         <p className="col-span-2">EXP bar maybe - {userDetails.experience}</p>

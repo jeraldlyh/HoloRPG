@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
@@ -61,18 +60,24 @@ class UserProfile(models.Model):
         return all_levels.index(self.level) + 1
     
     @property
-    def get_income_stacked(self) -> int:
-        from ..entity.selectors import get_user_entities_by_username, get_sum_income_by_entity_quantity
+    def get_income_accumulated(self) -> int:
+        from ..entity.selectors import get_user_entities_by_username, get_entity_income
 
         player_entities = list(get_user_entities_by_username(self.user).values_list("entity", "quantity"))
 
         sum_of_entities_income = 0
         for entity, quantity in player_entities:
-            sum_of_entities_income += get_sum_income_by_entity_quantity(entity, quantity)
+            sum_of_entities_income += get_entity_income(entity) * quantity
 
         last_collected = self.income_collected
         hours = clamp(get_duration(last_collected, interval="hours"), 0, 24)
         return hours * sum_of_entities_income
+    
+    @property
+    def get_net_worth(self) -> int:
+        from .services import get_user_net_worth
+
+        return get_user_net_worth(self.user)
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import Skill, UserProfile
 from .serializers import SkillSerializer, UserProfileSerializer, BountySerializer, UserRelationshipSerializer
-from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_unclaimed_bounties
+from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_unclaimed_bounties, get_user_net_worth
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
 from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_abstract_id, get_user_by_username, get_users_by_relationships
 
@@ -71,7 +71,8 @@ class BountyViewSet(viewsets.ViewSet):
     def create(self, request):
         request_copy = request.data.copy()
         target_name = request.data["target"]
-        bounty_value = 100                              # To be computed by a formula to determine player's net worth
+        target = get_user_by_username(target_name)
+        bounty_value = get_user_net_worth(target)                              # To be computed by a formula to determine player's net worth
         request_copy["value"] = bounty_value
         serializer = self.serializer_class(data=request_copy)
 
