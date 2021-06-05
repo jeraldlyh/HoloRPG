@@ -7,7 +7,7 @@ import Modal from "../components/modals/Modal"
 function Room() {
     const [rooms, setRooms] = useState([])
     const [showModal, setModal] = useState(false)
-    const [users, setUsers] = useState([])
+    // const [users, setUsers] = useState([])
 
 
     useEffect(() => {
@@ -15,12 +15,12 @@ function Room() {
             .then(response => {
                 setRooms(response.data)
             })
-            .then(() => {
-                axiosInstance.get("/api/profile")
-                    .then(response => {
-                        setUsers(response.data)
-                    })
-            })
+            // .then(() => {
+            //     axiosInstance.get("/api/profile")
+            //         .then(response => {
+            //             setUsers(response.data)
+            //         })
+            // })
             .catch(error => {
                 console.log(error)
             })
