@@ -101,11 +101,12 @@ class UserRelationship(models.Model):
     relationship = models.ForeignKey(Relationship, on_delete=models.DO_NOTHING)
 
 class Bounty(models.Model):
-    placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_placed_by")
-    target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_target")
+    placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="placed_by")
+    target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="target")
     value = models.IntegerField(blank=True)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
-    claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="%(class)s_claimed_by", null=True, editable=False)
+    claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="claimed_by", null=True, editable=False)
+    claimed_at = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=10, blank=True, editable=False, default="UNCLAIMED")
 
     @property

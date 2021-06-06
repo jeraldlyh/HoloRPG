@@ -93,7 +93,7 @@ class BountyViewSet(viewsets.ViewSet):
     def list(self, request):
         serializer = self.serializer_class(get_bounties_by_status("UNCLAIMED"), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def partial_update(self, request, pk=None):
         if pk is not None:
             try:

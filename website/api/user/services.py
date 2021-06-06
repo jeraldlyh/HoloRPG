@@ -2,6 +2,7 @@ import math
 from collections import OrderedDict
 from typing import List, Tuple
 from django.db.models.expressions import F
+from datetime import datetime
 
 from .models import Bounty, UserProfile, UserRelationship
 from .serializers import BountySerializer
@@ -71,6 +72,7 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
 def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
     bounty.status = "CLAIMED"
     bounty.claimed_by = player
+    bounty.claimed_at = datetime.now()
     bounty.save()
 
     add_player_currency(player, bounty.value)
