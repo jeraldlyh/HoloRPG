@@ -5,7 +5,7 @@ import Layout from "../components/layout/Layout"
 
 
 function Bounty(props) {
-    const { username } = props
+    const { user, current_health } = props.profile
     const [bounties, setBounties] = useState([])
     
     useEffect(() => {
@@ -18,7 +18,7 @@ function Bounty(props) {
     const attackPlayer = (index) => {
         const body = {
             bounty: bounties[index],
-            attacker: username
+            attacker: user
         }
         axiosInstance.patch(`/api/bounty/${bounties[index].id}/`, body)
             .then(response => {
@@ -28,6 +28,10 @@ function Bounty(props) {
             .catch(error => {
                 console.log(error)
             })
+    }
+
+    const hasInsufficientHP = () => {
+        return current_health === 0
     }
 
     return (
@@ -52,7 +56,7 @@ function Bounty(props) {
                                 <span className="py-3 px-3 text-center">{bounty.value}</span>
                                 <span className="py-3 px-3 text-center">{bounty.placed_at.substr(bounty.placed_at.indexOf(" "))}</span>
                                 <div className="py-3 px-3 text-center">
-                                    <button className="border-2 border-custom-blue rounded-lg p-1 focus:outline-none" type="button" onClick={() => attackPlayer(index)}>Attack</button>
+                                    <button className="border-2 border-custom-blue rounded-lg p-1 focus:outline-none disabled:bg-red-500" type="button" disabled={hasInsufficientHP()} onClick={() => attackPlayer(index)}>Attack</button>
                                 </div>
                             </div>
                         )
@@ -65,7 +69,7 @@ function Bounty(props) {
 }
 
 const mapStateToProps = state => ({
-    username: state.auth.user
+    profile: state.profileReducer.profile
 })
 
 

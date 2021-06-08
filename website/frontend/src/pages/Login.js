@@ -49,8 +49,8 @@ function LoginForm(props) {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    isAuthenticated: state.authReducer.isAuthenticated,
+    user: state.authReducer.user
 })
 
 export default connect(mapStateToProps, { loginUser })(LoginForm)

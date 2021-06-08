@@ -65,8 +65,8 @@ function FriendBar(props) {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    username: state.auth.user
+    isAuthenticated: state.authReducer.isAuthenticated,
+    username: state.authReducer.user
 })
 
 export default connect(mapStateToProps)(FriendBar)

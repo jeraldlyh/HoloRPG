@@ -9,6 +9,7 @@ import Leaderboard from "./pages/Leaderboard"
 import Shop from "./pages/Shop"
 import Header from "./components/layout/Header"
 import Footer from "./components/layout/Footer"
+import CustomRoute from "./components/CustomRoute"
 
 
 function App() {
@@ -17,13 +18,13 @@ function App() {
             <Header />
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path="/" component={Bounty} />
-                        <Route exact path="/room" component={Room} />
-                        <Route exact path="/faq" component={FAQ} />
+                        <Route exact path="/" component={FAQ} />
+                        <CustomRoute exact path="/room" component={Room} />
+                        <CustomRoute exact path="/bounty" component={Bounty} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/register" component={Register} />
                         <Route exact path="/leaderboard" component={Leaderboard} />
-                        <Route exact path="/shop" component={Shop} />
+                        <CustomRoute exact path="/shop" component={Shop} />
                     </Switch>
                 </BrowserRouter>
             <Footer />

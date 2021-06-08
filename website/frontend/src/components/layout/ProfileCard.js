@@ -93,8 +93,8 @@ function ProfileCard(props) {
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    profile: state.profile
+    auth: state.authReducer,
+    profile: state.profileReducer
 }) 
 
 export default connect(mapStateToProps, { getProfile })(ProfileCard)

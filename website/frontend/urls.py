@@ -5,7 +5,7 @@ from .views import index
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", index),
-    path("faq/", index),
+    path("bounty/", index),
     path("login/", index),
     path("register/", index),
     path("home/", index),
@@ -13,4 +13,5 @@ urlpatterns = [
     path("room/", index),
     path("leaderboard/", index),
     path("shop/", index),
+    path("character/", index),
 ]

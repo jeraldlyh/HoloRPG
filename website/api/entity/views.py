@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from .serializers import EntitySerializer, UserEntitySerializer
 from .services import create_entity, update_or_create_user_entity, claim_income
 from .selectors import get_all_entities, get_user_entities_by_username
+from ..user.serializers import UserProfileSerializer
+from ..user.selectors import get_user_by_username
 
 class EntityViewSet(viewsets.ViewSet):
     serializer_class = EntitySerializer
@@ -42,7 +44,12 @@ class UserEntityViewSet(viewsets.ViewSet):
 
 @api_view(["POST"])
 def claim_stacked_income(request):
-    if request.data["user"] and request.data["amount"]:
-        claim_income(request.data["user"], int(request.data["amount"]))
-        return Response(status=status.HTTP_200_OK)
+    username = request.data["user"]
+    amount = request.data["amount"]
+
+    if username and amount:
+        claim_income(username, int(amount))
+        user_profile = get_user_by_username(username)
+        serializer = UserProfileSerializer(user_profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response({"Bad Request": "User or amount is not specified"}, status=status.HTTP_400_BAD_REQUEST)

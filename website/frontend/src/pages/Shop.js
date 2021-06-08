@@ -132,8 +132,8 @@ function Shop(props) {
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    profile: state.profile.profile
+    auth: state.authReducer,
+    profile: state.profileReducer.profile
 }) 
 
 export default connect(mapStateToProps, { getProfile })(Shop)
