@@ -4,11 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "wdev": "webpack --mode development --watch",
-    "wbuild": "webpack --mode production",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production",
     "build:css": "tailwind build src/assets/style.css -o static/css/index.css"
   },
   "keywords": [],

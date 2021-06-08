@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import { FaUser, FaUnlockAlt, FaEnvelope } from "react-icons/fa"
-import { registerUser } from "../actions/auth"
+import { registerUser } from "../store/actions/auth"
 import { connect } from "react-redux"
 import Layout from "../components/layout/Layout"
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
-import axiosInstance from "../axios"
+import axiosInstance from "../axios/axiosInstance"
 import Layout from "../components/layout/Layout"
 
 

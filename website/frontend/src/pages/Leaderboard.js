@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { BiSort } from "react-icons/bi"
-import axiosInstance from "../axios"
+import axiosInstance from "../axios/axiosInstance"
 import Layout from "../components/layout/Layout"
 import useSortableData from "../components/hooks/Sortable"
 import PageHeader from "../components/layout/PageHeader"

@@ -1,10 +1,10 @@
 import axios from "axios"
 import { createBrowserHistory } from "history"
-import { configureStore } from "./storeConfig"
-import { logoutUser } from "./actions/auth"
+import { useStore } from "../store/storeConfig"
+import { logoutUser } from "../store/actions/auth"
 
 const baseURL = "http://127.0.0.1:8000"
-const { store } = configureStore()
+const { store } = useStore()
 const router = createBrowserHistory()
 
 const axiosInstance = axios.create({

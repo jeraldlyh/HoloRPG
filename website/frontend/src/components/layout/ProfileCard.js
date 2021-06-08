@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import { GiLifeBar, GiMoneyStack, GiProgression, GiCrossedSwords, GiEdgedShield, GiAlliedStar, GiBank } from "react-icons/gi"
-import { getProfile } from "../../actions/profile"
-import axiosInstance from "../../axios"
+import { getProfile } from "../../store/actions/profile"
+import axiosInstance from "../../axios/axiosInstance"
 
 
 function ProfileCard(props) {

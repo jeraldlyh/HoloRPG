@@ -1,6 +1,6 @@
-import axiosInstance from "../axios"
+import axiosInstance from "../../axios/axiosInstance"
 
-import { USER_LOADING, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL } from "./types"
+import { USER_LOADING, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL } from "../types"
 
 
 // LOGIN USER

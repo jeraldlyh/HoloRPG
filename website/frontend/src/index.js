@@ -2,10 +2,10 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react'
-import { configureStore } from "./storeConfig"
+import { useStore } from "./store/storeConfig"
 import App from "./App"
 
-const { store, persistor } = configureStore()
+const { store, persistor } = useStore()
 
 const appDiv = document.getElementById("app");
 ReactDOM.render(

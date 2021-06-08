@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Layout from "../components/layout/Layout"
-import axiosInstance from "../axios"
+import axiosInstance from "../axios/axiosInstance"
 import Modal from "../components/modals/Modal"
 
 

@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
-import auth from "./auth"
-import profile from "./profile"
+import { authReducer } from "./authReducer"
+import { profileReducer } from "./profileReducer"
 
 // Container to combine all reducers into one
 const rootReducer = combineReducers({
-    auth,
-    profile
+    authReducer,
+    profileReducer
 })
 
 export default rootReducer

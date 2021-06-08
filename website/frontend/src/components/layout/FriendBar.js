@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react"
 import { connect } from "react-redux"
-import axiosInstance from "../../axios"
+import axiosInstance from "../../axios/axiosInstance"
 import FriendCard from "./FriendCard"
 
 function FriendBar(props) {

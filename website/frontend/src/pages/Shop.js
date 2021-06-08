@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi"
-import axiosInstance from "../axios"
-import { getProfile } from "../actions/profile"
+import axiosInstance from "../axios/axiosInstance"
+import { getProfile } from "../store/actions/profile"
 import Layout from "../components/layout/Layout"
 import PageHeader from "../components/layout/PageHeader"
 

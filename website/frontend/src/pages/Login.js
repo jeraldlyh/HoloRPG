@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react"
 import { Redirect } from "react-router-dom"
 import { FaUser, FaUnlockAlt } from "react-icons/fa"
-import { loginUser } from "../actions/auth"
+import { loginUser } from "../store/actions/auth"
 import { connect } from "react-redux"
 import Layout from "../components/layout/Layout"
 

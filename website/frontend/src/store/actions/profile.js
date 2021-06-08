@@ -1,6 +1,6 @@
-import axiosInstance from "../axios"
+import axiosInstance from "../../axios/axiosInstance"
 
-import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAIL } from "./types"
+import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAIL } from "../types"
 
 // GET PROFILE
 export const getProfile = (username) => async(dispatch) => {
