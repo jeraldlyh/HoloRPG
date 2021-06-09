@@ -14,7 +14,8 @@ export const getProfile = (username) => async(dispatch) => {
         .catch(error => {
             console.log(error)
             dispatch({
-                type: LOAD_PROFILE_FAIL
+                type: LOAD_PROFILE_FAIL,
+                payload: error.response.data
             })
         })
 }

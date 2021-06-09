@@ -1,9 +1,7 @@
 import axiosInstance from "../../axios/axiosInstance"
-
 import { USER_LOADING, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL } from "../types"
 
 
-// LOGIN USER
 export const loginUser = ({username, password}) => async dispatch => {
     dispatch({type: USER_LOADING})
 
@@ -20,12 +18,12 @@ export const loginUser = ({username, password}) => async dispatch => {
     }).catch(error => {
         console.log(error)
         dispatch({
-            type: LOGIN_FAIL
+            type: LOGIN_FAIL,
+            payload: error.response.data
         })
     })
 }
 
-// REGISTER USER
 export const registerUser = ({username, email, password}) => async dispatch => {
     const body = JSON.stringify({username, email, password})
     const tokenBody = JSON.stringify({username, password})
@@ -50,12 +48,12 @@ export const registerUser = ({username, email, password}) => async dispatch => {
         .catch(error => {
             console.log(error.response.data)
             dispatch({
-                type: REGISTER_FAIL
+                type: REGISTER_FAIL,
+                payload: error.response.data
             })
         })
 }
 
-// LOGOUT USER
 export const logoutUser = () => async(dispatch) => {
     const body = { refresh_token: localStorage.getItem("refresh_token") }
 
@@ -66,9 +64,10 @@ export const logoutUser = () => async(dispatch) => {
             })
         })
         .catch(error => {
-            console.log(error)
+            console.log(error.response)
             dispatch({
-                type: LOGOUT_SUCCESS
+                type: LOGOUT_SUCCESS,
+                payload: error.response.data
             })
         })
 }

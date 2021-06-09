@@ -1,4 +1,4 @@
-import { LOAD_PROFILE_FAIL, REGISTER_FAIL, LOGIN_FAIL, HIDE_ERROR } from "../types"
+import { LOAD_PROFILE_FAIL, REGISTER_FAIL, LOGIN_FAIL, HIDE_ERROR, SHOW_ERROR, RESET_ERROR } from "../types"
 
 
 const initialState = {
@@ -11,8 +11,9 @@ export const errorReducer = (state=initialState, action) => {
         case LOAD_PROFILE_FAIL:
         case REGISTER_FAIL:
         case LOGIN_FAIL:
+            console.log(Object.values(action.payload))
             return {
-                error: action.payload,
+                error: Object.values(action.payload).join("\r\n"),
                 showError: true
             }
         case SHOW_ERROR:
@@ -26,5 +27,7 @@ export const errorReducer = (state=initialState, action) => {
                 error: null,
                 showError: false
             }
+        default:
+            return state
     }
 }
