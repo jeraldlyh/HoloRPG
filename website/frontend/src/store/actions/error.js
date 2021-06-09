@@ -20,9 +20,11 @@ export const hideError = () => dispatch => {
 
 export const resetError = () => dispatch => {
     return new Promise((resolve, reject) => {
-        dispatch({
-            type: RESET_ERROR
-        })
+        setTimeout(() => {
+            dispatch({
+                type: RESET_ERROR
+            })
+        }, 2000)
         resolve()
     })
 }

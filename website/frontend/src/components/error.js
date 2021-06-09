@@ -7,20 +7,23 @@ function Error(props) {
 
     const [opacity, setOpacity] = useState(0)
 
-    useEffect(() => {
+    useEffect(() => {   // In case of buggy errors that are not being reset
         if (error) {
             props.resetError()
         }
     }, [])
 
-    useEffect(() => {
-        setOpacity(100)
-        const timeout = setTimeout(() => {
-            setOpacity(0)
-        }, 3000)
 
-        return () => clearInterval(timeout)
-    }, [error])
+    useEffect(() => {
+        if (showError) {
+            setOpacity(100)
+            const timeout = setTimeout(() => {
+                setOpacity(0)
+                props.resetError()
+            }, 3000)
+            return () => clearInterval(timeout)
+        }
+    }, [showError])
 
     return (
         showError

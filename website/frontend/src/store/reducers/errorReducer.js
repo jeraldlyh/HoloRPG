@@ -11,7 +11,6 @@ export const errorReducer = (state=initialState, action) => {
         case LOAD_PROFILE_FAIL:
         case REGISTER_FAIL:
         case LOGIN_FAIL:
-            console.log(Object.values(action.payload))
             return {
                 error: Object.values(action.payload).join("\r\n"),
                 showError: true
