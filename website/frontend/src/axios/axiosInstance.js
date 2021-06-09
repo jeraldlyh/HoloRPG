@@ -6,6 +6,7 @@ import { logoutUser } from "../store/actions/auth"
 const baseURL = "http://127.0.0.1:8000"
 const { store } = useStore()
 const router = createBrowserHistory()
+var isRefreshingToken = false
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -38,9 +39,11 @@ axiosInstance.interceptors.response.use(
         if (
             error.response.data.code === 'token_not_valid' &&
             error.response.status === 401 &&
-            error.response.statusText === "Unauthorized"
+            error.response.statusText === "Unauthorized" &&
+            !isRefreshingToken
         ) {
             const refreshToken = localStorage.getItem("refresh_token")
+            isRefreshingToken = true
 
             if (refreshToken) {
                 const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]))         // Retrieves the time of the token
@@ -49,7 +52,7 @@ axiosInstance.interceptors.response.use(
 
                 if (tokenParts.exp > now) {
                     axiosInstance.post("/api/token/refresh/", { refresh: refreshToken })
-                        .then((response) => {
+                        .then(response => {
                             if (response.status === 200) {
                                 localStorage.setItem("access_token", response.data.access)
                                 // localStorage.setItem("refresh_token", response.data.refresh)
@@ -58,11 +61,12 @@ axiosInstance.interceptors.response.use(
                                 originalRequest.headers["Authorization"] = "Bearer" + response.data.access
                                 console.log("Refreshed token")
 
+                                isRefreshingToken = false
                                 return axiosInstance(originalRequest)
                             }
                         })
                         .catch(error => {
-                            console.log(error)
+                            console.log("Error in refreshing token ", error)
                         })
                 } else {
                     store.dispatch(logoutUser())
