@@ -13,7 +13,6 @@ function Error(props) {
         }
     }, [])
 
-
     useEffect(() => {
         if (showError) {
             setOpacity(100)
@@ -23,7 +22,7 @@ function Error(props) {
             }, 3000)
             return () => clearInterval(timeout)
         }
-    }, [showError])
+    }, [error])
 
     return (
         showError

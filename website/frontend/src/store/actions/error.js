@@ -24,7 +24,7 @@ export const resetError = () => dispatch => {
             dispatch({
                 type: RESET_ERROR
             })
-        }, 2000)
+        }, 500)
         resolve()
     })
 }

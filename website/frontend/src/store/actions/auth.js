@@ -6,22 +6,47 @@ export const loginUser = ({username, password}) => async dispatch => {
     dispatch({type: USER_LOADING})
 
     const body = JSON.stringify({username, password})
+    const responseData = {}
 
-    Promise.all([
-        axiosInstance.post("/api/token/", body),
-        axiosInstance.post("/auth/login/", body)
-    ]).then(function onSuccess([ token, user ]) {
-        dispatch({
-            type: LOGIN_SUCCESS,
-            payload: Object.assign({}, token.data, user.data)
+    axiosInstance.post("/auth/login/", body)
+        .then(response => {
+            Object.assign(responseData, response.data)
         })
-    }).catch(error => {
-        console.log(error)
-        dispatch({
-            type: LOGIN_FAIL,
-            payload: error.response.data
+        .then(() => {
+            axiosInstance.post("/api/token/", body)
+                .then(reponse => {
+                    Object.assign(responseData, response.data)
+                })
+                .then(() => {
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: Object.assign({}, token.data, user.data)
+                    })
+                })
         })
-    })
+        .catch(error => {
+            console.log(error)
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: error.response.data
+            })
+        })
+
+    // Promise.all([
+    //     axiosInstance.post("/api/token/", body),
+    //     axiosInstance.post("/auth/login/", body)
+    // ]).then(function onSuccess([ token, user ]) {
+    //     dispatch({
+    //         type: LOGIN_SUCCESS,
+    //         payload: Object.assign({}, token.data, user.data)
+    //     })
+    // }).catch(error => {
+    //     console.log(error)
+    //     dispatch({
+    //         type: LOGIN_FAIL,
+    //         payload: error.response.data
+    //     })
+    // })
 }
 
 export const registerUser = ({username, email, password}) => async dispatch => {
