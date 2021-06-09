@@ -18,6 +18,7 @@ export const loginUser = ({username, password}) => async dispatch => {
             payload: Object.assign({}, token.data, user.data)
         })
     }).catch(error => {
+        console.log(error)
         dispatch({
             type: LOGIN_FAIL
         })
@@ -47,7 +48,7 @@ export const registerUser = ({username, email, password}) => async dispatch => {
                 })
         })
         .catch(error => {
-            console.log(error)
+            console.log(error.response.data)
             dispatch({
                 type: REGISTER_FAIL
             })
@@ -56,7 +57,7 @@ export const registerUser = ({username, email, password}) => async dispatch => {
 
 // LOGOUT USER
 export const logoutUser = () => async(dispatch) => {
-    const body = {refresh_token: localStorage.getItem("refresh_token")}
+    const body = { refresh_token: localStorage.getItem("refresh_token") }
 
     axiosInstance.post("/auth/logout/", body)
         .then(() => {
@@ -65,6 +66,7 @@ export const logoutUser = () => async(dispatch) => {
             })
         })
         .catch(error => {
+            console.log(error)
             dispatch({
                 type: LOGOUT_SUCCESS
             })
