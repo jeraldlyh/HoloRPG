@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { GiLifeBar, GiMoneyStack, GiProgression, GiCrossedSwords, GiEdgedShield, GiAlliedStar, GiBank } from "react-icons/gi"
 import { getProfile } from "../store/actions/profile"
 import { claimIncome } from "../store/actions/entity"
-import axiosInstance from "../axios/axiosInstance"
+import NumberFormat from "react-number-format"
 
 
 function ProfileCard(props) {
     const { user, isAuthenticated } = props.auth
     const { profile } = props.profile
-    var isMounted = true
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -20,7 +19,13 @@ function ProfileCard(props) {
 
     const claimIncome = (amount) => {
         props.claimIncome(user, amount)
-            .then(response => props.getProfile(user))
+            .then(response => {
+                if (response.status === 200) {
+                    props.getProfile(user)
+                } else {
+                    console.log("UNABLE TO CLAIM INCOME")
+                }
+            })
             .catch(error => console.log(error))
     }
 
@@ -40,7 +45,7 @@ function ProfileCard(props) {
                         </div>
                         <div className="flex gap-x-1 items-center">
                             <GiMoneyStack size={32} />
-                            <p className="w-full px-1">{profile.currency}</p>
+                            <p className="w-full px-1"><NumberFormat value={profile.currency} displayType={"text"} thousandSeparator={true} prefix={"$"}/></p>
                         </div>
                         <div className="flex gap-x-1 items-center">
                             <GiAlliedStar size={32} />

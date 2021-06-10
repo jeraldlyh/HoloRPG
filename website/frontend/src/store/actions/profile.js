@@ -1,9 +1,8 @@
 import axiosInstance from "../../axios/axiosInstance"
 
-import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAIL } from "../types"
+import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_ERROR, GET_ALL_PROFILE_ERROR } from "../types"
 
-// GET PROFILE
-export const getProfile = (username) => async(dispatch) => {
+export const getProfile = (username) => (dispatch) => {
     return new Promise((resolve, reject) => {
         axiosInstance.get(`/api/profile/${username}`)
             .then(response => {
@@ -16,7 +15,21 @@ export const getProfile = (username) => async(dispatch) => {
             .catch(error => {
                 console.log(error)
                 dispatch({
-                    type: LOAD_PROFILE_FAIL,
+                    type: LOAD_PROFILE_ERROR,
+                    payload: error.response.data
+                })
+                reject(error)
+            })
+    })
+}
+
+export const getAllProfile = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        axiosInstance.get("/api/profile")
+            .then(response => resolve(response))
+            .catch(error => {
+                dispatch({
+                    type: GET_ALL_PROFILE_ERROR,
                     payload: error.response.data
                 })
                 reject(error)

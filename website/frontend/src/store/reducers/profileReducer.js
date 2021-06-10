@@ -1,4 +1,4 @@
-import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAIL, LOGOUT_SUCCESS } from "../types"
+import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_ERROR, LOGOUT_SUCCESS } from "../types"
 
 const initialState = {
     profile: null
@@ -12,7 +12,7 @@ export const profileReducer = (state=initialState, action) => {
                 profile: action.payload
             }
         case LOGOUT_SUCCESS:
-        case LOAD_PROFILE_FAIL:
+        case LOAD_PROFILE_ERROR:
             return {
                 ...state,
                 profile: null

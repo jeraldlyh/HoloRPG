@@ -1,25 +1,30 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { BiSort } from "react-icons/bi"
-import axiosInstance from "../axios/axiosInstance"
+import { connect } from "react-redux"
 import Layout from "../components/layout"
 import useSortableData from "../hooks/Sortable"
 import PageHeader from "../components/pageHeader"
+import { getAllProfile } from "../store/actions/profile"
 
 
-function Leaderboard() {
+function Leaderboard(props) {
     const [userProfiles, setUserProfiles] = useState([])
 
+    const sortData = (data) => {
+        return data.sort((a, b) => {
+            if (a.level > b.level) {
+                return -1
+            } else if (a.level < b.level) {
+                return 1
+            }
+            return 0
+        })
+    }
+
     useEffect(() => {
-        axiosInstance.get("/api/profile")
+        props.getAllProfile()
             .then(response => {
-                const sortedData = response.data.sort((a, b) => {
-                    if (a.level > b.level) {
-                        return -1
-                    } else if (a.level < b.level) {
-                        return 1
-                    }
-                    return 0
-                })
+                const sortedData = sortData(response.data)
                 setUserProfiles(sortedData)
             })
     }, [])
@@ -76,4 +81,4 @@ function Leaderboard() {
 }
 
 
-export default Leaderboard
+export default connect(null, { getAllProfile })(Leaderboard)
