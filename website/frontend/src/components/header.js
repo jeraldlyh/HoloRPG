@@ -21,7 +21,7 @@ function Header(props) {
             <div className="hidden lg:block">
                 <ul className="inline-flex">
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                        <a href="/faq"><button className="px-4 py-0.5 font-bold uppercase" type="button">FAQ</button></a>
+                        <a href="/"><button className="px-4 py-0.5 font-bold uppercase" type="button">FAQ</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
                         <a href="#"><button className="px-4 py-0.5 font-bold uppercase" type="button">Commands</button></a>
@@ -57,7 +57,7 @@ function Header(props) {
             <div className="hidden lg:block">
                 <ul className="inline-flex">
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
-                        <a href="/faq"><button className="px-4 py-0.5 font-bold uppercase">FAQ</button></a>
+                        <a href="/"><button className="px-4 py-0.5 font-bold uppercase">FAQ</button></a>
                     </li>
                     <li className="flex bg-clip-text hover:text-transparent bg-gradient-to-r hover:from-yellow-300 hover:via-red-500 hover:to-red-900 mx-1">
                         <a href="#"><button className="px-4 py-0.5 font-bold uppercase">Commands</button></a>

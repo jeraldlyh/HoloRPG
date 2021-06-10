@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { useStore } from "./store/storeConfig"
 import App from "./App"
 
+
 const { store, persistor } = useStore()
 
 const appDiv = document.getElementById("app");

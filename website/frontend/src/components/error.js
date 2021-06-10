@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
-import { resetError } from "../store/actions/error"
+import { resetError, hideError } from "../store/actions/error"
 
 function Error(props) {
     const { error, showError } = props.error
@@ -24,6 +24,18 @@ function Error(props) {
         }
     }, [error])
 
+    const onClick = () => {
+        setOpacity(0)
+        props.hideError()
+    }
+
+    const formatError = (error) => {
+        if (error.length > 50) {
+            return error.substr(0, 50) + "..."
+        }
+        return error
+    }
+
     return (
         showError
         ? <div className={`fixed alert z-10 flex flex-row self-start items-center bg-red-200 p-5 rounded border-b-2 border-red-300 transition-all duration-500 ease-in-out opacity-${opacity}`}>
@@ -43,8 +55,9 @@ function Error(props) {
                     Error
                 </div>
                 <div className="alert-description text-sm text-red-600">
-                    {error}
+                    {formatError(error)}
                 </div>
+                <button onClick={onClick}>Close</button>
             </div>
         </div>
         : null
@@ -56,5 +69,5 @@ const mapStateToProps = state => ({
     error: state.errorReducer
 })
 
-export default connect(mapStateToProps, { resetError })(Error)
+export default connect(mapStateToProps, { resetError, hideError })(Error)
 

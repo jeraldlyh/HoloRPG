@@ -11,9 +11,12 @@ export const showError = () => dispatch => {
 
 export const hideError = () => dispatch => {
     return new Promise((resolve, reject) => {
-        dispatch({
-            type: HIDE_ERROR
-        })
+        setTimeout(() => {
+            dispatch({
+                type: HIDE_ERROR
+            })
+        }, 500)
+        
         resolve()
     })
 }

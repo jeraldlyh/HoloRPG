@@ -9,26 +9,20 @@ import Leaderboard from "./pages/leaderboard"
 import Shop from "./pages/shop"
 import CustomRoute from "./components/customRoute"
 
-
 function App() {
     return (
-        <Fragment>
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path="/" component={FAQ} />
-                    <CustomRoute exact path="/room" component={Room} />
-                    <CustomRoute exact path="/bounty" component={Bounty} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/register" component={Register} />
-                    <Route exact path="/leaderboard" component={Leaderboard} />
-                    <CustomRoute exact path="/shop" component={Shop} />
-                </Switch>
-            </BrowserRouter>
-        </Fragment>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/" component={FAQ} />
+                <CustomRoute exact path="/room" component={Room} />
+                <CustomRoute exact path="/bounty" component={Bounty} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/leaderboard" component={Leaderboard} />
+                <CustomRoute exact path="/shop" component={Shop} />
+            </Switch>
+        </BrowserRouter>
     )
 }
-
-
-
 
 export default App

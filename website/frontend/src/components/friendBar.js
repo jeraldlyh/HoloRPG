@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react"
 import { connect } from "react-redux"
-import axiosInstance from "../axios/axiosInstance"
 import FriendCard from "./friendCard"
+import { getRelationship } from "../store/actions/relationship"
 
 function FriendBar(props) {
     const { isAuthenticated, username } = props
@@ -10,10 +10,8 @@ function FriendBar(props) {
 
     useEffect(() => {
         if (isAuthenticated) {
-            axiosInstance.get(`/api/relationship/${username}`)
-                .then(response => {
-                    setFriends(response.data)
-                })
+            props.getRelationship(username)
+                .then(response => setFriends(response.data))
         }
     }, [])
 
@@ -69,4 +67,4 @@ const mapStateToProps = state => ({
     username: state.authReducer.user
 })
 
-export default connect(mapStateToProps)(FriendBar)
+export default connect(mapStateToProps, { getRelationship })(FriendBar)
