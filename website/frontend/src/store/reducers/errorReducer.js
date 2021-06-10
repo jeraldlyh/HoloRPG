@@ -1,4 +1,4 @@
-import { LOAD_PROFILE_FAIL, REGISTER_FAIL, LOGIN_FAIL, HIDE_ERROR, SHOW_ERROR, RESET_ERROR } from "../types"
+import { LOAD_PROFILE_FAIL, REGISTER_FAIL, LOGIN_FAIL, HIDE_ERROR, SHOW_ERROR, RESET_ERROR, GET_RELATIONSHIP_ERROR, CLAIM_INCOME_ERROR, ATTACK_PLAYER_ERROR } from "../types"
 
 
 const initialState = {
@@ -11,6 +11,9 @@ export const errorReducer = (state=initialState, action) => {
         case LOAD_PROFILE_FAIL:
         case REGISTER_FAIL:
         case LOGIN_FAIL:
+        case GET_RELATIONSHIP_ERROR:
+        case CLAIM_INCOME_ERROR:
+        case ATTACK_PLAYER_ERROR:
             return {
                 error: Object.values(action.payload).join("\r\n"),
                 showError: true

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import axiosInstance from "../axios/axiosInstance"
 import Layout from "../components/layout"
+import { attackPlayer } from "../store/actions/bounty"
 
 
 function Bounty(props) {
@@ -20,14 +21,9 @@ function Bounty(props) {
             bounty: bounties[index],
             attacker: user
         }
-        axiosInstance.patch(`/api/bounty/${bounties[index].id}/`, body)
-            .then(response => {
-                console.log(response.data.bounty)
-                setBounties(response.data.bounty)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        props.attackPlayer(bounties[index].id, body)
+            .then(response => setBounties(response.data.bounty))
+            .catch(error => console.log(error))
     }
 
     const hasInsufficientHP = () => {
@@ -73,4 +69,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps)(Bounty)
+export default connect(mapStateToProps, { attackPlayer })(Bounty)

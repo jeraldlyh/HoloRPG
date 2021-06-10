@@ -14,13 +14,12 @@ export const loginUser = ({username, password}) => async dispatch => {
         })
         .then(() => {
             axiosInstance.post("/api/token/", body)
-                .then(reponse => {
+                .then(response => {
                     Object.assign(responseData, response.data)
-                })
-                .then(() => {
+
                     dispatch({
                         type: LOGIN_SUCCESS,
-                        payload: Object.assign({}, token.data, user.data)
+                        payload: responseData
                     })
                 })
         })
@@ -90,9 +89,5 @@ export const logoutUser = () => async(dispatch) => {
         })
         .catch(error => {
             console.log(error.response)
-            dispatch({
-                type: LOGOUT_SUCCESS,
-                payload: error.response.data
-            })
         })
 }
