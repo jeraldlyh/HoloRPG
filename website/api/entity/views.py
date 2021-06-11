@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import EntitySerializer, UserEntitySerializer
-from .services import create_entity, update_or_create_user_entity, claim_income
+from .services import create_entity, deduct_user_entity, update_or_create_user_entity, claim_income
 from .selectors import get_all_entities, get_user_entities_by_username
 from ..user.serializers import UserProfileSerializer
 from ..user.selectors import get_user_by_username
@@ -20,7 +20,7 @@ class EntityViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             create_entity(serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 class UserEntityViewSet(viewsets.ViewSet):
     serializer_class = UserEntitySerializer
 

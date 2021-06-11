@@ -61,13 +61,13 @@ class UserProfile(models.Model):
     
     @property
     def get_income_accumulated(self) -> int:
-        from ..entity.selectors import get_user_entities_by_username, get_entity_income
+        from ..entity.selectors import get_user_entities_by_username
 
-        player_entities = list(get_user_entities_by_username(self.user).values_list("entity", "quantity"))
+        player_entities = get_user_entities_by_username(self.user)
 
         sum_of_entities_income = 0
-        for entity, quantity in player_entities:
-            sum_of_entities_income += get_entity_income(entity) * quantity
+        for entity in player_entities:
+            sum_of_entities_income += entity.entity.income * entity.quantity
 
         last_collected = self.income_collected
         hours = clamp(get_duration(last_collected, interval="hours"), 0, 24)

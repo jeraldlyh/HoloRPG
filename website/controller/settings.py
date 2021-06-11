@@ -153,5 +153,5 @@ CORS_ORIGIN_ALLOW_TRUE = True
 
 # CronTab
 CRONJOBS = [
-    ("* * * * *", "api.entity.cron.deduct_upkeep")
+    ('* * * * *', 'api.entity.cron.deduct_upkeep', '>> /home/jeraldlim2020/Github/test.log')
 ]

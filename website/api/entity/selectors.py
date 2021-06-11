@@ -17,3 +17,11 @@ def get_user_entities_by_username(username: str) -> QuerySet:
 def get_entity_income(entity_name: str) -> int:
     query = Q(name=entity_name)
     return Entity.objects.get(query).income
+
+def get_entity_upkeep(entity_name: str) -> int:
+    query = Q(name=entity_name)
+    return Entity.objects.get(query).upkeep
+
+def get_sorted_user_entities_by_upkeep(username: str) -> QuerySet:
+    query = Q(user__user_id=username)
+    return UserEntity.objects.filter(query).order_by("-entity_id__upkeep")

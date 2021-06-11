@@ -1,18 +1,19 @@
 from collections import OrderedDict
 from datetime import datetime
 from django.db.models.expressions import F
+from django.db.models.query import QuerySet
 
 from ..user.models import UserProfile
 from ..user.services import deduct_player_currency
 from ..user.selectors import get_user_by_username
-from .selectors import get_entity_income, get_user_entities_by_username, get_user_entity_by_username_entityname
+from .selectors import get_user_entities_by_username, get_user_entity_by_username_entityname
 from .models import Entity, UserEntity
 
 
-def create_entity(serializer_data: OrderedDict):
+def create_entity(serializer_data: OrderedDict) -> None:
     Entity.objects.create(**serializer_data)
 
-def update_or_create_user_entity(serializer_data: OrderedDict):
+def update_or_create_user_entity(serializer_data: OrderedDict)-> QuerySet:
     """
         Creates a new user entity object if it does not exist for the user
         Returns updated list of user entities to be rendered on frontend
@@ -35,12 +36,19 @@ def update_or_create_user_entity(serializer_data: OrderedDict):
 
     return get_user_entities_by_username(user.user.username)
 
-def reset_income_collected(user: UserProfile):
+def reset_income_collected(user: UserProfile)-> None:
     user.income_collected = datetime.now()
     user.save()
 
-def claim_income(username: str, amount: int):
+def claim_income(username: str, amount: int) -> None:
     user = get_user_by_username(username)
     user.currency = F("currency") + amount
     user.save()
     reset_income_collected(user)
+
+def deduct_user_entity(user_entity: UserEntity, quantity: int) -> None:
+    if user_entity.quantity - quantity <= 0:
+        user_entity.delete()
+    else:
+        user_entity.quantity = F("quantity") - quantity
+        user_entity.save()
