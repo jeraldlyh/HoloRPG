@@ -1,6 +1,5 @@
 from django.db.models.query import QuerySet
 from django.db.models.query_utils import Q
-from django.db.models import Sum
 
 from .models import Entity, UserEntity
 

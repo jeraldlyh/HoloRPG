@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'api.user.apps.UserConfig',
     'api.room.apps.RoomConfig',
     'api.entity.apps.EntityConfig',
@@ -149,3 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ORIGIN_ALLOW_TRUE = True
+
+# CronTab
+CRONJOBS = [
+    ("* * * * *", "api.entity.cron.deduct_upkeep")
+]

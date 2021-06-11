@@ -1,5 +1,5 @@
 import axiosInstance from "../../axios/axiosInstance"
-import { CLAIM_INCOME_ERROR } from "../types"
+import { CLAIM_INCOME_ERROR, GET_ENTITY_LIST_ERROR, GET_USER_ENTITY_ERROR } from "../types"
 
 export const claimIncome = (user, amount) => (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -15,6 +15,34 @@ export const claimIncome = (user, amount) => (dispatch) => {
             .catch(error => {
                 dispatch({
                     type: CLAIM_INCOME_ERROR,
+                    payload: error.response.data
+                })
+                reject(error)
+            })
+    })
+}
+
+export const getEntityList = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        axiosInstance.get("/api/entity")
+            .then(response => resolve(response))
+            .catch(error => {
+                dispatch({
+                    type: GET_ENTITY_LIST_ERROR,
+                    payload: error.response.data
+                })
+                reject(error)
+            })
+    })
+}
+
+export const getUserEntity = (username) => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        axiosInstance.get(`/api/userentity/${username}`)
+            .then(response => resolve(response))
+            .catch(error => {
+                dispatch({
+                    type: GET_USER_ENTITY_ERROR,
                     payload: error.response.data
                 })
                 reject(error)

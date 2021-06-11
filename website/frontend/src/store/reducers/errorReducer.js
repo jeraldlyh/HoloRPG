@@ -8,7 +8,9 @@ import {
     GET_RELATIONSHIP_ERROR,
     CLAIM_INCOME_ERROR,
     ATTACK_PLAYER_ERROR,
-    GET_ALL_PROFILE_ERROR
+    GET_ALL_PROFILE_ERROR,
+    GET_ENTITY_LIST_ERROR,
+    GET_USER_ENTITY_ERROR
 } from "../types"
 
 
@@ -26,6 +28,8 @@ export const errorReducer = (state=initialState, action) => {
         case CLAIM_INCOME_ERROR:
         case ATTACK_PLAYER_ERROR:
         case GET_ALL_PROFILE_ERROR:
+        case GET_ENTITY_LIST_ERROR:
+        case GET_USER_ENTITY_ERROR:
             return {
                 error: Object.values(action.payload).join("\r\n"),
                 showError: true

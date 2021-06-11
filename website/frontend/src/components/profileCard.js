@@ -66,7 +66,7 @@ function ProfileCard(props) {
                         <div className="col-span-2 w-full">
                             <div className="flex gap-x-1 items-center w-full">
                                 <GiBank size={32} />
-                                <p className="px-1">{profile.income_accumulated}</p>
+                                <p className="px-1"><NumberFormat value={profile.income_accumulated} displayType={"text"} thousandSeparator={true} prefix={"$"}/></p>
                                 <button className="rounded-full ml-4 p-1 text-center border-2 border-custom-pink focus:outline-none disabled:bg-red-500 bg-custom-green"  disabled={hasStackedIncome()} onClick={() => claimIncome(profile.income_accumulated)}>Collect</button>
                             </div>
                         </div>

@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi"
 import axiosInstance from "../axios/axiosInstance"
 import { getProfile } from "../store/actions/profile"
+import { getEntityList } from "../store/actions/entity"
 import Layout from "../components/layout"
 import PageHeader from "../components/pageHeader"
 
@@ -14,8 +15,8 @@ function Shop(props) {
     const [playerEntities, setPlayerEntities] = useState([])
 
     useEffect(() => {
-        axiosInstance.get("/api/entity")
-            .then((response) => {
+        props.getEntityList()
+            .then(response => {
                 const updatedData = []      // Manually add quantity attribute in entity object
 
                 response.data.forEach(entity => {
@@ -136,4 +137,4 @@ const mapStateToProps = state => ({
     profile: state.profileReducer.profile
 }) 
 
-export default connect(mapStateToProps, { getProfile })(Shop)
+export default connect(mapStateToProps, { getProfile, getEntityList })(Shop)
