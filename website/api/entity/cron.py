@@ -1,5 +1,4 @@
 import math
-import logging
 
 from datetime import datetime
 from .selectors import get_sorted_user_entities_by_upkeep
@@ -7,11 +6,11 @@ from .services import deduct_user_entity
 from ..user.services import deduct_player_currency
 from ..user.selectors import get_all_users
 
-logger = logging.getLogger(__name__)
-
 
 def deduct_upkeep():
     users = get_all_users()
+    time_now = datetime.now()
+
     for user in users:
         sorted_user_entities = get_sorted_user_entities_by_upkeep(user.user_id)
         
@@ -27,7 +26,7 @@ def deduct_upkeep():
                 while loop_check:
                     for user_entity in sorted_user_entities:
                         required_quantity = math.ceil(difference / (user_entity.entity.cost * 0.75))             # Checks how many quantity of entity does it need to cover the upkeep
-                        logger.info(f"{datetime.now()}  {user} Current Entity: {user_entity} Require: {required_quantity} | Has: {user_entity.quantity}")
+                        print(f"{time_now} | {user} | Current Entity: {user_entity} Require: {required_quantity} | Has: {user_entity.quantity}")
 
                         if user_entity.quantity >= required_quantity:
                             deduct_user_entity(user_entity, required_quantity)         # Liquidate partial amount
@@ -36,6 +35,7 @@ def deduct_upkeep():
                         else:
                             deduct_user_entity(user_entity, entity.quantity)           # Full liquidation
             else:
+                print(f"{time_now} | {user} | Currency: {user.currency} | Deduction: {sum_of_entities_upkeep}")
                 deduct_player_currency(user, sum_of_entities_upkeep)
             
             # SEND SOME NOTIFICATION
