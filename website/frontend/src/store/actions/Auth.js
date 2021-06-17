@@ -1,5 +1,5 @@
-import axiosInstance from "../../axios/axiosInstance"
-import { USER_LOADING, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL } from "../types"
+import axiosInstance from "../../axios/AxiosInstance"
+import { USER_LOADING, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL } from "../Types"
 
 
 export const loginUser = ({username, password}) => async dispatch => {

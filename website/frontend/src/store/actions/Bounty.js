@@ -1,5 +1,5 @@
-import axiosInstance from "../../axios/axiosInstance"
-import { ATTACK_PLAYER_ERROR } from "../types"
+import axiosInstance from "../../axios/AxiosInstance"
+import { ATTACK_PLAYER_ERROR } from "../Types"
 
 export const attackPlayer = (bountyID, body) => (dispatch) => {
     return new Promise((resolve, reject) => {

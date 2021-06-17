@@ -1,9 +1,9 @@
 import React, { Fragment } from "react"
-import Footer from "./footer"
-import Header from "./header"
-import Error from "./error"
-import FriendBar from "./friendBar"
-import ProfileCard from "./profileCard"
+import Footer from "./Footer"
+import Header from "./Header"
+import Error from "./Error"
+import FriendBar from "./FriendBar"
+import ProfileCard from "./ProfileCard"
 
 
 function Layout(props) {

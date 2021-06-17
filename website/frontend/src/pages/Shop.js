@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi"
-import axiosInstance from "../axios/axiosInstance"
-import { getProfile } from "../store/actions/profile"
-import { getEntityList } from "../store/actions/entity"
-import Layout from "../components/layout"
-import PageHeader from "../components/pageHeader"
+import axiosInstance from "../axios/AxiosInstance"
+import { getProfile } from "../store/actions/Profile"
+import { getEntityList } from "../store/actions/Entity"
+import Layout from "../components/Layout"
+import PageHeader from "../components/PageHeader"
 
 
 function Shop(props) {

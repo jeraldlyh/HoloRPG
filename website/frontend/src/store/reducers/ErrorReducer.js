@@ -11,7 +11,7 @@ import {
     GET_ALL_PROFILE_ERROR,
     GET_ENTITY_LIST_ERROR,
     GET_USER_ENTITY_ERROR
-} from "../types"
+} from "../Types"
 
 
 const initialState = {

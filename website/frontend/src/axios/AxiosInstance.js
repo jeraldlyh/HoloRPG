@@ -1,7 +1,7 @@
 import axios from "axios"
 import { createBrowserHistory } from "history"
-import { useStore } from "../store/storeConfig"
-import { logoutUser } from "../store/actions/auth"
+import { useStore } from "../store/StoreConfig"
+import { logoutUser } from "../store/actions/Auth"
 
 const baseURL = "http://127.0.0.1:8000"
 const { store } = useStore()

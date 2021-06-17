@@ -1,5 +1,5 @@
-import axiosInstance from "../../axios/axiosInstance"
-import { GET_RELATIONSHIP_ERROR } from "../types"
+import axiosInstance from "../../axios/AxiosInstance"
+import { GET_RELATIONSHIP_ERROR } from "../Types"
 
 export const getRelationship = (username) => (dispatch) => {
     return new Promise((resolve, reject) => {

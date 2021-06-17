@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import { connect } from "react-redux"
-import { logoutUser } from "../store/actions/auth"
+import { logoutUser } from "../store/actions/Auth"
 
 
 

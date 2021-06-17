@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
-import { resetError, hideError } from "../store/actions/error"
+import { resetError, hideError } from "../store/actions/Error"
 
 function Error(props) {
     const { error, showError } = props.error

@@ -1,5 +1,5 @@
-import axiosInstance from "../../axios/axiosInstance"
-import { CLAIM_INCOME_ERROR, GET_ENTITY_LIST_ERROR, GET_USER_ENTITY_ERROR } from "../types"
+import axiosInstance from "../../axios/AxiosInstance"
+import { CLAIM_INCOME_ERROR, GET_ENTITY_LIST_ERROR, GET_USER_ENTITY_ERROR } from "../Types"
 
 export const claimIncome = (user, amount) => (dispatch) => {
     return new Promise((resolve, reject) => {

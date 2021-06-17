@@ -1,4 +1,4 @@
-import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_ERROR, LOGOUT_SUCCESS } from "../types"
+import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_ERROR, LOGOUT_SUCCESS } from "../Types"
 
 const initialState = {
     profile: null

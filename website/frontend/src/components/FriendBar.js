@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react"
 import { connect } from "react-redux"
-import FriendCard from "./friendCard"
-import { getRelationship } from "../store/actions/relationship"
+import FriendCard from "./FriendCard"
+import { getRelationship } from "../store/actions/Relationship"
 
 function FriendBar(props) {
     const { isAuthenticated, username } = props
@@ -35,7 +35,7 @@ function FriendBar(props) {
                 <hr className="mt-3 w-full border-t-2 border-red-500" />
                 {
                     friends.length !== 0
-                    ? friends.map((friend, index) => {
+                    ? friends.map((friend) => {
                         return (
                             <Fragment key={index}>
                                 <FriendCard 
@@ -48,7 +48,7 @@ function FriendBar(props) {
                                     index !== friends.length - 1
                                     ? <hr className="w-2/3 border-t-2 border-red-500"/>
                                     : null
-                                }  
+                                }
                             </Fragment>
                         )
                     })

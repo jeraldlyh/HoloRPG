@@ -1,4 +1,4 @@
-import { HIDE_ERROR, RESET_ERROR } from "../types"
+import { HIDE_ERROR, RESET_ERROR } from "../Types"
 
 export const showError = () => dispatch => {
     return new Promise((resolve, reject) => {

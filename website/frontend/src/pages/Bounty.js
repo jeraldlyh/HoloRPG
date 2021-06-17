@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
-import axiosInstance from "../axios/axiosInstance"
-import Layout from "../components/layout"
-import { attackPlayer } from "../store/actions/bounty"
+import axiosInstance from "../axios/AxiosInstance"
+import Layout from "../components/Layout"
+import { attackPlayer } from "../store/actions/Bounty"
 
 
 function Bounty(props) {

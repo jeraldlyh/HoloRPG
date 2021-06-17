@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { BiSort } from "react-icons/bi"
 import { connect } from "react-redux"
-import Layout from "../components/layout"
+import Layout from "../components/Layout"
 import useSortableData from "../hooks/Sortable"
-import PageHeader from "../components/pageHeader"
-import { getAllProfile } from "../store/actions/profile"
+import PageHeader from "../components/PageHeader"
+import { getAllProfile } from "../store/actions/Profile"
 
 
 function Leaderboard(props) {

@@ -1,13 +1,13 @@
 import React, { Fragment } from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
-import Login from "./pages/login"
-import Room from "./pages/room"
-import Bounty from "./pages/bounty"
-import Register from "./pages/register"
-import FAQ from "./pages/faq"
-import Leaderboard from "./pages/leaderboard"
-import Shop from "./pages/shop"
-import CustomRoute from "./components/customRoute"
+import Login from "./pages/Login"
+import Room from "./pages/Room"
+import Bounty from "./pages/Bounty"
+import Register from "./pages/Register"
+import FAQ from "./pages/FAQ"
+import Leaderboard from "./pages/Leaderboard"
+import Shop from "./pages/Shop"
+import CustomRoute from "./components/CustomRoute"
 
 function App() {
     return (

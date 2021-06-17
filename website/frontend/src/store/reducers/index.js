@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import { authReducer } from "./authReducer"
-import { profileReducer } from "./profileReducer"
-import { errorReducer } from "./errorReducer"
+import { authReducer } from "./AuthReducer"
+import { profileReducer } from "./ProfileReducer"
+import { errorReducer } from "./ErrorReducer"
 
 // Container to combine all reducers into one
 const rootReducer = combineReducers({

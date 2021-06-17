@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getProfile } from '../store/actions/profile'
+import { getProfile } from '../store/actions/Profile'
 
 function CustomRoute(props) {
     const { isLoading, isAuthenticated, user } = props.auth

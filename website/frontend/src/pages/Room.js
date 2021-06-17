@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import axiosInstance from "../axios/axiosInstance"
-import Modal from "../modals/modal"
+import axiosInstance from "../axios/AxiosInstance"
+import Modal from "../modals/Modal"
 
 
 function Room() {

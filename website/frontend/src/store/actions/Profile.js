@@ -1,6 +1,6 @@
-import axiosInstance from "../../axios/axiosInstance"
+import axiosInstance from "../../axios/AxiosInstance"
 
-import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_ERROR, GET_ALL_PROFILE_ERROR } from "../types"
+import { LOAD_PROFILE_SUCCESS, LOAD_PROFILE_ERROR, GET_ALL_PROFILE_ERROR } from "../Types"
 
 export const getProfile = (username) => (dispatch) => {
     return new Promise((resolve, reject) => {
