@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'api.user.apps.UserConfig',
     'api.room.apps.RoomConfig',
     'api.entity.apps.EntityConfig',
+    'api.stock.apps.StockConfig',
     'frontend.apps.FrontendConfig',
     'accounts.apps.AccountsConfig',
     'rest_framework',

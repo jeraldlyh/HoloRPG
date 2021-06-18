@@ -20,11 +20,7 @@ function ProfileCard(props) {
     const claimIncome = (amount) => {
         props.claimIncome(user, amount)
             .then(response => {
-                if (response.status === 200) {
-                    props.getProfile(user)
-                } else {
-                    console.log("UNABLE TO CLAIM INCOME")
-                }
+                props.getProfile(user)
             })
             .catch(error => console.log(error))
     }
