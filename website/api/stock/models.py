@@ -13,6 +13,8 @@ class Stock(models.Model):
     )
 
     company_name = models.CharField(max_length=100, primary_key=True)
+    symbol = models.CharField(max_length=3)
+    shares = models.IntegerField()
     type = models.CharField(choices=TYPE_CHOICES, max_length=10)
 
 class StockPrice(models.Model):

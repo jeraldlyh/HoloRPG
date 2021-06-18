@@ -82,14 +82,18 @@
         "model": "stock.Stock",
         "fields": {
             "company_name": "Bitcoin",
-            "type": "Volatile"
+            "symbol": "BTC",
+            "type": "Volatile",
+            "shares": 100
         }
     },
     {
         "model": "stock.Stock",
         "fields": {
             "company_name": "Company 2",
-            "type": "Passive"
+            "symbol": "CC2",
+            "type": "Passive",
+            "shares": 100
         }
     },
     {

@@ -14,4 +14,5 @@ urlpatterns = [
     path("leaderboard/", index),
     path("shop/", index),
     path("character/", index),
+    path("stock/", index),
 ]
