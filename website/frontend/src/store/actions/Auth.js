@@ -2,92 +2,68 @@ import axiosInstance from "../../axios/AxiosInstance"
 import { USER_LOADING, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL } from "../Types"
 
 
-export const loginUser = ({username, password}) => async dispatch => {
-    dispatch({type: USER_LOADING})
+export const loginUser = ({ username, password }) => async (dispatch) => {
+    try {
+        dispatch({ type: USER_LOADING })            // Shows loading bubble
+        const body = JSON.stringify({ username, password })
+        const responseData = {}
 
-    const body = JSON.stringify({username, password})
-    const responseData = {}
+        const login = await axiosInstance.post("/auth/login/", body)
+        Object.assign(responseData, login.data)
 
-    axiosInstance.post("/auth/login/", body)
-        .then(response => {
-            Object.assign(responseData, response.data)
+        const token = await axiosInstance.post("/api/token/", body)
+        Object.assign(responseData, token.data)
+
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: responseData
         })
-        .then(() => {
-            axiosInstance.post("/api/token/", body)
-                .then(response => {
-                    Object.assign(responseData, response.data)
-
-                    dispatch({
-                        type: LOGIN_SUCCESS,
-                        payload: responseData
-                    })
-                })
+    } catch (error) {
+        console.log("Error in loginUser", error)
+        dispatch({
+            type: LOGIN_FAIL,
+            payload: error.response.data
         })
-        .catch(error => {
-            console.log(error)
-            dispatch({
-                type: LOGIN_FAIL,
-                payload: error.response.data
-            })
-        })
-
-    // Promise.all([
-    //     axiosInstance.post("/api/token/", body),
-    //     axiosInstance.post("/auth/login/", body)
-    // ]).then(function onSuccess([ token, user ]) {
-    //     dispatch({
-    //         type: LOGIN_SUCCESS,
-    //         payload: Object.assign({}, token.data, user.data)
-    //     })
-    // }).catch(error => {
-    //     console.log(error)
-    //     dispatch({
-    //         type: LOGIN_FAIL,
-    //         payload: error.response.data
-    //     })
-    // })
+    }
 }
 
-export const registerUser = ({username, email, password}) => async dispatch => {
-    const body = JSON.stringify({username, email, password})
-    const tokenBody = JSON.stringify({username, password})
-    const responseData = {}
+export const registerUser = ({ username, email, password }) => async (dispatch) => {
+    try {
+        const body = JSON.stringify({ username, email, password })
+        const tokenBody = JSON.stringify({ username, password })
+        const responseData = {}
 
-    axiosInstance.post("/auth/register/", body)
-        .then((response) => {
-            Object.assign(responseData, response.data)
+        const register = axiosInstance.post("/auth/register/", body)
+        Object.assign(responseData, register.data)
+
+        const token = await axiosInstance.post("/api/token/", tokenBody)
+        Object.assign(responseData, token.data)
+
+        dispatch({
+            type: REGISTER_SUCCESS,
+            payload: responseData
         })
-        .then(() => {
-            axiosInstance.post("/api/token/", tokenBody)
-                .then((response) => {
-                    Object.assign(responseData, response.data)
-                })
-                .then(() => {
-                    dispatch({
-                        type: REGISTER_SUCCESS,
-                        payload: responseData
-                    })
-                })
+    } catch (error) {
+        console.log("Error in registerUser", error)
+        dispatch({
+            type: REGISTER_FAIL,
+            payload: error.response.data
         })
-        .catch(error => {
-            console.log(error.response.data)
-            dispatch({
-                type: REGISTER_FAIL,
-                payload: error.response.data
-            })
-        })
+    }
 }
 
-export const logoutUser = () => async(dispatch) => {
-    const body = { refresh_token: localStorage.getItem("refresh_token") }
+export const logoutUser = () => async (dispatch) => {
+    try {
+        const body = { refresh_token: localStorage.getItem("refresh_token") }
+        const logout = await axiosInstance.post("/auth/logout/", body)
 
-    axiosInstance.post("/auth/logout/", body)
-        .then(() => {
-            dispatch({
-                type: LOGOUT_SUCCESS
-            })
+        dispatch({
+            type: LOGOUT_SUCCESS
         })
-        .catch(error => {
-            console.log(error.response)
+    } catch (error) {
+        console.log("Error in logoutUser", error.response)
+        dispatch({                                              // Force logout
+            type: LOGOUT_SUCCESS
         })
+    }
 }

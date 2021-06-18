@@ -1,51 +1,46 @@
 import axiosInstance from "../../axios/AxiosInstance"
 import { CLAIM_INCOME_ERROR, GET_ENTITY_LIST_ERROR, GET_USER_ENTITY_ERROR } from "../Types"
 
-export const claimIncome = (user, amount) => (dispatch) => {
-    return new Promise((resolve, reject) => {
+export const claimIncome = (user, amount) => async (dispatch) => {
+    try {
         const body = {
             user: user,
             amount: amount
         }
-    
-        axiosInstance.post("/api/income/", body)
-            .then(response => {
-                resolve(response)
-            })
-            .catch(error => {
-                dispatch({
-                    type: CLAIM_INCOME_ERROR,
-                    payload: error.response.data
-                })
-                reject(error)
-            })
-    })
+        const response = await axiosInstance.post("/api/income/", body)
+        return response
+    } catch (error) {
+        console.log("Error in claimIncome", error)
+        dispatch({
+            type: CLAIM_INCOME_ERROR,
+            payload: error.response.data
+        })
+        
+    }
 }
 
-export const getEntityList = () => (dispatch) => {
-    return new Promise((resolve, reject) => {
-        axiosInstance.get("/api/entity")
-            .then(response => resolve(response))
-            .catch(error => {
-                dispatch({
-                    type: GET_ENTITY_LIST_ERROR,
-                    payload: error.response.data
-                })
-                reject(error)
-            })
-    })
+export const getEntityList = () => async (dispatch) => {
+    try {
+        const response = await axiosInstance.get("/api/entity")
+        return response
+    } catch (error) {
+        console.log("Error in getEntityList", error)
+        dispatch({
+            type: GET_ENTITY_LIST_ERROR,
+            payload: error.response.data
+        })
+    }
 }
 
-export const getUserEntity = (username) => (dispatch) => {
-    return new Promise((resolve, reject) => {
-        axiosInstance.get(`/api/userentity/${username}`)
-            .then(response => resolve(response))
-            .catch(error => {
-                dispatch({
-                    type: GET_USER_ENTITY_ERROR,
-                    payload: error.response.data
-                })
-                reject(error)
-            })
-    })
+export const getUserEntity = (username) => async (dispatch) => {
+    try {
+        const response = await axiosInstance.get(`/api/userentity/${username}`)
+        return response
+    } catch (error) {
+        console.log("Error in getUserEntity", error)
+        dispatch({
+            type: GET_USER_ENTITY_ERROR,
+            payload: error.response.data
+        })
+    }
 }

@@ -35,7 +35,7 @@ function FriendBar(props) {
                 <hr className="mt-3 w-full border-t-2 border-red-500" />
                 {
                     friends.length !== 0
-                    ? friends.map((friend) => {
+                    ? friends.map((friend, index) => {
                         return (
                             <Fragment key={index}>
                                 <FriendCard 
