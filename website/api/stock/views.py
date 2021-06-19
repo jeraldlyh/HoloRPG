@@ -2,8 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from .serializers import StockSerializer, StockPriceSerializer, UserStockSerializer
-from .selectors import get_all_stocks, get_stock_price_by_name
-from .services import create_stock, update_or_create_user_stock
+from .selectors import get_all_stocks
+from .services import create_stock, create_stock_price, update_or_create_user_stock, get_stock_data_by_30_days
 
 class StockViewSet(viewsets.ViewSet):
     serializer_class = StockSerializer
@@ -22,9 +22,16 @@ class StockViewSet(viewsets.ViewSet):
 class StockPriceViewSet(viewsets.ViewSet):
     serializer_class = StockPriceSerializer
 
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            create_stock_price(serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+
     def retrieve(self, request, pk=None):
         if pk is not None:
-            stock_prizes = get_stock_price_by_name(pk)
+            stock_prizes = get_stock_data_by_30_days(pk)
             serializer = self.serializer_class(stock_prizes, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "Stock name parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)

@@ -8,7 +8,7 @@ import FAQ from "./pages/FAQ"
 import Leaderboards from "./pages/Leaderboards"
 import Shop from "./pages/Shop"
 import CustomRoute from "./components/CustomRoute"
-import Stock from "./pages/Stocks"
+import Stock from "./pages/Stock"
 
 function App() {
     return (

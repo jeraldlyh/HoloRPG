@@ -15,7 +15,7 @@ export const getAllStocks = () => async (dispatch) => {
 
 export const getStockData = (company) => async (dispatch) => {
     try {
-        const response = await axiosInstance.get(`/api/stockprice/ ${company}`)
+        const response = await axiosInstance.get(`/api/stockprice/${company}`)
         return response
     } catch (error) {
         console.log("Error in getStockData")

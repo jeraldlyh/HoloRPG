@@ -19,13 +19,17 @@ class Stock(models.Model):
 
 class StockPrice(models.Model):
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["date", "company_name"], name="unique_stockprice")]
+        constraints = [models.UniqueConstraint(fields=["datetime", "company_name"], name="unique_stockprice")]
 
-    date = models.DateField(auto_now_add=True, blank=True, editable=False)
+    datetime = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
     company_name = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
-    open = models.IntegerField()
-    close = models.IntegerField()
-    volume = models.IntegerField()
+    price = models.IntegerField()
+
+    @property
+    def get_volume(self) -> int:
+        from .selectors import get_volume_by_date
+
+        return get_volume_by_date(self.company_name, self.datetime)
 
 class UserStock(models.Model):
     class Meta:
@@ -40,7 +44,7 @@ class UserStock(models.Model):
     )
 
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
+    company_name = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
     quantity = models.IntegerField()
     transaction_type = models.CharField(choices=TRANSACTION_TYPES, max_length=4)

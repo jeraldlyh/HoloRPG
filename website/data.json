@@ -95,35 +95,5 @@
             "type": "Passive",
             "shares": 100
         }
-    },
-    {
-        "model": "stock.StockPrice",
-        "fields": {
-            "date": "2021-01-04",
-            "company_name": "Bitcoin",
-            "open": 150,
-            "close": 200,
-            "volume": 1500
-        }
-    },
-    {
-        "model": "stock.StockPrice",
-        "fields": {
-            "date": "2021-01-05",
-            "company_name": "Bitcoin",
-            "open": 100,
-            "close": 350,
-            "volume": 600
-        }
-    },
-    {
-        "model": "stock.StockPrice",
-        "fields": {
-            "date": "2021-01-06",
-            "company_name": "Bitcoin",
-            "open": 50,
-            "close": 2200,
-            "volume": 1000
-        }
     }
 ]

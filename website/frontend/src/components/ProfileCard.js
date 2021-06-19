@@ -79,4 +79,9 @@ const mapStateToProps = state => ({
     profile: state.profileReducer
 }) 
 
-export default connect(mapStateToProps, { getProfile, claimIncome })(ProfileCard)
+const mapDispatchToProps = {
+    getProfile,
+    claimIncome
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileCard)

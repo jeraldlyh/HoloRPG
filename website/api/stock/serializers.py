@@ -12,6 +12,8 @@ class StockPriceSerializer(serializers.ModelSerializer):
         model = StockPrice
         fields = "__all__"
 
+    volume = serializers.ReadOnlyField(source="get_volume")
+
 class UserStockSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStock
