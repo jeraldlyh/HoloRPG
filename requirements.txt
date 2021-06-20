@@ -9,3 +9,4 @@ django-crontab
 django-q
 redis
 python-dotenv
+python-decouple
