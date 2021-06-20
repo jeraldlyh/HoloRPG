@@ -37,7 +37,7 @@ class UserProfile(models.Model):
         return get_duration(registered, interval="days")
     
     @property
-    def get_character_class(self) -> tuple:
+    def get_character_class(self) -> str:
         return self.character
     
     @property

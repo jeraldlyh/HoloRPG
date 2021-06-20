@@ -34,6 +34,7 @@ export const errorReducer = (state=initialState, action) => {
         case GET_USER_ENTITY_ERROR:
         case GET_STOCK_PRICE_ERROR:
         case GET_ALL_STOCKS_ERROR:
+        case PURCHASE_ENTITY_ERROR:
             return {
                 error: Object.values(action.payload).join("\r\n"),
                 showError: true

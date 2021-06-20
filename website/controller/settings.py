@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_crontab',
     'api.user.apps.UserConfig',
-    'api.room.apps.RoomConfig',
     'api.entity.apps.EntityConfig',
     'api.stock.apps.StockConfig',
     'frontend.apps.FrontendConfig',
