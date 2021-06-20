@@ -1,90 +1,180 @@
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
-from .models import Skill, UserProfile
-from .serializers import SkillSerializer, UserProfileSerializer, BountySerializer, UserRelationshipSerializer
+from .models import UserProfile
+from .serializers import UserProfileSerializer, BountySerializer, UserRelationshipSerializer
 from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_unclaimed_bounties, get_user_net_worth
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
 from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_abstract_id, get_user_by_username, get_users_by_relationships
 
-class UserProfileViewSet(viewsets.ViewSet):
-    serializer_class = UserProfileSerializer
+# class UserProfileViewSet(viewsets.ViewSet):
+#     serializer_class = UserProfileSerializer
 
+#     def get_object(self, pk):
+#         if pk.isdigit():
+#             return get_user_by_abstract_id(pk)
+#         return get_user_by_username(pk)
+
+#     def retrieve(self, request, pk=None):
+#         if pk is not None:
+#             try:
+#                 user_profile = self.get_object(pk=pk)
+#                 serializer = self.serializer_class(user_profile)
+#                 return Response(serializer.data, status=status.HTTP_200_OK)
+#             except (UserProfile.DoesNotExist, User.DoesNotExist):
+#                 return Response({"Profile Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
+#         return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
+
+#     def list(self, request):
+#         serializer = self.serializer_class(get_all_users(), many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UserProfileDetail(views.APIView):
     def get_object(self, pk):
         if pk.isdigit():
             return get_user_by_abstract_id(pk)
         return get_user_by_username(pk)
 
-    def retrieve(self, request, pk=None):
+    def get(self, request, pk=None, format=None):
         if pk is not None:
             try:
                 user_profile = self.get_object(pk=pk)
-                serializer = self.serializer_class(user_profile)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                serializer = UserProfileSerializer(user_profile)
+                return Response({
+                    "message": f"Retrieved user profile for {pk}",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
             except (UserProfile.DoesNotExist, User.DoesNotExist):
-                return Response({"Profile Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
-        return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": "User profile does not exist",
+                    "data": ""
+                }, status=status.HTTP_404_NOT_FOUND)
+        return Response({
+            "message": "Username parameter not specified",
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-    def list(self, request):
+class UserProfileList(views.APIView):
+    def get(self, request, format=None):
         serializer = self.serializer_class(get_all_users(), many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({
+            "message": "Retrieved all user profiles",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
 
-class UserRelationshipViewSet(viewsets.ViewSet):
-    serializer_class = UserRelationshipSerializer
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
+class UserRelationshipCreate(views.APIView):
+    def post(self, request, format=None):
+        serializer = UserRelationshipSerializer(data=request.data)
         if serializer.is_valid():
             try:
+                user_from = request.data.get("user_from")
+                user_to = request.data.get("user_to")
                 create_user_relationship(serializer.validated_data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response({
+                    "message": f"Relationship between {user_from} & {user_to} has been created",
+                    "data": serializer.data
+                }, status=status.HTTP_201_CREATED)
             except SameUserError:
-                return Response({"Bad Request": "Unable to befriend yourself"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
-    
-    def retrieve(self, request, pk=None):
+                return Response({
+                    "message": "Unable to befriend yourself",
+                    "data": ""
+                }, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "message": "Unable to create relationship between {user_from} & {user_to}",
+            "data": serializer.error_messages
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+class UserRelationshipDetail(views.APIView):
+    def get(self, request, pk=None, format=None):
         if pk is not None:
             try:
                 relationships = get_list_of_relationships_by_username(pk)
                 friend_profiles = get_users_by_relationships(relationships)
                 serializer = UserProfileSerializer(friend_profiles, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response({
+                    "message": f"Retrieved relationships for {pk}",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
             except:
                 return Response({"Relationships Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
-class BountyViewSet(viewsets.ViewSet):
-    serializer_class = BountySerializer
+# class UserRelationshipViewSet(viewsets.ViewSet):
+#     serializer_class = UserRelationshipSerializer
 
-    def create(self, request):
-        request_copy = request.data.copy()
+#     def create(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             try:
+#                 create_user_relationship(serializer.validated_data)
+#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+#             except SameUserError:
+#                 return Response({"Bad Request": "Unable to befriend yourself"}, status=status.HTTP_400_BAD_REQUEST)
+#         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+    
+#     def retrieve(self, request, pk=None):
+#         if pk is not None:
+#             try:
+#                 relationships = get_list_of_relationships_by_username(pk)
+#                 friend_profiles = get_users_by_relationships(relationships)
+#                 serializer = UserProfileSerializer(friend_profiles, many=True)
+#                 return Response(serializer.data, status=status.HTTP_200_OK)
+#             except:
+#                 return Response({"Relationships Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
+#         return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BountyListCreate(views.APIView):
+    def get(self, request, format=None):
+        serializer = BountySerializer(get_bounties_by_status("UNCLAIMED"), many=True)
+        return Response({
+            "message": "Retrieved list of unclaimed bounties",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        request_copy = request.data.copy()              # Deep clone a copy of request data
         target_name = request.data["target"]
         target = get_user_by_username(target_name)
-        bounty_value = get_user_net_worth(target)                              # To be computed by a formula to determine player's net worth
+        bounty_value = get_user_net_worth(target)       # To be computed by a formula to determine player's net worth
         request_copy["value"] = bounty_value
-        serializer = self.serializer_class(data=request_copy)
+        serializer = BountySerializer(data=request_copy)
 
         if serializer.is_valid():
             try:
                 create_bounty(serializer.validated_data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response({
+                    "message": f"Successfully placed bounty on {target} (${bounty_value})",
+                    "data": serializer.data
+                }, status=status.HTTP_201_CREATED)
             except SameUserError:
-                return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": "Unable to place bounty on yourself",
+                    "data": ""
+                }, status=status.HTTP_400_BAD_REQUEST)
             except BountyExistError:
-                return Response({"Bad Request": f"{target_name} currently has an existing bounty".format}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": f"{target_name} currently has an existing bounty",
+                    "data": ""
+                }, status=status.HTTP_400_BAD_REQUEST)
             except InsufficientHealthError:
-                return Response({"Bad Request": f"{target_name} is currently dead"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": f"{target_name} is currently dead",
+                    "data": "",
+                }, status=status.HTTP_400_BAD_REQUEST)
             except InsufficientCurrencyError:
-                return Response({"Bad Request": f"Insufficient currency to place bounty on {target_name}"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": f"Insufficient currency to place bounty on {target_name}",
+                    "data": ""
+                }, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "message": serializer.error_messages,
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-    def list(self, request):
-        serializer = self.serializer_class(get_bounties_by_status("UNCLAIMED"), many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def partial_update(self, request, pk=None):
+class BountyPatch(views.APIView):
+    def patch(self, request, pk=None, format=None):
         if pk is not None:
             try:
                 player_name = request.data["attacker"]
@@ -92,14 +182,72 @@ class BountyViewSet(viewsets.ViewSet):
                 damage, currency, exp, target = attack_player_on_bounty(player_name, bounty_id)
 
                 return Response({
-                "battle": {
-                    "target": target,
-                    "damage": damage,
-                    "currency": currency,
-                    "experience": exp
-                },
-                "bounty": get_unclaimed_bounties()
-            }, status=status.HTTP_200_OK)
+                    "data": {
+                        "battle": {
+                            "target": target,
+                            "damage": damage,
+                            "currency": currency,
+                            "experience": exp
+                        },
+                        "bounty": get_unclaimed_bounties()
+                    },
+                    "message": f"Successfully attacked {target} for {damage}. Earned ${currency} and {exp} exp"
+                }, status=status.HTTP_200_OK)
             except InsufficientHealthError:
-                return Response({"Bad Request": "Bounty has already been claimed"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": "Bounty not specified"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": "Bounty has already been claimed",
+                    "data": ""
+                }, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "message": "Bounty parameter not specified",
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+# class BountyViewSet(viewsets.ViewSet):
+#     serializer_class = BountySerializer
+
+#     def create(self, request):
+#         request_copy = request.data.copy()
+#         target_name = request.data["target"]
+#         target = get_user_by_username(target_name)
+#         bounty_value = get_user_net_worth(target)                              # To be computed by a formula to determine player's net worth
+#         request_copy["value"] = bounty_value
+#         serializer = self.serializer_class(data=request_copy)
+
+#         if serializer.is_valid():
+#             try:
+#                 create_bounty(serializer.validated_data)
+#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+#             except SameUserError:
+#                 return Response({"Bad Request": "Unable to place bounty on yourself"}, status=status.HTTP_400_BAD_REQUEST)
+#             except BountyExistError:
+#                 return Response({"Bad Request": f"{target_name} currently has an existing bounty".format}, status=status.HTTP_400_BAD_REQUEST)
+#             except InsufficientHealthError:
+#                 return Response({"Bad Request": f"{target_name} is currently dead"}, status=status.HTTP_400_BAD_REQUEST)
+#             except InsufficientCurrencyError:
+#                 return Response({"Bad Request": f"Insufficient currency to place bounty on {target_name}"}, status=status.HTTP_400_BAD_REQUEST)
+#         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+
+#     def list(self, request):
+#         serializer = self.serializer_class(get_bounties_by_status("UNCLAIMED"), many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # def partial_update(self, request, pk=None):
+    #     if pk is not None:
+    #         try:
+    #             player_name = request.data["attacker"]
+    #             bounty_id = pk
+    #             damage, currency, exp, target = attack_player_on_bounty(player_name, bounty_id)
+
+    #             return Response({
+    #             "battle": {
+    #                 "target": target,
+    #                 "damage": damage,
+    #                 "currency": currency,
+    #                 "experience": exp
+    #             },
+    #             "bounty": get_unclaimed_bounties()
+    #         }, status=status.HTTP_200_OK)
+    #         except InsufficientHealthError:
+    #             return Response({"Bad Request": "Bounty has already been claimed"}, status=status.HTTP_400_BAD_REQUEST)
+    #     return Response({"Bad Request": "Bounty not specified"}, status=status.HTTP_400_BAD_REQUEST)

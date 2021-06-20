@@ -7,7 +7,7 @@ from datetime import datetime
 from .models import Bounty, UserProfile, UserRelationship
 from .serializers import BountySerializer
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
-from .selectors import get_bounties_by_target_status, get_bounty_by_id, get_user_by_username
+from .selectors import get_bounties_by_status, get_bounties_by_target_status, get_bounty_by_id, get_user_by_username
 
 def damage_dealt(player: UserProfile, target: UserProfile) -> int:
     damage = player.attack**2 / (player.attack / player.defence)
@@ -78,7 +78,7 @@ def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
     add_player_currency(player, bounty.value)
 
 def get_unclaimed_bounties() -> List[dict]:
-    bounty_queryset = Bounty.objects.filter(status="UNCLAIMED")
+    bounty_queryset = get_bounties_by_status("UNCLAIMED")
     bounty_serializer = BountySerializer(bounty_queryset, many=True)
     result = [dict(OrderedDict(bounty)) for bounty in bounty_serializer.data]
     return result

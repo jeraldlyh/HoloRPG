@@ -6,6 +6,9 @@ from .models import Bounty, UserProfile, UserRelationship
 def get_all_users() -> QuerySet:
     return UserProfile.objects.all()
 
+def get_all_user_levels() -> QuerySet:
+    return UserProfile.objects.all().values_list("level", flat=True)
+
 def get_user_by_username(username: str) -> UserProfile:
     query = Q(user_id=username)
     return UserProfile.objects.get(query)

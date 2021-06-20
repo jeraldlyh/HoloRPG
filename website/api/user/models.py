@@ -9,24 +9,11 @@ from django.db.models.signals import post_save
 from .utils import get_duration, clamp
 
 class Character(models.Model):
-    class Meta:
-        constraints = [models.UniqueConstraint(name="unique_character", fields=["main_class", "sub_class"])]
-
-    main_class = models.CharField(default="DEFAULT", max_length=32)
-    sub_class = models.CharField(default="NULL", max_length=50)
-
-class Skill(models.Model):
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=["character", "name"], name="unique_skill")]
-    
-    character = models.ForeignKey(Character, on_delete=models.DO_NOTHING)
-    name = models.CharField(max_length=50, unique=True)
-    accuracy = models.IntegerField()
-    multiplier = models.IntegerField()
+    main_class = models.CharField(default="DEFAULT", max_length=32, primary_key=True)
 
 class UserProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, to_field="username", on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.CharField(default="https://svgshare.com/i/Xd6.svg", max_length=100)
     date_registered = models.DateTimeField(auto_now_add=True)
     character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
@@ -47,16 +34,17 @@ class UserProfile(models.Model):
     @property
     def get_account_age(self) -> int:
         registered = self.date_registered
-        
         return get_duration(registered, interval="days")
     
     @property
     def get_character_class(self) -> tuple:
-        return (self.character.main_class, self.character.sub_class)
+        return self.character
     
     @property
     def get_rank(self) -> int:
-        all_levels = list(UserProfile.objects.values_list("level", flat=True))[::-1]
+        from .selectors import get_all_user_levels
+
+        all_levels = list(get_all_user_levels())[::-1]
         return all_levels.index(self.level) + 1
     
     @property
@@ -101,11 +89,11 @@ class UserRelationship(models.Model):
     relationship = models.ForeignKey(Relationship, on_delete=models.DO_NOTHING)
 
 class Bounty(models.Model):
-    placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="placed_by")
-    target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="target")
+    placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="placed_by")
+    target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="target")
     value = models.IntegerField(blank=True)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
-    claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id", related_name="claimed_by", null=True, editable=False)
+    claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="claimed_by", null=True, editable=False)
     claimed_at = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=10, blank=True, editable=False, default="UNCLAIMED")
 

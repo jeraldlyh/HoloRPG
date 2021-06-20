@@ -1,11 +1,12 @@
+from django.db.models import fields
 from rest_framework import serializers
-from .models import UserProfile, Character, Skill
+from .models import UserProfile, Character
 from .models import Bounty, UserRelationship
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        exclude = ["id", "character"]
+        fields ="__all__"
 
     account_age = serializers.ReadOnlyField(source="get_account_age")
     character_class = serializers.ReadOnlyField(source="get_character_class")
@@ -18,16 +19,10 @@ class CharacterSerializer(serializers.ModelSerializer):
         model = Character
         fields = "__all__"
 
-class SkillSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Skill
-        fields = "__all__"
-
-
 class UserRelationshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRelationship
-        exclude = ["id"]
+        fields = "__all__"
 
 class BountySerializer(serializers.ModelSerializer):
     class Meta:
