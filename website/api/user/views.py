@@ -55,16 +55,6 @@ class UserRelationshipViewSet(viewsets.ViewSet):
                 return Response({"Relationships Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
 
-class SkillViewSet(viewsets.ViewSet):
-    serializer_class = SkillSerializer
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            Skill.objects.create(**serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
-
 class BountyViewSet(viewsets.ViewSet):
     serializer_class = BountySerializer
 

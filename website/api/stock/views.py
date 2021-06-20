@@ -1,49 +1,61 @@
-from rest_framework import viewsets, status
+from rest_framework import views, status
 from rest_framework.response import Response
 
 from .serializers import StockSerializer, StockPriceSerializer, UserStockSerializer
 from .selectors import get_all_stocks
 from .services import create_stock, create_stock_price, update_or_create_user_stock, get_stock_data_by_30_days
 
-class StockViewSet(viewsets.ViewSet):
-    serializer_class = StockSerializer
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
+class StockListCreate(views.APIView):
+    def get(self, request, format=None):
+        serializer = StockSerializer(get_all_stocks())
+        return Response({
+            "message": "Retrieved list of stocks",
+            "data": serializer.data,
+        }, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = StockPriceSerializer(request.data)
         if serializer.is_valid():
-            create_stock(serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            stock = request.data.get("company_name")
 
-    def list(self, request):
-        serializer = self.serializer_class(get_all_stocks(), many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+                "message": f"{stock} has been created",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            "message": serializer.error_messages,
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-class StockPriceViewSet(viewsets.ViewSet):
-    serializer_class = StockPriceSerializer
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            create_stock_price(serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
-
-    def retrieve(self, request, pk=None):
+class StockPriceDetail(views.APIView):
+    def get(self, request, pk, format=None):
         if pk is not None:
-            stock_prizes = get_stock_data_by_30_days(pk)
-            serializer = self.serializer_class(stock_prizes, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({"Bad Request": "Stock name parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
+            stock_price = get_stock_data_by_30_days(pk)
+            serializer  = StockPriceSerializer(stock_price, many=True)
+
+            return Response({
+                "message": f"Retrieved stock prize for {pk}",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        return Response({
+            "message": "Stock name is not specified",
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserStockViewSet(viewsets.ViewSet):
-    serializer_class = UserStockSerializer
-
-    def create(self, request):
-        serializer = self.serializer_class(request.data)
+class UserStockCreate(views.APIView):
+    def post(self, request, format=None):
+        serializer = UserStockSerializer(request.data)
         if serializer.is_valid():
             update_or_create_user_stock(serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({
+                "message": "Stock has been created/updated",
+                "data": serializer.data,
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            "message": serializer.error_messages,
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
 

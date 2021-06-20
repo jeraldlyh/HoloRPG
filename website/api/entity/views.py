@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 from .serializers import EntitySerializer, UserEntitySerializer
 from .services import create_entity, deduct_user_entity, update_or_create_user_entity, claim_income
@@ -8,39 +8,103 @@ from .selectors import get_all_entities, get_user_entities_by_username
 from ..user.serializers import UserProfileSerializer
 from ..user.selectors import get_user_by_username
 
-class EntityViewSet(viewsets.ViewSet):
-    serializer_class = EntitySerializer
 
-    def list(self, request):
-        serializer = self.serializer_class(get_all_entities(), many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class EntityListCreate(views.APIView):
+    def get(self, request, format=None):
+        serializer = EntitySerializer(get_all_entities(), many=True)
+        return Response({
+            "message": "Retrieved list of entities",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
     
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
+    def post(self, request, format=None):
+        serializer = EntitySerializer(data=request.data)
         if serializer.is_valid():
             create_entity(serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            entity_name = request.data.get("name")
 
-class UserEntityViewSet(viewsets.ViewSet):
-    serializer_class = UserEntitySerializer
+            return Response({
+                "message": f"{entity_name} has been created",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        return Response({
+            "message": serializer.error_messages,
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, pk=None):
+# class EntityViewSet(viewsets.ViewSet):
+#     serializer_class = EntitySerializer
+
+#     def list(self, request):
+#         serializer = self.serializer_class(get_all_entities(), many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+#     def create(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             create_entity(serializer.validated_data)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UserEntityCreate(views.APIView):
+    def post(self, request, format=None):
+        serializer = UserEntitySerializer(data=request.data)
+        if serializer.is_valid():
+            updated_entities = update_or_create_user_entity(serializer.validated_data)
+            serialized_data = UserEntitySerializer(updated_entities, many=True)
+            username = request.data.get("user")
+            entity = request.data.get("entity")
+            quantity = request.data.get("quantity")
+
+            return Response({
+                "message": f"{username} has successfully purchased {quantity}x {entity}",
+                "data": serialized_data.data
+            }, status=status.HTTP_200_OK)
+        return Response({
+            "message": serializer.error_messages,
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+class UserEntityDetail(views.APIView):
+    def get(self, request, pk=None, format=None):
         if pk is not None:
             try:
                 user_entity = get_user_entities_by_username(pk)
-                serializer = self.serializer_class(user_entity, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            except:
-                return Response({"Profile Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
-        return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
+                serializer = UserEntitySerializer(user_entity, many=True)
 
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            updated_entities = update_or_create_user_entity(serializer.validated_data)
-            serialized_data = self.serializer_class(updated_entities, many=True)
-            return Response(serialized_data.data, status=status.HTTP_200_OK)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "message": f"Retrieved data for {pk}",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+            except:
+                return Response({
+                    "message": f"{pk} cannot be found",
+                    "data": ""
+                }, status=status.HTTP_404_NOT_FOUND)
+        return Response({
+            "message": "Username parameter not specified",
+            "data": ""
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+# class UserEntityViewSet(viewsets.ViewSet):
+#     serializer_class = UserEntitySerializer
+
+#     def retrieve(self, request, pk=None):
+#         if pk is not None:
+#             try:
+#                 user_entity = get_user_entities_by_username(pk)
+#                 serializer = self.serializer_class(user_entity, many=True)
+#                 return Response(serializer.data, status=status.HTTP_200_OK)
+#             except:
+#                 return Response({"Profile Not Found": "Invalid username"}, status=status.HTTP_404_NOT_FOUND)
+#         return Response({"Bad Request": "Username parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)
+
+#     def create(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             updated_entities = update_or_create_user_entity(serializer.validated_data)
+#             serialized_data = self.serializer_class(updated_entities, many=True)
+#             return Response(serialized_data.data, status=status.HTTP_200_OK)
+#         return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
 def claim_stacked_income(request):

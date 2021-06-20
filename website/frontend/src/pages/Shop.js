@@ -49,7 +49,7 @@ function Shop(props) {
             entity: entityName,
             quantity: quantity
         }
-        axiosInstance.post("/api/userentity/", body)
+        axiosInstance.post("/api/entity/purchase/", body)
             .then(response => {
                 setPlayerEntities(response.data)
 
