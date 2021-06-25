@@ -54,7 +54,7 @@ class UserProfile(models.Model):
 
         sum_of_entities_income = 0
         for entity in player_entities:
-            hours = clamp(get_duration(entity.last_collected, "hours"), 0, 24)
+            hours = clamp(get_duration(entity.last_collected, interval="hours"), 0, 24)
             sum_of_entities_income += entity.entity.income * entity.quantity * hours
 
         # last_collected = self.income_collected
