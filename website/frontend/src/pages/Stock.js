@@ -4,104 +4,102 @@ import moment from "moment"
 import { connect } from "react-redux"
 import ReactApexChart from "react-apexcharts"
 import { getStockData } from "../store/actions/Stock"
+import { seriesData } from "./dummyStock"
+import "../styles/Stock.css"
+
 
 function Stock(props) {
-    const [candleData, setCandleData] = useState([])
-    const [volumeData, setVolumeData] = useState([])
+    const [priceData, setPriceData] = useState([])
+    const [datesData, setDatesData] = useState([])
 
-    const populateVolume = (response) => {
-        const data = _.map(response.data, data => (
-            {
-                x: moment(data.date, "YYYY-MM-DD").toDate(),
-                y: data.volume
-            }
-        ))
 
-        if (data.length !== 50) {
-            const difference = 50 - data.length
-            var startDate = moment(data[0].x, "YYYY-MM-DD")
-            var endDate = moment(data[0].x, "YYYY-MM-DD").add(difference, "days")
+    const populateData = (response) => {
+        const tempPriceData = []
+        const tempDatesData = []
 
-            while (startDate.add(1, "days").diff(endDate) < 0) {
-                data.push({
-                    x: startDate.clone().toDate(),
-                    y: 0
-                })
-            }
-        }
-        return data
-    }
+        response.data.forEach(data => {
+            tempPriceData.push(data.price)
+            tempDatesData.push(data.date)
+        })
 
-    const populateCandles = (response) => {
-        const data = _.map(response.data, data => (
-            {
-                x: moment(data.date, "YYYY-MM-DD").toDate(),
-                y: [data.open, data.open, data.close, data.close]
-            }
-        ))
+        if (response.data.length !== 30) {
+            const difference = 30 - response.data.length
+            
+            var startDate = moment(tempDatesData[0], "YYYY-MM-DD")
+            var endDate = startDate.clone().add(difference, 'days')
+            console.log("start", startDate, "end", endDate)
 
-        if (data.length !== 50) {
-            const difference = 50 - data.length
-            var startDate = moment(data[0].x, "YYYY-MM-DD")
-            var endDate = moment(data[0].x, "YYYY-MM-DD").add(difference, "days")
-
-            while (startDate.add(1, "days").diff(endDate) < 0) {
-                data.push({
-                    x: startDate.clone().toDate(),
-                    y: [0, 600, 400, 0]
-                })
+            while (startDate.add(1, 'days').diff(endDate) < 0) {
+                tempDatesData.push(startDate.clone().format("YYYY-MM-DD"))
             }
         }
-        return data
+        console.log(tempDatesData)
+        setPriceData(tempPriceData)
+        setDatesData(tempDatesData)
     }
 
     useEffect(() => {
         props.getStockData("Bitcoin").then(response => {
-            console.log(response)
-
-            const populatedCandleData = populateCandles(response)
-            setCandleData(populatedCandleData)
-
-            const populatedVolumeData = populateVolume(response)
-            setVolumeData(populatedVolumeData)
+            populateData(response)
         })
     }, [])
 
     const candleStick = {
         series: [{
-            data: candleData
+            name: 'XXX',
+            data: priceData
         }],
         options: {
             chart: {
-                type: "candlestick",
-                height: 290,
-                id: "candles",
-                toolbar: {
-                    autoSelected: "pan",
-                    show: false
-                },
+                type: 'area',
+                height: 350,
                 zoom: {
                     enabled: false
-                },
-            },
-            plotOptions: {
-                candlestick: {
-                    colors: {
-                        upward: '#3C90EB',
-                        downward: '#DF7D46'
-                    }
                 }
             },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: 'Stock Price of XXX',
+                align: 'middle',
+                style: {
+                    // insert text styles here
+                }
+            },
+            labels: datesData,
             xaxis: {
-                type: 'datetime'
+                type: 'datetime',
+                labels: {
+                    format: 'dd MMM yyyy',
+                    showDuplicates: false
+                }
+            },
+            tooltip: {
+                style: {
+                    background: '#000'
+                },
+                x: {
+                    show: false
+                }
+            },
+            noData: {
+                text: "There's no data for XXX",
+                align: "center",
+                verticalAlign: "middle",
+                style: {
+                    // insert text styles here
+                }
             }
         },
     }
 
-
     return (
         <div>
-            <ReactApexChart options={candleStick.options} series={candleStick.series} type="candlestick" height={290} />
+            <ReactApexChart options={candleStick.options} series={candleStick.series} type="area" height={350} />
         </div>
     )
 }

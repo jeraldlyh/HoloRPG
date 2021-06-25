@@ -12,9 +12,9 @@ def get_all_stocks() -> QuerySet:
 
 def get_stock_data_by_30_days(company_name: str) -> QuerySet:
     query = Q(company_name=company_name)
-    return StockPrice.objects.filter(query).order_by("-datetime")[0: 30]
+    return StockPrice.objects.filter(query).order_by("-date")[0: 30]
 
-def get_volume_by_date(company_name: str, datetime: str) -> QuerySet:
-    query = Q(company_name=company_name, placed_at__day=ExtractDay(datetime))
+def get_volume_by_date(company_name: str, date: str) -> QuerySet:
+    query = Q(company_name=company_name, placed_at__day=ExtractDay(date))
     quantity = UserStock.objects.filter(query).aggregate(quantity=Sum("quantity"))["quantity"]
     return quantity if quantity else 0

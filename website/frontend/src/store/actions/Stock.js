@@ -3,7 +3,7 @@ import { GET_STOCK_PRICE_ERROR, GET_ALL_STOCKS_ERROR } from "../Types"
 
 export const getAllStocks = () => async (dispatch) => {
     try {
-        const response = await axiosInstance.get("api/stock")
+        const response = await axiosInstance.get("api/stocks")
         return response
     } catch (error) {
         console.log("Error in getAllStocks")
@@ -15,7 +15,7 @@ export const getAllStocks = () => async (dispatch) => {
 
 export const getStockData = (company) => async (dispatch) => {
     try {
-        const response = await axiosInstance.get(`/api/stockprice/${company}`)
+        const response = await axiosInstance.get(`/api/stocks/${company}`)
         return response
     } catch (error) {
         console.log("Error in getStockData")

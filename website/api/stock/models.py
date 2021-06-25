@@ -19,9 +19,9 @@ class Stock(models.Model):
 
 class StockPrice(models.Model):
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["datetime", "company_name"], name="unique_stockprice")]
+        constraints = [models.UniqueConstraint(fields=["date", "company_name"], name="unique_stockprice")]
 
-    datetime = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
+    date = models.DateField(auto_now_add=True, blank=True, editable=False)
     company_name = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
     price = models.IntegerField()
 
