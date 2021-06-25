@@ -11,7 +11,7 @@ export const getProfile = (username) => async (dispatch) => {
         })
         return response
     } catch (error) {
-        console.log("Error in getProfile", error)
+        console.log("Error in getProfile")
         dispatch({
             type: LOAD_PROFILE_ERROR,
             payload: error.response.data
@@ -24,7 +24,7 @@ export const getAllProfile = () => async (dispatch) => {
         const response = await axiosInstance.get("/api/profile")
         return response
     } catch (error) {
-        console.log("Erorr in getAllProfile", error)
+        console.log("Error in getAllProfile")
         dispatch({
             type: GET_ALL_PROFILE_ERROR,
             payload: error.response.data

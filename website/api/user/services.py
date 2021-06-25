@@ -98,6 +98,7 @@ def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, User
     """
     player = get_user_by_username(player_name)
     bounty = get_bounty_by_id(bounty_id)
+
     target = bounty.target
 
     if target.current_health == 0:
@@ -118,6 +119,7 @@ def create_bounty(serializer_data: OrderedDict) -> None:
     """
 
     data = list(serializer_data.items())
+
     player = data[1][1]
     target = data[2][1]
     bounty_value = data[0][1]

@@ -33,7 +33,7 @@ export const registerUser = ({ username, email, password }) => async (dispatch) 
         const tokenBody = JSON.stringify({ username, password })
         const responseData = {}
 
-        const register = axiosInstance.post("/auth/register/", body)
+        const register = await axiosInstance.post("/auth/register/", body)
         Object.assign(responseData, register.data)
 
         const token = await axiosInstance.post("/api/token/", tokenBody)

@@ -12,6 +12,6 @@ urlpatterns = [
     path("", include(router.urls)),
     path("entity/", EntityListCreate.as_view()),
     path("entity/<str:pk>", UserEntityDetail.as_view()),
-    path("entity/purchase", UserEntityCreate.as_view()),
+    path("entity/purchase/", UserEntityCreate.as_view()),
     path(r"income/", claim_stacked_income, name="income")
 ]

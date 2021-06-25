@@ -25,6 +25,7 @@ function Leaderboards(props) {
     useEffect(() => {
         props.getAllProfile()
             .then(response => {
+                console.log(response)
                 const sortedData = sortData(response.data)
                 setUserProfiles(sortedData)
             })

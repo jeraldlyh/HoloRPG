@@ -1,19 +1,5 @@
 [
     {
-        "model": "room.Dungeon",
-        "fields": {
-            "name": "Dungeon 1",
-            "level": "1"
-        }
-    },
-    {
-        "model": "room.Monster",
-        "fields": {
-            "name": "Monster 1",
-            "dungeon_name": "Dungeon 1"
-        }
-    },
-    {
         "model": "user.Relationship",
         "fields": {
             "name": "Friend"
@@ -28,36 +14,31 @@
     {
         "model": "user.Character",
         "fields": {
-            "main_class": "Default",
-            "sub_class": "NULL"
+            "main_class": "Default"
         }
     },
     {
         "model": "user.Character",
         "fields": {
-            "main_class": "Warrior",
-            "sub_class": "Dawn Warrior"
+            "main_class": "Warrior"
         }
     },
     {
         "model": "user.Character",
         "fields": {
-            "main_class": "Archer",
-            "sub_class": "Hunter"
+            "main_class": "Archer"
         }
     },
     {
         "model": "user.Character",
         "fields": {
-            "main_class": "Rogue",
-            "sub_class": "Scout"
+            "main_class": "Rogue"
         }
     },
     {
         "model": "user.Character",
         "fields": {
-            "main_class": "Magician",
-            "sub_class": "Battle Cleric"
+            "main_class": "Magician"
         }
     },
     {

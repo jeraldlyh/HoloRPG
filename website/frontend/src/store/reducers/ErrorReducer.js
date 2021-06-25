@@ -10,9 +10,9 @@ import {
     ATTACK_PLAYER_ERROR,
     GET_ALL_PROFILE_ERROR,
     GET_ENTITY_LIST_ERROR,
-    GET_USER_ENTITY_ERROR,
     GET_STOCK_PRICE_ERROR,
-    GET_ALL_STOCKS_ERROR
+    GET_ALL_STOCKS_ERROR,
+    PURCHASE_ENTITY_ERROR
 } from "../Types"
 
 
@@ -31,7 +31,6 @@ export const errorReducer = (state=initialState, action) => {
         case ATTACK_PLAYER_ERROR:
         case GET_ALL_PROFILE_ERROR:
         case GET_ENTITY_LIST_ERROR:
-        case GET_USER_ENTITY_ERROR:
         case GET_STOCK_PRICE_ERROR:
         case GET_ALL_STOCKS_ERROR:
         case PURCHASE_ENTITY_ERROR:

@@ -12,10 +12,7 @@ from ..user.selectors import get_user_by_username
 class EntityListCreate(views.APIView):
     def get(self, request, format=None):
         serializer = EntitySerializer(get_all_entities(), many=True)
-        return Response({
-            "message": "Retrieved list of entities",
-            "data": serializer.data
-        }, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
         serializer = EntitySerializer(data=request.data)
@@ -23,14 +20,8 @@ class EntityListCreate(views.APIView):
             create_entity(serializer.validated_data)
             entity_name = request.data.get("name")
 
-            return Response({
-                "message": f"{entity_name} has been created",
-                "data": serializer.data
-            }, status=status.HTTP_200_OK)
-        return Response({
-            "message": serializer.error_messages,
-            "data": ""
-        }, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
 # class EntityViewSet(viewsets.ViewSet):
 #     serializer_class = EntitySerializer
@@ -48,21 +39,14 @@ class EntityListCreate(views.APIView):
 class UserEntityCreate(views.APIView):
     def post(self, request, format=None):
         serializer = UserEntitySerializer(data=request.data)
+
         if serializer.is_valid():
+            print("valid")
             updated_entities = update_or_create_user_entity(serializer.validated_data)
             serialized_data = UserEntitySerializer(updated_entities, many=True)
-            username = request.data.get("user")
-            entity = request.data.get("entity")
-            quantity = request.data.get("quantity")
 
-            return Response({
-                "message": f"{username} has successfully purchased {quantity}x {entity}",
-                "data": serialized_data.data
-            }, status=status.HTTP_200_OK)
-        return Response({
-            "message": serializer.error_messages,
-            "data": ""
-        }, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serialized_data.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
 class UserEntityDetail(views.APIView):
     def get(self, request, pk=None, format=None):
@@ -71,18 +55,13 @@ class UserEntityDetail(views.APIView):
                 user_entity = get_user_entities_by_username(pk)
                 serializer = UserEntitySerializer(user_entity, many=True)
 
-                return Response({
-                    "message": f"Retrieved data for {pk}",
-                    "data": serializer.data
-                }, status=status.HTTP_200_OK)
+                return Response(serializer.data, status=status.HTTP_200_OK)
             except:
                 return Response({
                     "message": f"{pk} cannot be found",
-                    "data": ""
                 }, status=status.HTTP_404_NOT_FOUND)
         return Response({
             "message": "Username parameter not specified",
-            "data": ""
         }, status=status.HTTP_400_BAD_REQUEST)
 
 # class UserEntityViewSet(viewsets.ViewSet):
@@ -116,4 +95,4 @@ def claim_stacked_income(request):
         user_profile = get_user_by_username(username)
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response({"Bad Request": "User or amount is not specified"}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"message": "User or amount is not specified"}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.db.models.query import QuerySet
 from django.db.models.query_utils import Q
 
@@ -10,15 +11,19 @@ def get_all_user_levels() -> QuerySet:
     return UserProfile.objects.all().values_list("level", flat=True)
 
 def get_user_by_username(username: str) -> UserProfile:
-    query = Q(user_id=username)
+    query = Q(user__username=username)
     return UserProfile.objects.get(query)
 
-def get_user_by_abstract_id(id: str) -> UserProfile:
+def get_user_by_profile_id(id: str) -> UserProfile:
+    query = Q(id=id)
+    return UserProfile.objects.get(query)
+
+def get_user_by_user_id(id: str) -> UserProfile:
     query = Q(user__id=id)
     return UserProfile.objects.get(query)
 
 def get_users_by_relationships(relationships: QuerySet) -> QuerySet:
-    query = Q(id__in=relationships)
+    query = Q(user__username__in=relationships)
     return UserProfile.objects.filter(query)
 
 def get_all_bounties() -> QuerySet:

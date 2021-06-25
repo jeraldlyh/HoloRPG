@@ -30,7 +30,9 @@ function Shop(props) {
     useEffect(() => {                      // useEffect for user owned entities
         props.getUserEntity(user)
             .then(response => {
-                setPlayerEntities(response.data)
+                if (response) {
+                    setPlayerEntities(response.data)
+                }
             })
     }, [])
 
@@ -43,7 +45,7 @@ function Shop(props) {
         return 0
     }
 
-    const purchaseEntity = (user, entityName, quantity) => {
+    const purchaseEntity = (entityName, quantity) => {
         props.purchaseEntity(user, entityName, quantity)
             .then(response => {
                 setPlayerEntities(response.data)
@@ -129,7 +131,7 @@ const mapStateToProps = state => ({
     profile: state.profileReducer.profile
 })
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = {
     getProfile,
     getEntityList,
     getUserEntity,

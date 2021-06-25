@@ -14,7 +14,7 @@ function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/" component={FAQ} />
+                <CustomRoute exact path="/" component={FAQ} />
                 <CustomRoute exact path="/room" component={Room} />
                 <CustomRoute exact path="/bounty" component={Bounty} />
                 <CustomRoute exact path="/stock" component={Stock} />

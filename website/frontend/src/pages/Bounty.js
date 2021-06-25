@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
-import axiosInstance from "../axios/AxiosInstance"
 import Layout from "../components/Layout"
-import { attackPlayer } from "../store/actions/Bounty"
+import { attackPlayer, getBountyList } from "../store/actions/Bounty"
 
 
 function Bounty(props) {
@@ -10,7 +9,7 @@ function Bounty(props) {
     const [bounties, setBounties] = useState([])
     
     useEffect(() => {
-        axiosInstance.get("/api/bounty")
+        props.getBountyList()
             .then(response => {
                 setBounties(response.data)
             })
@@ -68,5 +67,10 @@ const mapStateToProps = state => ({
     profile: state.profileReducer.profile
 })
 
+const mapDispatchToProps = {
+    attackPlayer,
+    getBountyList
+}
 
-export default connect(mapStateToProps, { attackPlayer })(Bounty)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Bounty)

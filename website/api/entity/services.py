@@ -6,7 +6,7 @@ from django.db.models.query import QuerySet
 from ..user.models import UserProfile
 from ..user.services import deduct_player_currency
 from ..user.selectors import get_user_by_username
-from .selectors import get_user_entities_by_username, get_user_entity_by_username_entityname
+from .selectors import get_user_entities_by_username, get_user_entity_by_entityname
 from .models import Entity, UserEntity
 
 
@@ -25,7 +25,7 @@ def update_or_create_user_entity(serializer_data: OrderedDict)-> QuerySet:
     quantity = data[0][1]
 
     try:
-        existing = get_user_entity_by_username_entityname(user.user.username, entity.name)
+        existing = get_user_entity_by_entityname(user.user.username, entity.name)
         existing.quantity = F("quantity") + quantity
         existing.save()
     except UserEntity.DoesNotExist:
@@ -36,9 +36,12 @@ def update_or_create_user_entity(serializer_data: OrderedDict)-> QuerySet:
 
     return get_user_entities_by_username(user.user.username)
 
-def reset_income_collected(user: UserProfile)-> None:
-    user.income_collected = datetime.now()
-    user.save()
+def reset_income_collected(username: str)-> None:
+    entities = get_user_entities_by_username(username)
+    for entity in entities:
+        entity.last_collected = datetime.now()
+        entity.save()
+
 
 def claim_income(username: str, amount: int) -> None:
     user = get_user_by_username(username)

@@ -6,7 +6,7 @@ from .models import Entity, UserEntity
 def get_all_entities() -> QuerySet:
     return Entity.objects.all()
 
-def get_user_entity_by_username_entityname(username: str, entity_name: str) -> UserEntity:
+def get_user_entity_by_entityname(username: str, entity_name: str) -> UserEntity:
     query = Q(user__user_id=username, entity__name=entity_name)
     return UserEntity.objects.get(query)
 

@@ -37,10 +37,6 @@ export const getUserEntity = (username) => async (dispatch) => {
         const response = await axiosInstance.get(`/api/userentity/${username}`)
         return response
     } catch (error) {
-        console.log("Error in getUserEntity", error)
-        dispatch({
-            type: GET_USER_ENTITY_ERROR,
-            payload: error.response.data
-        })
+        console.log("User does not own any entities", error)
     }
 }

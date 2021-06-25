@@ -14,5 +14,6 @@ class UserEntity(models.Model):
         constraints = [models.UniqueConstraint(fields=["entity", "user"], name="unique_user_entity")]
 
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field="user_id")
+    user = models.ForeignKey(UserProfile, to_field="user_id", on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    last_collected = models.DateTimeField(auto_now_add=True, blank=True)

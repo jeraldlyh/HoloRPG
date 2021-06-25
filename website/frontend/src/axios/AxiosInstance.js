@@ -6,7 +6,7 @@ import { logoutUser } from "../store/actions/Auth"
 const baseURL = "http://127.0.0.1:8000"
 const { store } = useStore()
 const router = createBrowserHistory()
-var isRefreshingToken = false
+var isRefreshing = false
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -40,10 +40,10 @@ axiosInstance.interceptors.response.use(
             error.response.data.code === 'token_not_valid' &&
             error.response.status === 401 &&
             error.response.statusText === "Unauthorized" &&
-            !isRefreshingToken
+            !isRefreshing
         ) {
             const refreshToken = localStorage.getItem("refresh_token")
-            isRefreshingToken = true
+            isRefreshing = true
 
             if (refreshToken) {
                 const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]))         // Retrieves the time of the token
@@ -61,7 +61,7 @@ axiosInstance.interceptors.response.use(
                                 originalRequest.headers["Authorization"] = "Bearer" + response.data.access
                                 console.log("Refreshed token")
 
-                                isRefreshingToken = false
+                                isRefreshing = false
                                 return axiosInstance(originalRequest)
                             }
                         })

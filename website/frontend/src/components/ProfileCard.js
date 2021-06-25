@@ -79,7 +79,7 @@ const mapStateToProps = state => ({
     profile: state.profileReducer
 }) 
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = {
     getProfile,
     claimIncome
 }

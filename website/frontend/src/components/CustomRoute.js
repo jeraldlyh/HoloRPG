@@ -2,11 +2,13 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getProfile } from '../store/actions/Profile'
+import { logoutUser } from '../store/actions/Auth'
 
 function CustomRoute(props) {
     const { isLoading, isAuthenticated, user } = props.auth
 
     if (!isAuthenticated) {
+        props.logoutUser()
         return <Redirect to="/login" />
     } else if (isAuthenticated && !props.profile) {                     // Sets profile reducer just in case
         console.log("CALLED GET PROFILE IN CUSTOM ROUTE")
@@ -23,4 +25,9 @@ const mapStateToProps = state => ({
     profile: state.profileReducer.profile
 })
 
-export default connect(mapStateToProps, { getProfile })(CustomRoute)
+const mapDispatchToProps = {
+    getProfile,
+    logoutUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomRoute)
