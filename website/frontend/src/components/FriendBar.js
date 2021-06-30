@@ -20,7 +20,7 @@ function FriendBar(props) {
     }
 
     const online = (
-        <button className="rounded-full font-bold focus:outline-none w-20 py-1 text-center bg-custom-green" onClick={onClick}>Online</button>
+        <button className="rounded-full mt-1 font-bold focus:outline-none w-20 py-1 text-center bg-custom-green" onClick={onClick}>Online</button>
     )
 
     const away = (

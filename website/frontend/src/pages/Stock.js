@@ -5,7 +5,6 @@ import { connect } from "react-redux"
 import ReactApexChart from "react-apexcharts"
 import { getStockData } from "../store/actions/Stock"
 import { seriesData } from "./dummyStock"
-import "../styles/Stock.css"
 
 
 function Stock(props) {
@@ -80,7 +79,8 @@ function Stock(props) {
             },
             tooltip: {
                 style: {
-                    background: '#000'
+                    background: black,
+                    color: black,
                 },
                 x: {
                     show: false

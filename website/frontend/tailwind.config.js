@@ -1,7 +1,7 @@
-const colors = require('./colors')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
-    purge: [],
+    purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
     presets: [],
     darkMode: false, // or 'media' or 'class'
     theme: {
@@ -16,14 +16,6 @@ module.exports = {
             transparent: 'transparent',
             current: 'currentColor',
 
-            custom: {
-                orange: "#fbba2c",
-                green: "#79c9a3",
-                peach: "#fb9c9b",
-                green: "#79c9a3",
-                blue: "#33348c",
-                pink: "#fa0563",
-            },
             black: colors.black,
             white: colors.white,
             gray: colors.coolGray,
@@ -119,6 +111,7 @@ module.exports = {
         },
         blur: {
             0: '0',
+            none: '0',
             sm: '4px',
             DEFAULT: '8px',
             md: '12px',
@@ -849,17 +842,17 @@ module.exports = {
         backgroundAttachment: ['responsive'],
         backgroundBlendMode: ['responsive'],
         backgroundClip: ['responsive'],
-        backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
+        backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
         backgroundImage: ['responsive'],
-        backgroundOpacity: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
+        backgroundOpacity: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
         backgroundPosition: ['responsive'],
         backgroundRepeat: ['responsive'],
         backgroundSize: ['responsive'],
         backgroundOrigin: ['responsive'],
         blur: ['responsive'],
         borderCollapse: ['responsive'],
-        borderColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
-        borderOpacity: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
+        borderColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
+        borderOpacity: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
         borderRadius: ['responsive'],
         borderStyle: ['responsive'],
         borderWidth: ['responsive'],
@@ -925,7 +918,7 @@ module.exports = {
         mixBlendMode: ['responsive'],
         objectFit: ['responsive'],
         objectPosition: ['responsive'],
-        opacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
+        opacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
         order: ['responsive'],
         outline: ['responsive', 'focus-within', 'focus'],
         overflow: ['responsive'],

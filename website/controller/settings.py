@@ -15,6 +15,7 @@ from datetime import timedelta
 from decouple import config
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -69,11 +70,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'controller.urls'
-
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(SETTINGS_PATH, "frontend/public")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
