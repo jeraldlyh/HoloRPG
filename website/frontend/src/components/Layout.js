@@ -9,7 +9,7 @@ import ProfileCard from "./ProfileCard"
 function Layout(props) {
     return (
         <Fragment>
-            <Header />
+            <NavBar />
             <div className="flex flex-row mx-10 my-5 min-h-screen items-center justify-around">
                 <Error />
                 <FriendBar />
