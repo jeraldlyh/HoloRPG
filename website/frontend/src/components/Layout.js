@@ -1,6 +1,7 @@
 import React, { Fragment } from "react"
 import Footer from "./Footer"
 import Header from "./Header"
+import NavBar from "./NavBar"
 import Error from "./Error"
 import FriendBar from "./FriendBar"
 import ProfileCard from "./ProfileCard"
