@@ -11,7 +11,7 @@ function Layout(props) {
     return (
         <Fragment>
             <NavBar />
-            <div className="flex flex-row mx-10 my-5 min-h-screen items-center justify-around">
+            <div className="flex flex-row mx-10 min-h-screen items-center justify-around">
                 <Error />
                 <FriendBar />
                 { props.children }
