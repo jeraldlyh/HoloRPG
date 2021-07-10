@@ -11,6 +11,9 @@ function Layout(props) {
     return (
         <div className="flex flex-row bg-custom-bg-main h-screen">
             <NavBar />
+            <div className="">
+
+            </div>
             <Error />
             {props.children}
 
