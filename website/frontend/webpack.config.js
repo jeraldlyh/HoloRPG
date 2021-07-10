@@ -20,7 +20,7 @@ module.exports = {
                 test: /\.css$/,
                 // exclude: /node_modules/,
                 use: [
-                    'style-loader', 
+                    'style-loader',
                     'css-loader',
                     'postcss-loader',
                 ],
@@ -47,4 +47,7 @@ module.exports = {
             },
         }),
     ],
+    devServer: {
+        writeToDisk: true,
+    }
 };

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "package": "npm run build:css && webpack --mode=development --watch --progress",
-    "dev": "webpack --mode=development --watch --progress",
+    "start:dev": "webpack --mode=development --watch --progress",
+    "dev": "webpack serve --config webpack.config.js --mode development --progress",
     "build": "webpack --mode=production",
     "build:css": "postcss build src/styles/tailwind.css -o static/css/index.css"
   },

@@ -2,8 +2,6 @@ import React, { Fragment } from "react"
 import { connect } from "react-redux"
 import { logoutUser } from "../store/actions/Auth"
 
-
-
 function Header(props) {
     const { user, isAuthenticated } = props.auth
 

@@ -8,7 +8,7 @@ function CustomRoute(props) {
     const { isLoading, isAuthenticated, user } = props.auth
 
     if (!isAuthenticated) {
-        props.logoutUser()
+        // props.logoutUser()
         return <Redirect to="/login" />
     } else if (isAuthenticated && !props.profile) {                     // Sets profile reducer just in case
         console.log("CALLED GET PROFILE IN CUSTOM ROUTE")
