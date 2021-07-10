@@ -10,14 +10,13 @@ import ProfileCard from "./ProfileCard"
 function Layout(props) {
     return (
         <Fragment>
-            <NavBar />
-            <div className="flex flex-row mx-10 min-h-screen items-center justify-around">
+            <div className="flex flex-row">
+                <NavBar />
                 <Error />
-                <FriendBar />
-                { props.children }
-                <ProfileCard />
+                {props.children}
+
+                <div className="w-14 bg-black h-min-screen"></div>
             </div>
-            <Footer />
         </Fragment>
     )
 }
