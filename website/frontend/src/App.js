@@ -9,12 +9,13 @@ import Leaderboards from "./pages/Leaderboards"
 import Shop from "./pages/Shop"
 import CustomRoute from "./components/CustomRoute"
 import Stock from "./pages/Stock"
+import HomePage from "./pages/Home"
 
 function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <CustomRoute exact path="/" component={FAQ} />
+                <Route exact path="/" component={HomePage} />
                 <CustomRoute exact path="/room" component={Room} />
                 <CustomRoute exact path="/bounty" component={Bounty} />
                 <CustomRoute exact path="/stock" component={Stock} />

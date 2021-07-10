@@ -35,7 +35,8 @@ module.exports = {
                         online: "#77E4BD",
                         offline: "#757575",
                         accent: "#8955DF",
-                        nav: "#693EBD"
+                        nav: "#693EBD",
+                        card: "#28282B",
                     },
                 }
             },
