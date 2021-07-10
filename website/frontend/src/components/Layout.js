@@ -9,15 +9,13 @@ import ProfileCard from "./ProfileCard"
 
 function Layout(props) {
     return (
-        <Fragment>
-            <div className="flex flex-row">
-                <NavBar />
-                <Error />
-                {props.children}
+        <div className="flex flex-row bg-custom-bg-main h-screen">
+            <NavBar />
+            <Error />
+            {props.children}
 
-                <div className="w-14 bg-black h-min-screen"></div>
-            </div>
-        </Fragment>
+            <div className="w-14 bg-black h-min-screen"></div>
+        </div>
     )
 }
 
