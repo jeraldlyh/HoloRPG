@@ -11,16 +11,16 @@ import Banner from "./Banner"
 
 function Layout(props) {
     return (
-        <Fragment>
-            <div className="flex flex-row">
-                <NavBar />
-                <Error />
+        <div className="flex flex-row bg-custom-bg-main h-screen">
+            <NavBar />
+            <div className="flex flex-col">
+                <Banner />
                 {props.children}
-
-                <div className="w-14 bg-black h-min-screen"></div>
-                <ProfileBar />
+                <Error />
             </div>
-        </Fragment>
+            <ProfileBar />
+            <div className="w-14 bg-black h-min-screen"></div>
+        </div>
     )
 }
 
