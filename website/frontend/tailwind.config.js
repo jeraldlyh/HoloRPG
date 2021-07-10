@@ -37,6 +37,7 @@ module.exports = {
                         accent: "#8955DF",
                         nav: "#693EBD",
                         card: "#28282B",
+                        cardlight: "#202020",
                     },
                 }
             },
