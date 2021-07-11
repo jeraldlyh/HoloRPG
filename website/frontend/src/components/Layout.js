@@ -12,7 +12,9 @@ function Layout(props) {
             <div className="flex flex-col w-full">
                 <Banner />
                 <Error />
-                {props.children}
+                <div className="p-3 h-full w-full">
+                    {props.children}
+                </div>
             </div>
             <ProfileBar />
         </div>
