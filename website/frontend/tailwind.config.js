@@ -15,6 +15,9 @@ module.exports = {
                         nav: "#171717",
                         progress: "#555555",
                     },
+                    color: {
+                        grey: "#707070"
+                    },
                     button: {
                         primary: "#FF4887",
                     },

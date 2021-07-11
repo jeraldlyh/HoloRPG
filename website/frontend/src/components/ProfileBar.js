@@ -1,10 +1,31 @@
 import React from "react"
 import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
-import { FaUserFriends } from "react-icons/fa"
+import { IoPersonAddOutline } from "react-icons/io5"
 import { connect } from "react-redux"
+import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import fighterIcon from "../assets/avatars/fighter.svg"
 
 function ProfileBar() {
+    const children = ({ remainingTime }) => {
+        // const hours = Math.floor(remainingTime / 3600)
+        var minutes = Math.floor((remainingTime % 3600) / 60)
+        var seconds = remainingTime % 60
+
+        if (seconds === 0) {
+            seconds = "00"
+        } else if (seconds < 10) {
+            seconds = `0${seconds}`
+        }
+
+        if (minutes === 0) {
+            minutes = "00"
+        } else if (minutes < 10) {
+            minutes = `0${minutes}`
+        }
+
+        return `${minutes}:${seconds}`
+    }
+
     return (
         // sidebar
         <div className="bg-custom-bg-nav text-white w-80 py-4 px-5 h-full">
@@ -37,7 +58,7 @@ function ProfileBar() {
             </div>
 
             {/* xp */}
-            <div className="flex text-sm text-white items-center justify-between">
+            <div className="flex text-xs text-white items-center justify-between">
                 <p>XP</p>
                 <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
                     <div style={{ width: "52%" }} className="rounded-full bg-custom-stats-attack"></div>
@@ -63,33 +84,39 @@ function ProfileBar() {
 
             {/* currency */}
             <div className="flex flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
-                    <p className="text-xs font-medium">Currency</p>
-                    <p className="text-9x1 font-semibold">$12,345.67</p>
+                <p className="text-xs font-medium">Currency</p>
+                <p className="text-9x1 font-semibold">$12,345.67</p>
             </div>
-            
-            {/* income stacked */}
-            <div className="flex justify-between px-5 rounded-lg w-full h-24 mt-3 bg-custom-misc-cardlight">
 
+            {/* income stacked */}
+            <div className="flex justify-around px-2 items-center rounded-lg w-full h-24 mt-3 bg-custom-misc-cardlight">
                 {/* timer */}
-                <div className="flex flex-col items-center justify-center rounded-full w-20 h-20 border-2 border-white">
-                    <p className="text-sm font-semibold">02:35</p>
-                </div>
+                <CountdownCircleTimer
+                    isPlaying
+                    size={80}
+                    duration={11}
+                    strokeWidth={5}
+                    trailColor="#555555"
+                    colors="#FFFFFF"
+                    children={children}
+                />
 
                 {/* income */}
                 <div className="flex flex-col items-center justify-center ml-2">
                     <p className="text-xs font-medium">Income Stacked</p>
-                    <p className="text-9x1 font-semibold mb-1">$326.80</p>
-                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold">COLLECT</div>                   
-                </div>       
+                    <p className="font-semibold mb-1">$326.80</p>
+                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold">COLLECT</div>
+                </div>
             </div>
 
-            <hr className="border-custom-grey w-full mt-5"></hr>
+            <hr className="border-custom-color-grey w-full mt-5 mb-5"></hr>
 
             {/* friends */}
-            
-            <div className="flex items-center mt-3 text-9x1 font-medium">
-                <FaUserFriends size={16} />
-                <p className="ml-3">Friends</p>
+            <div className="flex items-center justify-between">
+                <p className="font-semibold">Friends (3)</p>
+                <div className="bg-custom-misc-cardlight rounded-full p-2">
+                    <IoPersonAddOutline size={12} />
+                </div>
             </div>
         </div>
     )

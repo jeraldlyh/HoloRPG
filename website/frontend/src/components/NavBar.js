@@ -58,8 +58,8 @@ function NavBar(props) {
                 <div className="flex flex-col justify-center items-center">
                     <a className={getFocusDesign(0)}>
                         <GiAxeSwing size={24} />
-                    </a>
-                    <hr className="border-custom-grey w-4/5 mt-3"></hr>
+                    </a> 
+                    <hr className="border-custom-color-grey w-4/5 mt-3"></hr>
                 </div>
                 <div className="flex flex-col justify-center items-center space-y-5">
                     <a href={`/profile/${user.username}`} className={getFocusDesign(1)}>
