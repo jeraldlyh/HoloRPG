@@ -34,7 +34,7 @@ class UserProfile(models.Model):
     def get_account_age(self) -> int:
         registered = self.date_registered
         age = get_duration(registered, interval="days")
-        return age if age != 0 else 0
+        return age if age >= 0 else 0
 
     @property
     def get_rank(self) -> int:
