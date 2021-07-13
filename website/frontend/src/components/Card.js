@@ -1,7 +1,6 @@
 import React from "react"
 
 function Card(props) {
-    console.log(props)
     return (
         <div className={`rounded-lg h-${props.height} w-${props.width} p-4 bg-custom-misc-card text-white`}>
             <div className="flex flex-col items-center max-w-max">
