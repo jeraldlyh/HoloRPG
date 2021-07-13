@@ -94,7 +94,7 @@ function ProfileBar() {
             </div>
 
             {/* income stacked */}
-            <div className="flex justify-around px-2 items-center rounded-lg w-full h-24 mt-3 bg-custom-misc-cardlight">
+            <div className="flex justify-around px-2 items-center rounded-lg w-full h-24 mt-3 bg-custom-card-light">
                 {/* timer */}
                 <CountdownCircleTimer
                     isPlaying
@@ -122,7 +122,7 @@ function ProfileBar() {
             <div className="flex-col"></div>
             <div className="flex items-center justify-between">
                 <p className="font-semibold">Friends (3)</p>
-                <div className="bg-custom-misc-cardlight rounded-full p-2">
+                <div className="bg-custom-card-light rounded-full p-2">
                     <IoPersonAddOutline size={12} />
                 </div>
             </div>

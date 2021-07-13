@@ -29,6 +29,11 @@ module.exports = {
                         defence: "#49B79F",
                         net_worth: "#FFDFAE",
                     },
+                    card: {
+                        normal: "#28282B",
+                        light: "rgba(101, 101, 101, 0.1)",
+                        dark: "#202020"
+                    },
                     misc: {
                         datetime: "#FFF2C7",
                         object: "#A5CFFF",
@@ -37,8 +42,6 @@ module.exports = {
                         offline: "#757575",
                         accent: "#8955DF",
                         nav: "#693EBD",
-                        card: "#28282B",
-                        cardlight: "#202020",
                     },
                 }
             },

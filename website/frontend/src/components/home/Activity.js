@@ -1,11 +1,10 @@
-import React, { Fragment } from "react"
+import React from "react"
 import Card from "../Card"
 import { FiActivity } from "react-icons/fi"
 import moment from "moment"
 
 function Activity() {
     const renderTime = () => {
-        console.log(moment(new Date()).format("DD/MM/YY hh:mm"))
         return moment(new Date()).format("DD/MM/YY hh:mm")
     }
 
