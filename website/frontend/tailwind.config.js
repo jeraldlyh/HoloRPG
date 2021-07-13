@@ -46,7 +46,8 @@ module.exports = {
                 }
             },
             boxShadow: {
-                glow: '5px 5px 15px 5px rgba(255, 255, 255, 0.25)'
+                'glow-left': '5px 5px 15px 5px rgba(255, 255, 255, 0.5)',
+                'glow-right': '15px 15px 15px -15px rgba(255, 255, 255, 0.5)',
             },
         },
     },

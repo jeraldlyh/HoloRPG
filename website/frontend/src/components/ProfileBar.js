@@ -29,7 +29,7 @@ function ProfileBar() {
 
     return (
         // sidebar
-        <div className="bg-custom-bg-nav shadow-glow text-white w-80 py-4 px-5 h-full">
+        <div className="bg-custom-bg-nav shadow-glow-left text-white w-80 py-4 px-5 h-full">
             {/* user profile */}
             <div className="flex items-center">
                 {/* avatar */}
@@ -116,7 +116,7 @@ function ProfileBar() {
                 </div>
             </div>
 
-            <hr className="border-custom-color-grey w-full my-5"></hr>
+            <hr className="border-custom-color-grey w-full my-5 shadow-glow"></hr>
 
             {/* friends */}
             <div className="flex-col"></div>
