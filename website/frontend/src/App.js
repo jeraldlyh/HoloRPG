@@ -17,7 +17,7 @@ function App() {
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <CustomRoute exact path="/room" component={Room} />
-                <CustomRoute exact path="/bounty" component={Bounty} />
+                <Route exact path="/bounty" component={Bounty} />
                 <CustomRoute exact path="/stock" component={Stock} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />

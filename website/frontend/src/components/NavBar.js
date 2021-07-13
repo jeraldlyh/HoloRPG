@@ -56,7 +56,7 @@ function NavBar(props) {
         authenticated  // To be changed to IsAuthenticated
             ? <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right">
                 <div className="flex flex-col justify-center items-center">
-                    <a className={getFocusDesign(0)}>
+                    <a href="/" className={getFocusDesign(0)}>
                         <GiAxeSwing size={24} />
                     </a> 
                     <hr className="border-custom-color-grey w-4/5 mt-3"></hr>
