@@ -116,7 +116,7 @@ function ProfileBar() {
                 </div>
             </div>
 
-            <hr className="border-custom-color-grey w-full my-5 shadow-glow"></hr>
+            <hr className="border-custom-color-grey w-full my-5"></hr>
 
             {/* friends */}
             <div className="flex-col"></div>
