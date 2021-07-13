@@ -33,19 +33,16 @@ class UserProfile(models.Model):
     @property
     def get_account_age(self) -> int:
         registered = self.date_registered
-        return get_duration(registered, interval="days")
-    
-    @property
-    def get_character_class(self) -> str:
-        return self.character.main_class
-    
+        age = get_duration(registered, interval="days")
+        return age if age != 0 else 0
+
     @property
     def get_rank(self) -> int:
         from .selectors import get_all_user_levels
 
         all_levels = list(get_all_user_levels())[::-1]
         return all_levels.index(self.level) + 1
-    
+
     @property
     def get_income_accumulated(self) -> int:
         from ..entity.selectors import get_user_entities_by_username
@@ -67,7 +64,7 @@ class UserProfile(models.Model):
     def get_net_worth(self) -> int:
         from .services import get_user_net_worth
 
-        return get_user_net_worth(self.user)
+        return get_user_net_worth(self.user.username)
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"
