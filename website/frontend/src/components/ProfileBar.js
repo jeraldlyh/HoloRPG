@@ -29,7 +29,7 @@ function ProfileBar() {
 
     return (
         // sidebar
-        <div className="bg-custom-bg-nav text-white w-80 py-4 px-5 h-full">
+        <div className="bg-custom-bg-nav shadow-glow text-white w-80 py-4 px-5 h-full">
             {/* user profile */}
             <div className="flex items-center">
                 {/* avatar */}
@@ -137,7 +137,7 @@ function ProfileBar() {
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.authReducer,
+    auth: state.authReducer,    
 });
 
 export default ProfileBar;

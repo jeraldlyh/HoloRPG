@@ -42,6 +42,9 @@ module.exports = {
                     },
                 }
             },
+            boxShadow: {
+                glow: '5px 5px 15px 5px rgba(255, 255, 255, 0.25)'
+            },
         },
     },
     variants: {
