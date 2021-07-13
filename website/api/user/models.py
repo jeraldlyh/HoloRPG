@@ -64,7 +64,7 @@ class UserProfile(models.Model):
     def get_net_worth(self) -> int:
         from .services import get_user_net_worth
 
-        return get_user_net_worth(self.user.username)
+        return get_user_net_worth(self.user.username) + self.currency
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"

@@ -14,7 +14,7 @@ function CardLight(props) {
                     </div>
                     : null
             }
-            <div className="flex flex-col mt-3">
+            <div className="flex flex-col mt-3 -ml-4 -mr-4">
                 {props.children}
             </div>
         </div>
