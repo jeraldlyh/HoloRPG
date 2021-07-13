@@ -3,6 +3,7 @@ import _ from "lodash"
 import { connect } from "react-redux"
 import { IoPodiumOutline } from "react-icons/io5"
 import { getAllProfile } from "../../store/actions/Profile"
+import NumberFormat from "react-number-format"
 
 function Leaderboard(props) {
     const [userProfiles, setUserProfiles] = useState([])
@@ -39,9 +40,9 @@ function Leaderboard(props) {
             <div className="flex flex-col mt-3">
                 <div className="flex justify-around mb-3">
                     <span className="w-14 text-center font-semibold">RANK</span>
-                    <span className="w-20 text-center font-semibold">PLAYER</span>
+                    <span className="w-32 text-center font-semibold">PLAYER</span>
                     <span className="w-14 text-center font-semibold">CLASS</span>
-                    <span className="w-8 text-center font-semibold">AGE</span>
+                    <span className="w-20 text-center font-semibold">AGE</span>
                     <span className="w-24 text-center font-semibold">NET WORTH</span>
                 </div>
                 {
@@ -50,7 +51,7 @@ function Leaderboard(props) {
                             return (
                                 <div key={index} className="flex justify-around items-center">
                                     <p className="w-14 text-center">#{index + 1}</p>
-                                    <div className="flex items-center w-20">
+                                    <div className="flex items-center w-32">
                                         <div className="w-4 h-4 bg-white"></div>
                                         <p className="flex flex-col ml-3">
                                             <span>{profile.user}</span>
@@ -58,8 +59,10 @@ function Leaderboard(props) {
                                         </p>
                                     </div>
                                     <p className="w-14 text-center">{profile.character}</p>
-                                    <p className="w-8 text-center">{profile.account_age}</p>
-                                    <p className="w-24 text-center">{profile.net_worth}</p>
+                                    <p className="w-20 text-center">{profile.account_age} days</p>
+                                    <p className="w-24 text-center text-custom-stats-net_worth">
+                                        <NumberFormat value={profile.net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                                    </p>
                                 </div>
                             )
                         })
