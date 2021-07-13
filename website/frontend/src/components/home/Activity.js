@@ -35,15 +35,15 @@ function Activity() {
 
     return (
         <Card height="full" width="2/5" title="Activity" icon={<FiActivity />}>
-            <div className="flex">
+            <div className="flex text-sm">
                 <p className="text-custom-misc-datetime">[{renderTime()}]</p>&nbsp;
                 {renderText("Player is online")}
             </div>
-            <div className="flex">
+            <div className="flex text-sm">
                 <p className="text-custom-misc-datetime">[{renderTime()}]</p>&nbsp;
                 {renderText("You have claimed a bounty")}
             </div>
-            <div className="flex">
+            <div className="flex text-sm">
                 <p className="text-custom-misc-datetime">[{renderTime()}]</p>&nbsp;
                 {renderText("You have been attacked")}
             </div>

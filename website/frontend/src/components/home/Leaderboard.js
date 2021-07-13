@@ -49,10 +49,10 @@ function Leaderboard(props) {
                     userProfiles
                         ? userProfiles.map((profile, index) => {
                             return (
-                                <div key={index} className="flex justify-around items-center">
+                                <div key={index} className="flex justify-around items-center text-sm">
                                     <p className="w-14 text-center">#{index + 1}</p>
                                     <div className="flex items-center w-32">
-                                        <div className="w-4 h-4 bg-white"></div>
+                                        <div className="w-8 h-8 bg-white"></div>
                                         <p className="flex flex-col ml-3">
                                             <span>{profile.user}</span>
                                             <span>Lv. {profile.level}</span>
