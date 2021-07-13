@@ -1,12 +1,10 @@
-const defaultTheme = require("tailwindcss/defaultTheme")
-
 module.exports = {
     purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
     darkMode: false, // or "media" or "class"
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Metropolis", ...defaultTheme.fontFamily.sans]
+                sans: ["Poppins"]
             },
             colors: {
                 custom: {
@@ -14,6 +12,9 @@ module.exports = {
                         main: "#2D2D30",
                         nav: "#171717",
                         progress: "#555555",
+                    },
+                    color: {
+                        grey: "#707070"
                     },
                     button: {
                         primary: "#FF4887",
@@ -28,6 +29,11 @@ module.exports = {
                         defence: "#49B79F",
                         net_worth: "#FFDFAE",
                     },
+                    card: {
+                        normal: "#28282B",
+                        light: "rgba(101, 101, 101, 0.1)",
+                        dark: "#202020"
+                    },
                     misc: {
                         datetime: "#FFF2C7",
                         object: "#A5CFFF",
@@ -35,9 +41,13 @@ module.exports = {
                         online: "#77E4BD",
                         offline: "#757575",
                         accent: "#8955DF",
-                        nav: "#693EBD"
+                        nav: "#693EBD",
                     },
                 }
+            },
+            boxShadow: {
+                'glow-left': '5px 5px 15px 5px rgba(255, 255, 255, 0.5)',
+                'glow-right': '15px 15px 15px -15px rgba(255, 255, 255, 0.5)',
             },
         },
     },

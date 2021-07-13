@@ -90,7 +90,7 @@ class BountyListCreate(views.APIView):
         request_copy = request.data.copy()              # Deep clone a copy of request data
         target_name = request.data["target"]
         target = get_user_by_username(target_name)
-        bounty_value = get_user_net_worth(target)       # To be computed by a formula to determine player's net worth
+        bounty_value = get_user_net_worth(target.user.username)       # To be computed by a formula to determine player's net worth
         request_copy["value"] = bounty_value
         serializer = BountySerializer(data=request_copy)
 
@@ -148,7 +148,7 @@ class BountyViewSet(viewsets.ViewSet):
         request_copy = request.data.copy()
         target_name = request.data["target"]
         target = get_user_by_username(target_name)
-        bounty_value = get_user_net_worth(target)                              # To be computed by a formula to determine player's net worth
+        bounty_value = get_user_net_worth(target.user.username)                          # To be computed by a formula to determine player's net worth
         request_copy["value"] = bounty_value
         serializer = self.serializer_class(data=request_copy)
 

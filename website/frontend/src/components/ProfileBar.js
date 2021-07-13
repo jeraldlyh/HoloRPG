@@ -1,80 +1,143 @@
-import React from "react"
-import { MdPerson, MdSettings } from "react-icons/md"
-import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
-import { connect } from "react-redux"
-import { logoutUser } from "../store/actions/Auth"
-// import attack - sword icon 138128' from "../assets/icons"
+import React from "react";
+import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi";
+import { IoPersonAddOutline } from "react-icons/io5";
+import { connect } from "react-redux";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import fighterIcon from "../assets/avatars/fighter.svg";
+import FriendCard from "./FriendCard";
 
-function NavBar() {
+function ProfileBar() {
+    const children = ({ remainingTime }) => {
+        // const hours = Math.floor(remainingTime / 3600)
+        var minutes = Math.floor((remainingTime % 3600) / 60);
+        var seconds = remainingTime % 60;
+
+        if (seconds === 0) {
+            seconds = "00";
+        } else if (seconds < 10) {
+            seconds = `0${seconds}`;
+        }
+
+        if (minutes === 0) {
+            minutes = "00";
+        } else if (minutes < 10) {
+            minutes = `0${minutes}`;
+        }
+
+        return `${minutes}:${seconds}`;
+    };
+
     return (
         // sidebar
-        <div className="bg-custom-bg-nav text-white w-64 py-4 px-5 h-full fixed">
-
+        <div className="bg-custom-bg-nav shadow-glow-left text-white w-80 py-4 px-5 h-full">
             {/* user profile */}
             <div className="flex items-center">
-
                 {/* avatar */}
-                <div className="relative inline-block w-16 h-16">
-                    <img className="rounded-full border border-gray-300" src="https://icons.iconarchive.com/icons/thesquid.ink/free-flat-sample/64/rubber-duck-icon.png" alt="user image" />
-                    <span class="absolute bottom-1.5 right-0 inline-block w-3 h-3 bg-custom-misc-online rounded-full"></span>
-                </div>   
+                <div className="relative inline-block w-14 h-14">
+                    <div className="border-2 rounded-full border-custom-color-grey p-3">
+                        <img src={fighterIcon} alt="avatar" />
+                        <span className="absolute bottom-1.5 right-0 inline-block w-2 h-2 bg-custom-misc-online rounded-full"></span>
+                    </div>
+                </div>
 
-                {/* username/level/class */}   
-                <div className="pl-4">
-                    <p className="text-white font-normal">Player_123</p>
+                {/* username/level/class */}
+                <div className="ml-4">
+                    <p className="text-white">Player_123</p>
                     <p className="text-xs text-gray-300 font-semibold">Lv. 20 Warrior</p>
-                </div>                
+                </div>
             </div>
 
             {/* hp */}
-            <div className="relative pt-3 text-sm text-white">
-                <p>HP</p> 
-                <div className="overflow-hidden h-1 flex rounded bg-custom-bg-progress">
-                    <div style={{ width: "60%" }} className="shadow-none flex flex-col bg-custom-stats-health"></div>
+            <div className="flex mt-3 text-xs text-white items-center justify-between">
+                <p>HP</p>
+                <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
+                    <div
+                        style={{ width: "60%" }}
+                        className="rounded-full bg-custom-stats-health"
+                    ></div>
                 </div>
-                <p className="font-semibold">60/100</p>
+                <p className="w-1/5 text-left font-semibold">60/100</p>
             </div>
-                
+
             {/* xp */}
-            <div className="relative pt-3 text-sm text-white">
+            <div className="flex text-xs text-white items-center justify-between">
                 <p>XP</p>
-                <div className="overflow-hidden h-1 flex rounded bg-custom-bg-progress">
-                    <div style={{ width: "52%" }} className="shadow-none flex flex-col bg-custom-stats-attack"></div>
+                <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
+                    <div
+                        style={{ width: "52%" }}
+                        className="rounded-full bg-custom-stats-attack"
+                    ></div>
                 </div>
-                <p className="font-semibold">52.60%</p>
+                <p className="w-1/5 text-left font-semibold">52%</p>
             </div>
 
             {/* stats */}
-            <div className="flex flex-row justify-between items-center mt-3">
-                <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-                </svg>
-                    <p>70</p>
+            <div className="flex justify-between items-center mt-3 text-sm">
+                <div className="flex items-center">
+                    <GiPiercingSword size={16} />
+                    <p className="ml-2">70</p>
                 </div>
-
-                <div className="">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.41 16.4"><defs><style>.cls-1{fill:#fff;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path id="sword_icon_138128" data-name="sword icon 138128" class="cls-1" d="M3.73,1.9H1.9l8.56,8.56.95-.9m4.72,5.77-.8.8a1,1,0,0,1-1.34,0h0l-3-3L8.47,15.69,7.13,14.35,8.48,13,0,4.52V0H4.52L13,8.48l1.35-1.35L15.7,8.47,13.16,11l3,3a.94.94,0,0,1,0,1.34Z"/></g></g></svg>
-                120
+                <div className="flex items-center">
+                    <GiCheckedShield size={16} />
+                    <p className="ml-2">120</p>
                 </div>
-
-                <div>
-                    <img></img>
-                    <p>35</p>
+                <div className="flex items-center">
+                    <GiRoundStar size={16} />
+                    <p className="ml-2">35</p>
                 </div>
             </div>
-            
-            <div className="flex flex-col justify-center items-center">
-                <hr className="border-custom-grey w-4/5 mt-3 "></hr>
+
+            {/* currency */}
+            <div className="flex flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
+                <p className="text-xs font-medium">Currency</p>
+                <p className="text-9x1 font-semibold">$12,345.67</p>
             </div>
 
-           
+            {/* income stacked */}
+            <div className="flex justify-around px-2 items-center rounded-lg w-full h-24 mt-3 bg-custom-card-light">
+                {/* timer */}
+                <CountdownCircleTimer
+                    isPlaying
+                    size={80}
+                    duration={11}
+                    strokeWidth={5}
+                    trailColor="#555555"
+                    colors="#FFFFFF"
+                    children={children}
+                />
+
+                {/* income */}
+                <div className="flex flex-col items-center justify-center ml-2">
+                    <p className="text-xs font-medium">Income Stacked</p>
+                    <p className="font-semibold mb-1">$326.80</p>
+                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold">
+                        COLLECT
+                    </div>
+                </div>
+            </div>
+
+            <hr className="border-custom-color-grey w-full my-5 shadow-glow"></hr>
+
+            {/* friends */}
+            <div className="flex-col"></div>
+            <div className="flex items-center justify-between">
+                <p className="font-semibold">Friends (3)</p>
+                <div className="bg-custom-card-light rounded-full p-2">
+                    <IoPersonAddOutline size={12} />
+                </div>
+            </div>
+            <div>
+                <FriendCard />
+                <FriendCard />
+                <FriendCard />
+            </div>
+
         </div>
-    )
+    );
 }
 
-const mapStateToProps = state => ({
-    auth: state.authReducer
-})
+const mapStateToProps = (state) => ({
+    auth: state.authReducer,    
+});
 
-export default NavBar
+export default ProfileBar;
