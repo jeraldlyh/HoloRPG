@@ -62,7 +62,7 @@ function NavBar(props) {
                     <hr className="border-custom-color-grey w-4/5 mt-3"></hr>
                 </div>
                 <div className="flex flex-col justify-center items-center space-y-5">
-                    <a href={`/profile/${user.username}`} className={getFocusDesign(1)}>
+                    <a href="/profile" className={getFocusDesign(1)}>
                         <MdPerson size={24} />
                     </a>
                     <a href="/bounty" className={getFocusDesign(2)}>

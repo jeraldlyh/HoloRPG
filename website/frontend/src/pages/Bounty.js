@@ -65,7 +65,7 @@ function Bounty(props) {
       <div className="flex w-full h-full justify-between">
         <CardLight>
           <div className="flex justify-around mb-3">
-            <span className="w-28 text-center font-semibold">NAME</span>
+            <span className="w-32 text-center font-semibold">NAME</span>
             <span className="w-20 text-center font-semibold">HP</span>
             <span className="w-32 text-center font-semibold">PLACED BY</span>
             <span className="w-36 text-center font-semibold">BOUNTY VALUE</span>
@@ -74,7 +74,7 @@ function Bounty(props) {
           </div>
           <hr className="border-custom-color-grey w-full mt-1 mb-2"></hr>
           <div className="flex justify-around items-center text-sm my-2">
-            <p className="w-28 text-center">Player_123</p>
+            <p className="w-32 text-center">Player_123</p>
             <p className="w-20 text-center">52/80</p>
             <p className="w-32 text-center">Player_456</p>
             <p className="w-36 text-center font-semibold">$300.20</p>

@@ -2,6 +2,7 @@ import React from "react"
 import { Route, BrowserRouter, Switch } from "react-router-dom"
 import Login from "./pages/Login"
 import Room from "./pages/Room"
+import Profile from "./pages/Profile"
 import Bounty from "./pages/Bounty"
 import Register from "./pages/Register"
 import FAQ from "./pages/FAQ"
@@ -17,6 +18,7 @@ function App() {
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <CustomRoute exact path="/room" component={Room} />
+                <Route exact path="/profile" component={Profile} />
                 <Route exact path="/bounty" component={Bounty} />
                 <CustomRoute exact path="/stock" component={Stock} />
                 <Route exact path="/login" component={Login} />
