@@ -56,13 +56,13 @@ function NavBar(props) {
     return (
         authenticated  // To be changed to IsAuthenticated
             ? <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right">
-                <div className="flex-col justify-center items-center">
+                <div className="flex flex-col justify-center items-center">
                     <a href="/" className={getFocusDesign(0)}>
                         <GiAxeSwing size={24} />
                     </a> 
                     <hr className="border-custom-color-grey w-4/5 mt-3"></hr>
                 </div>
-                <div className="flex-col justify-center items-center space-y-5">
+                <div className="flex flex-col justify-center items-center space-y-5">
                     <a href="/profile" className={getFocusDesign(1)}>
                         <MdPerson size={24} />
                     </a>

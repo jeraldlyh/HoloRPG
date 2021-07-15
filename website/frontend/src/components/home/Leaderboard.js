@@ -52,7 +52,7 @@ function Leaderboard(props) {
                                 <p className="w-14 text-center">#{profile.rank}</p>
                                 <div className="flex items-center w-32">
                                     <div className="w-8 h-8 bg-white"></div>
-                                    <p className="flex-col ml-3">
+                                    <p className="flex flex-col ml-3">
                                         <span>{profile.user}</span>
                                         <span>Lv. {profile.level}</span>
                                     </p>
