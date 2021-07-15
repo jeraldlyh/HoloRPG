@@ -11,35 +11,35 @@ import { GiSwordsPower } from "react-icons/gi"
 export default function Profile() {
   return (
     <Layout>
-      <div className="flex-col w-full h-full justify-between">
+      <div className="flex-col w-full h-full p-5">
 
-        <Card height="3/5" width="full" title="Statistics" icon={<IoStatsChart />}>
+        <Card height="3/5" title="Statistics" icon={<IoStatsChart />}>
               
         </Card>
         
 
-        <Card height="2/5" width="full" title="Items" icon={<IoMdCube />}>
+        <Card height="2/5" title="Items" icon={<IoMdCube />}>
         
         </Card>
 
 
 
-        <Card height="3/5" width="full" title="Stocks" icon={<GiMoneyStack />}>
+        <Card height="3/5" title="Stocks" icon={<GiMoneyStack />}>
         
         </Card>
 
 
-        <Card height="3/5" width="full" title="Entities" icon={<FaCoins />}>
+        <Card height="3/5" title="Entities" icon={<FaCoins />}>
               
         </Card>
 
 
-        <Card height="3/5" width="full" title="Dungeon" icon={<FaDungeon />}>
+        <Card height="3/5" title="Dungeon" icon={<FaDungeon />}>
               
         </Card>
 
 
-        <Card height="3/5" width="full" title="PVP" icon={<GiSwordsPower />}>
+        <Card height="3/5" title="PVP" icon={<GiSwordsPower />}>
               
         </Card>
 
