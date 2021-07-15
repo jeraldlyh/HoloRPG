@@ -9,7 +9,7 @@ function Layout(props) {
     return (
         <div className="flex bg-custom-bg-main h-screen">
             <NavBar />
-            <div className="flex flex-col w-full">
+            <div className="flex-col w-full">
                 <Banner />
                 <Error />
                 <div className="p-3 h-full w-full">

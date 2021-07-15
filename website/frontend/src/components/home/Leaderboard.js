@@ -33,7 +33,7 @@ function Leaderboard(props) {
     }, [])
 
     return (
-        <CardLight header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
+        <CardLight  height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
             <div className="flex justify-around mb-3">
                 <span className="w-14 text-center font-semibold">RANK</span>
                 <span className="w-32 text-center font-semibold">PLAYER</span>
@@ -52,7 +52,7 @@ function Leaderboard(props) {
                                 <p className="w-14 text-center">#{profile.rank}</p>
                                 <div className="flex items-center w-32">
                                     <div className="w-8 h-8 bg-white"></div>
-                                    <p className="flex flex-col ml-3">
+                                    <p className="flex-col ml-3">
                                         <span>{profile.user}</span>
                                         <span>Lv. {profile.level}</span>
                                     </p>

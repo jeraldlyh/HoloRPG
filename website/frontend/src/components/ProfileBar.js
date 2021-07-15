@@ -1,31 +1,31 @@
-import React from "react";
-import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi";
-import { IoPersonAddOutline } from "react-icons/io5";
-import { connect } from "react-redux";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import fighterIcon from "../assets/avatars/fighter.svg";
-import FriendCard from "./FriendCard";
+import React from "react"
+import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
+import { IoPersonAddOutline } from "react-icons/io5"
+import { connect } from "react-redux"
+import { CountdownCircleTimer } from "react-countdown-circle-timer"
+import fighterIcon from "../assets/avatars/fighter.svg"
+import FriendCard from "./FriendCard"
 
 function ProfileBar() {
     const children = ({ remainingTime }) => {
         // const hours = Math.floor(remainingTime / 3600)
-        var minutes = Math.floor((remainingTime % 3600) / 60);
-        var seconds = remainingTime % 60;
+        var minutes = Math.floor((remainingTime % 3600) / 60)
+        var seconds = remainingTime % 60
 
         if (seconds === 0) {
-            seconds = "00";
+            seconds = "00"
         } else if (seconds < 10) {
-            seconds = `0${seconds}`;
+            seconds = `0${seconds}`
         }
 
         if (minutes === 0) {
-            minutes = "00";
+            minutes = "00"
         } else if (minutes < 10) {
-            minutes = `0${minutes}`;
+            minutes = `0${minutes}`
         }
 
-        return `${minutes}:${seconds}`;
-    };
+        return `${minutes}:${seconds}`
+    }
 
     return (
         // sidebar
@@ -88,7 +88,7 @@ function ProfileBar() {
             </div>
 
             {/* currency */}
-            <div className="flex flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
+            <div className="flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
                 <p className="text-xs font-medium">Currency</p>
                 <p className="text-9x1 font-semibold">$12,345.67</p>
             </div>
@@ -107,7 +107,7 @@ function ProfileBar() {
                 />
 
                 {/* income */}
-                <div className="flex flex-col items-center justify-center ml-2">
+                <div className="flex-col items-center justify-center ml-2">
                     <p className="text-xs font-medium">Income Stacked</p>
                     <p className="font-semibold mb-1">$326.80</p>
                     <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold">
@@ -133,11 +133,11 @@ function ProfileBar() {
             </div>
 
         </div>
-    );
+    )
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.authReducer,    
-});
+    auth: state.authReducer,
+})
 
-export default ProfileBar;
+export default ProfileBar
