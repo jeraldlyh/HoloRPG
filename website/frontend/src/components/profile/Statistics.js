@@ -33,6 +33,12 @@ function Statistics() {
                     <div className="flex gap-x-3 mb-2">
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
+                                <p className="text-xs text-custom-color-lightgrey">Net Worth</p>
+                                <p className="font-semibold">$999,888</p>
+                            </div>
+                        </CardLight>
+                        <CardLight height="18" width="full">
+                            <div className="flex flex-col justify-center">
                                 <p className="text-xs text-custom-color-lightgrey">Currency</p>
                                 <p className="font-semibold">$12,345,67</p>
                             </div>
@@ -54,7 +60,7 @@ function Statistics() {
                     {/* Stats Bar */}
                     <CardLight height="full" width="full">
                         <div className="flex">
-                            <div className="flex items-center justify-center w-36 h-auto">
+                            <div className="flex relative items-center justify-center w-36 h-auto">
                                 <PieChart
                                     lineWidth={35}
                                     data={[
