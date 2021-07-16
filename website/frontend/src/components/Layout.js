@@ -12,7 +12,7 @@ function Layout(props) {
             <div className="flex flex-col w-full">
                 <Banner />
                 <Error />
-                <div className="p-3 h-full w-full">
+                <div className="p-3 h-full w-full overflow-hidden">
                     {props.children}
                 </div>
             </div>

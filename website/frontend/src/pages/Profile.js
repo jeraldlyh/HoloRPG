@@ -11,7 +11,7 @@ import Statistics from "../components/profile/Statistics"
 export default function Profile() {
     return (
         <Layout>
-            <div className="flex-col w-full h-full overflow-y-auto gap-y-3">
+            <div className="flex flex-col w-full h-full gap-y-3">
                 <Statistics />
 
                 <Card height="auto" width="full" title="Items" icon={<IoMdCube />}>

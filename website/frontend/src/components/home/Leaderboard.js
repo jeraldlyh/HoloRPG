@@ -34,7 +34,7 @@ function Leaderboard(props) {
 
     return (
         <CardLight  height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
-            <div className="flex justify-around mb-3">
+            <div className="flex justify-around mb-3 text-sm">
                 <span className="w-14 text-center font-semibold">RANK</span>
                 <span className="w-32 text-center font-semibold">PLAYER</span>
                 <span className="w-14 text-center font-semibold">CLASS</span>

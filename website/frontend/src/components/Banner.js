@@ -4,7 +4,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai"
 
 function Banner() {
     return (
-        <div className="w-full h-36 p-8 border-2 border-white">
+        <div className="flex flex-col w-full h-36 p-8 border-2 border-white">
             <div className="flex justify-between items-center">
                 <p className="text-white text-md">HOLO</p>
                 <div className="flex space-x-3 text-white">

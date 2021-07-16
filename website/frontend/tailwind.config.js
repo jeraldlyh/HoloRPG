@@ -14,7 +14,8 @@ module.exports = {
                         progress: "#555555",
                     },
                     color: {
-                        grey: "#707070"
+                        grey: "#707070",
+                        lightgrey: "#D2D2D2",
                     },
                     button: {
                         primary: "#FF4887",
@@ -46,13 +47,16 @@ module.exports = {
                 }
             },
             boxShadow: {
-                'glow-left': '5px 5px 15px 5px rgba(255, 255, 255, 0.5)',
-                'glow-right': '15px 15px 15px -15px rgba(255, 255, 255, 0.5)',
+                "glow-left": "5px 5px 15px 5px rgba(255, 255, 255, 0.5)",
+                "glow-right": "15px 15px 15px -15px rgba(255, 255, 255, 0.5)",
             },
         },
     },
     variants: {
+        scrollbar: ['rounded'],
         extend: {},
     },
-    plugins: [],
+    plugins: [
+        require("tailwind-scrollbar"),
+    ],
 }
