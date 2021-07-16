@@ -4,7 +4,7 @@ import { BiChat } from "react-icons/bi";
 
 function FriendCard(props) {
     return (
-        <div className="flex items-center my-3 justify-between">
+        <div className="flex items-center justify-between">
             <div className="flex items-center">
                 {/* avatar */}
                 <div className="relative inline-block w-12 h-12">

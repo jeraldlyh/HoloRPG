@@ -33,7 +33,7 @@ function Leaderboard(props) {
     }, [])
 
     return (
-        <CardLight  height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
+        <CardLight height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
             <div className="flex justify-around mb-3 text-sm">
                 <span className="w-14 text-center font-semibold">RANK</span>
                 <span className="w-32 text-center font-semibold">PLAYER</span>
@@ -67,21 +67,6 @@ function Leaderboard(props) {
                     })
                     : null
             }
-            {/* <div className={`flex justify-around items-center text-sm h-14 `}>
-                <p className="w-14 text-center">#asdasd</p>
-                <div className="flex items-center w-32">
-                    <div className="w-8 h-8 bg-white"></div>
-                    <p className="flex flex-col ml-3">
-                        <span>asdasd</span>
-                        <span>Lv. asdasd</span>
-                    </p>
-                </div>
-                <p className="w-14 text-center">asdasd</p>
-                <p className="w-20 text-center">asdasd days</p>
-                <p className="w-24 text-center text-custom-stats-net_worth">
-                    <NumberFormat value={1} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                </p>
-            </div> */}
         </CardLight>
     )
 }

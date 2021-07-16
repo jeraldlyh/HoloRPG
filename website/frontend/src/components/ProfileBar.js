@@ -28,11 +28,10 @@ function ProfileBar() {
     }
 
     return (
-        // sidebar
         <div className="bg-custom-bg-nav shadow-glow-left text-white w-80 py-4 px-5 h-full">
-            {/* user profile */}
+            {/* User Profile */}
             <div className="flex items-center">
-                {/* avatar */}
+                {/* Avatar */}
                 <div className="relative inline-block w-14 h-14">
                     <div className="border-2 rounded-full border-custom-color-grey p-3">
                         <img src={fighterIcon} alt="avatar" />
@@ -40,14 +39,14 @@ function ProfileBar() {
                     </div>
                 </div>
 
-                {/* username/level/class */}
+                {/* Username/Level/Class */}
                 <div className="ml-4">
                     <p className="text-white">Player_123</p>
                     <p className="text-xs text-gray-300 font-semibold">Lv. 20 Warrior</p>
                 </div>
             </div>
 
-            {/* hp */}
+            {/* HP */}
             <div className="flex mt-3 text-xs text-white items-center justify-between">
                 <p>HP</p>
                 <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
@@ -59,7 +58,7 @@ function ProfileBar() {
                 <p className="w-1/5 text-left font-semibold">60/100</p>
             </div>
 
-            {/* xp */}
+            {/* XP */}
             <div className="flex text-xs text-white items-center justify-between">
                 <p>XP</p>
                 <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
@@ -71,7 +70,7 @@ function ProfileBar() {
                 <p className="w-1/5 text-left font-semibold">52%</p>
             </div>
 
-            {/* stats */}
+            {/* Stats */}
             <div className="flex justify-between items-center mt-3 text-sm">
                 <div className="flex items-center">
                     <GiPiercingSword size={16} />
@@ -87,15 +86,14 @@ function ProfileBar() {
                 </div>
             </div>
 
-            {/* currency */}
-            <div className="flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
+            {/* Currency */}
+            <div className="flex flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
                 <p className="text-xs font-medium">Currency</p>
                 <p className="text-9x1 font-semibold">$12,345.67</p>
             </div>
 
-            {/* income stacked */}
+            {/* Income Stacked */}
             <div className="flex justify-around px-2 items-center rounded-lg w-full h-24 mt-3 bg-custom-card-light">
-                {/* timer */}
                 <CountdownCircleTimer
                     isPlaying
                     size={80}
@@ -106,7 +104,7 @@ function ProfileBar() {
                     children={children}
                 />
 
-                {/* income */}
+                {/* Income */}
                 <div className="flex-col items-center justify-center ml-2">
                     <p className="text-xs font-medium">Income Stacked</p>
                     <p className="font-semibold mb-1">$326.80</p>
@@ -118,20 +116,18 @@ function ProfileBar() {
 
             <hr className="border-custom-color-grey w-full my-5"></hr>
 
-            {/* friends */}
-            <div className="flex-col"></div>
-            <div className="flex items-center justify-between">
-                <p className="font-semibold">Friends (3)</p>
-                <div className="bg-custom-card-light rounded-full p-2">
-                    <IoPersonAddOutline size={12} />
+            {/* Friends */}
+            <div className="flex flex-col gap-y-2">
+                <div className="flex items-center justify-between">
+                    <p className="font-semibold">Friends (3)</p>
+                    <div className="bg-custom-card-light rounded-full p-2">
+                        <IoPersonAddOutline size={12} />
+                    </div>
                 </div>
-            </div>
-            <div>
                 <FriendCard />
                 <FriendCard />
                 <FriendCard />
             </div>
-
         </div>
     )
 }

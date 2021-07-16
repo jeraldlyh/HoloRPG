@@ -10,11 +10,11 @@ function CardLight(props) {
                             &nbsp;{props.icon}
                             <p className="ml-3 font-bold">{props.title}&nbsp;</p>
                         </div>
-                        <hr className="border border-custom-misc-accent w-full mt-1" />
+                        <hr className="border-0 border-custom-misc-accent w-full mt-1" />
                     </div>
                     : null
             }
-            <div className={`flex flex-col ${props.header ? "mt-3 " : ""}-ml-4 -mr-4`}>
+            <div className={`flex flex-col h-full ${props.header ? "mt-3 -ml-4 -mr-4" : ""}`}>
                 {props.children}
             </div>
         </div>
