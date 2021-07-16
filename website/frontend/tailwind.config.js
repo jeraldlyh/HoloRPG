@@ -43,6 +43,7 @@ module.exports = {
                         offline: "#757575",
                         accent: "#8955DF",
                         nav: "#693EBD",
+                        inactive: "#8F99A5"
                     },
                 }
             },
