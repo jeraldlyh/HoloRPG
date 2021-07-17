@@ -7,7 +7,7 @@ import { PieChart } from "react-minimal-pie-chart"
 import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
-function Statistics() {
+function Statistics() { 
     return (
         <Card height="auto" width="auto" title="Statistics" icon={<IoStatsChart />}>
             <div className="flex w-full h-full">

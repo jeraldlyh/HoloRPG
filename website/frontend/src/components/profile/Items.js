@@ -1,58 +1,55 @@
-import React from "react";
-import Card from "../Card";
-import CardLight from "../CardLight";
-import ItemCard from "./ItemCard";
-import { IoMdCube } from "react-icons/io";
-import { RiHeartPulseFill } from "react-icons/ri";
-import { GiPiercingSword, GiCheckedShield } from "react-icons/gi";
+import React from "react"
+import Card from "../Card"
+import ItemCard from "./ItemCard"
+import { IoMdCube } from "react-icons/io"
+import { RiHeartPulseFill } from "react-icons/ri"
+import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
 function Items() {
-  return (
-    <Card height="auto" width="auto" title="Items" icon={<IoMdCube />}>
-      <div className="flex text-white">
-      <div className="flex flex-col w-auto ml-1 mr-10 ">
-      {/* enhancements */}
-        <p className="text-xs text-custom-color-lightgrey mb-3">Total enhancements</p>
-        
-        <div className="flex items-center h-auto space-x-6 mb-6">
-          <div className="flex flex-col items-center justify-center">
-            <RiHeartPulseFill size={24} />
-            <p className="text-sm mt-2.5">+62</p>
-          </div>
+    return (
+        <Card height="auto" width="auto" title="Items" icon={<IoMdCube />}>
+            <div className="flex">
+                <div className="flex flex-col w-auto ">
+                    {/* Ehancements */}
+                    <p className="text-xs text-custom-color-lightgrey mb-3">Total enhancements</p>
+                    <div className="flex items-center h-auto space-x-6 mb-6">
+                        <div className="flex flex-col items-center justify-center">
+                            <RiHeartPulseFill size={24} />
+                            <p className="text-sm mt-2.5">+62</p>
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <GiPiercingSword size={24} />
+                            <p className="text-sm mt-2.5">+30</p>
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <GiCheckedShield size={24} />
+                            <p className="text-sm mt-2.5">+120</p>
+                        </div>
+                    </div>
 
-          <div className="flex flex-col items-center justify-center">
-            <GiPiercingSword size={24} />
-            <p className="text-sm mt-2.5">+30</p>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-           <GiCheckedShield size={24} />
-            <p className="text-sm mt-2.5">+120</p>
-          </div>
-        </div>
+                    {/* Total Items */}
+                    <div className="flex flex-col">
+                        <p className="text-xs text-custom-color-lightgrey mb-1">Total items</p>
+                        <p className="text-xl font-semibold">12</p>
+                    </div>
+                </div>
 
-        {/* total items */}
-        <p className="text-xs text-custom-color-lightgrey mb-3">Total items</p>
-                
-        <div className="flex flex-col justify-center">
-          <p className="text-xl font-semibold">12</p>                                 
-        </div>
-      </div>
-      <div>
-       
-      </div>
+                <hr className="border-0 w-px bg-custom-color-grey h-40 ml-5 mr-3" />
 
-      <div className="flex w-full justify-around">
-        <ItemCard />
-        <ItemCard />
-        <ItemCard />
-        <ItemCard />
-        <ItemCard />
-      </div>
-      </div>
-
-      
-    </Card>
-  );
+                <div className="flex flex-wrap w-full space-x-3 h-44 gap-x-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                </div>
+            </div>
+        </Card>
+    );
 }
 
 export default Items;

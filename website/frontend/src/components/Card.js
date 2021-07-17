@@ -11,7 +11,7 @@ function Card(props) {
                                 &nbsp;{props.icon}
                                 <p className="ml-3 font-semibold">{props.title}&nbsp;</p>
                             </div>
-                            <hr className="border-0 border-custom-misc-accent w-full mt-1" />
+                            <hr className="border-t-2 border-custom-misc-accent w-full h-px mt-1" />
                         </div>
                         <div className="mt-3">
                             {props.children}
