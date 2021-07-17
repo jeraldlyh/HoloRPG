@@ -51,6 +51,9 @@ module.exports = {
                 "glow-left": "5px 5px 15px 5px rgba(255, 255, 255, 0.5)",
                 "glow-right": "15px 15px 15px -15px rgba(255, 255, 255, 0.5)",
             },
+            // gridTemplateColumns: {
+            //     "auto": "repeat(auto-fit, 175px)"
+            // },
         },
     },
     variants: {

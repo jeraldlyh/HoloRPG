@@ -1,7 +1,7 @@
-import React from "react";
-import CardLight from "../CardLight";
-import { RiHeartPulseFill } from "react-icons/ri";
-import { GiPiercingSword, GiCheckedShield } from "react-icons/gi";
+import React from "react"
+import CardLight from "../CardLight"
+import { RiHeartPulseFill } from "react-icons/ri"
+import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
 function ItemCard(props) {
     return (

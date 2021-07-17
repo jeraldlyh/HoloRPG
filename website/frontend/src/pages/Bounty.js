@@ -84,8 +84,6 @@ function Bounty(props) {
                         </button>
                         <div></div>
                     </div>
-
-
                 </CardLight>
                 <Activity />
             </div>

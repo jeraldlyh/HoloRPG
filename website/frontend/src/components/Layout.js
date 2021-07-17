@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import NavBar from "./NavBar"
-import Error from "./Error"
+import Error from "./Error(old)"
 import ProfileBar from "./ProfileBar"
 import Banner from "./Banner"
 

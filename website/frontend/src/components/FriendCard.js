@@ -1,12 +1,12 @@
-import React from "react";
-import fighterIcon from "../assets/avatars/fighter.svg";
-import { BiChat } from "react-icons/bi";
+import React from "react"
+import fighterIcon from "../assets/avatars/fighter.svg"
+import { BiChat } from "react-icons/bi"
 
 function FriendCard(props) {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center">
-                {/* avatar */}
+                {/* Avatar */}
                 <div className="relative inline-block w-12 h-12">
                     <div className="border-2 rounded-full border-custom-color-grey p-3">
                         <img src={fighterIcon} alt="avatar" />
@@ -14,7 +14,7 @@ function FriendCard(props) {
                     </div>
                 </div>
 
-                {/* username/level/class */}
+                {/* Username/Level/Class */}
                 <div className="ml-4 text-xs text-gray-300">
                     <p className="font-semibold">Player_456</p>
                     <p>Lv. 56 Mage</p>
@@ -23,7 +23,7 @@ function FriendCard(props) {
 
             <BiChat size={16} />
         </div>
-    );
+    )
 }
 
-export default FriendCard;
+export default FriendCard

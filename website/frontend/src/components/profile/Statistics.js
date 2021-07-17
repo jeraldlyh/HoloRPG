@@ -1,13 +1,14 @@
 import React from "react"
 import Card from "../Card"
 import CardLight from "../CardLight"
+import NumberFormat from "react-number-format"
 import fighterIcon from "../../assets/avatars/fighter.svg"
 import { IoStatsChart } from "react-icons/io5"
 import { PieChart } from "react-minimal-pie-chart"
 import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
-function Statistics() { 
+function Statistics() {
     return (
         <Card height="auto" width="auto" title="Statistics" icon={<IoStatsChart />}>
             <div className="flex w-full h-full">
@@ -34,13 +35,17 @@ function Statistics() {
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
                                 <p className="text-xs text-custom-color-lightgrey">Net Worth</p>
-                                <p className="font-semibold">$999,888</p>
+                                <p className="font-semibold">
+                                    <NumberFormat value={"999888"} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                                </p>
                             </div>
                         </CardLight>
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
                                 <p className="text-xs text-custom-color-lightgrey">Currency</p>
-                                <p className="font-semibold">$12,345,67</p>
+                                <p className="font-semibold">
+                                    <NumberFormat value={"12345678"} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                                </p>
                             </div>
                         </CardLight>
                         <CardLight height="18" width="full">

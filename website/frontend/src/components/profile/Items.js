@@ -10,7 +10,7 @@ function Items() {
         <Card height="auto" width="auto" title="Items" icon={<IoMdCube />}>
             <div className="flex">
                 <div className="flex flex-col w-auto ">
-                    {/* Ehancements */}
+                    {/* Enhancements */}
                     <p className="text-xs text-custom-color-lightgrey mb-3">Total enhancements</p>
                     <div className="flex items-center h-auto space-x-6 mb-6">
                         <div className="flex flex-col items-center justify-center">
@@ -34,9 +34,12 @@ function Items() {
                     </div>
                 </div>
 
-                <hr className="border-0 w-px bg-custom-color-grey h-40 ml-5 mr-3" />
+                <hr className="border-0 w-px bg-custom-color-grey h-40 ml-5" />
 
-                <div className="flex flex-wrap w-full space-x-3 h-44 gap-x-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+                {/* Add responsive gap-x-{n} */}
+                <div className="flex flex-wrap gap-x-3 w-full ml-5 pr-3 h-44 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
+                    <ItemCard name="test" health="100" attack="3" defence="3" />
                     <ItemCard name="test" health="100" attack="3" defence="3" />
                     <ItemCard name="test" health="100" attack="3" defence="3" />
                     <ItemCard name="test" health="100" attack="3" defence="3" />

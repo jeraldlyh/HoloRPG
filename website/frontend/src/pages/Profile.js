@@ -7,6 +7,7 @@ import { FaCoins } from "react-icons/fa"
 import { FaDungeon } from "react-icons/fa"
 import { GiSwordsPower } from "react-icons/gi"
 import Statistics from "../components/profile/Statistics"
+import Stocks from "../components/profile/Stock"
 
 export default function Profile() {
     return (
@@ -19,9 +20,9 @@ export default function Profile() {
             </div>
 
             <div className="flex flex-col w-full h-full gap-y-3 overflow-y-auto scrollbar-hide">
-                <Statistics />
-
-               <Items />
+                {/* <Statistics />
+                <Items /> */}
+                <Stocks />
 
                 <Card height="auto" width="full" title="Stocks" icon={<GiMoneyStack />}>
 
