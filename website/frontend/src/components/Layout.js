@@ -10,7 +10,7 @@ function Layout(props) {
         <div className="flex bg-custom-bg-main h-screen">
             <NavBar />
             <div className="flex flex-col w-full h-full">
-                <Banner />
+                {props ? <Banner title={props.title} /> : <Banner />}
                 <Error />
                 <div className="flex p-3 w-full h-full overflow-hidden">
                     {props.children}

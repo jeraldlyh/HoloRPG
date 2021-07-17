@@ -50,11 +50,11 @@ function ProfileBar() {
             {/* HP */}
             <div className="flex mt-3 text-xs text-white items-center justify-between">
                 <p>HP</p>
-                <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
+                <div className="flex w-3/5 h-1 rounded-full bg-custom-bg-progress">
                     <div
                         style={{ width: "60%" }}
                         className="rounded-full bg-custom-stats-health"
-                    ></div>
+                    />
                 </div>
                 <p className="w-1/5 text-left font-semibold">60/100</p>
             </div>
@@ -62,11 +62,11 @@ function ProfileBar() {
             {/* XP */}
             <div className="flex text-xs text-white items-center justify-between">
                 <p>XP</p>
-                <div className="w-3/5 h-1 flex rounded-full bg-custom-bg-progress">
+                <div className="flex w-3/5 h-1 rounded-full bg-custom-bg-progress">
                     <div
                         style={{ width: "52%" }}
                         className="rounded-full bg-custom-stats-attack"
-                    ></div>
+                    />
                 </div>
                 <p className="w-1/5 text-left font-semibold">52%</p>
             </div>

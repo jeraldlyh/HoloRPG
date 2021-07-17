@@ -4,7 +4,7 @@ import { FiPlusCircle, FiMinusCircle } from "react-icons/fi"
 import { getProfile } from "../store/actions/Profile"
 import { getEntityList, getUserEntity } from "../store/actions/Entity"
 import Layout from "../components/Layout"
-import PageHeader from "../components/PageHeader"
+import PageHeader from "../components/PageHeader(old)"
 import { purchaseEntity } from "../store/actions/Shop"
 
 
