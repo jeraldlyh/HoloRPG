@@ -34,7 +34,7 @@ function ProfileBar() {
             <div className="flex items-center">
                 {/* Avatar */}
                 <div className="relative inline-block w-14 h-14">
-                    <div className="border-2 rounded-full border-custom-color-grey p-3">
+                    <div className="border-2 rounded-full border-custom-color-grey p-3 bg-custom-color-darkblue">
                         <img src={fighterIcon} alt="avatar" />
                         <span className="absolute bottom-1.5 right-0 inline-block w-2 h-2 bg-custom-misc-online rounded-full"></span>
                     </div>

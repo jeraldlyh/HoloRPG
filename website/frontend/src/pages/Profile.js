@@ -12,7 +12,7 @@ function Profile() {
     const BannerTitle = () => {
         return (
             <div className="flex items-center text-white">
-                <div className="w-14 h-14 border-2 rounded-full border-custom-color-grey p-3 items-center justify-center">
+                <div className="w-14 h-14 border-2 rounded-full border-custom-color-grey bg-custom-color-darkblue p-3 items-center justify-center">
                     <img src={fighterIcon} alt="avatar" />
                 </div>
                 <p className="flex flex-col ml-2">

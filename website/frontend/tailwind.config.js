@@ -16,6 +16,7 @@ module.exports = {
                     color: {
                         grey: "#707070",
                         lightgrey: "#D2D2D2",
+                        darkblue: "#041A2F",
                     },
                     button: {
                         primary: "#FF4887",
