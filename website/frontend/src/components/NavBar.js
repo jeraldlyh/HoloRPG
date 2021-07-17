@@ -46,10 +46,11 @@ function NavBar(props) {
     }
 
     const getFocusDesign = (pageIndex) => {
+        const isHomeButton = pageIndex === 0
         if (pageIndex === index) {
-            return "flex items-center justify-center w-14 h-14 rounded bg-white text-custom-misc-nav"
+            return `flex items-center justify-center w-14 h-14 rounded bg-${isHomeButton ? "white" : "custom-misc-nav"} text-${isHomeButton ? "custom-misc-nav" : "white"}`
         }
-        return "flex items-center justify-center w-14 h-14 text-custom-misc-offline rounded transition duration-200 hover:bg-purple-600 hover:text-white"
+        return `flex items-center justify-center w-14 h-14 text-custom-misc-offline rounded transition duration-200 hover:bg-custom-misc-nav hover:text-white`
     }
 
     return (
@@ -62,7 +63,7 @@ function NavBar(props) {
                     <hr className="border-custom-color-grey w-4/5 mt-3"></hr>
                 </div>
                 <div className="flex flex-col justify-center items-center space-y-5">
-                    <a href={`/profile/${user.username}`} className={getFocusDesign(1)}>
+                    <a href="/profile" className={getFocusDesign(1)}>
                         <MdPerson size={24} />
                     </a>
                     <a href="/bounty" className={getFocusDesign(2)}>

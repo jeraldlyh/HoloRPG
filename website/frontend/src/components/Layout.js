@@ -1,6 +1,6 @@
-import React, { Fragment } from "react"
+import React from "react"
 import NavBar from "./NavBar"
-import Error from "./Error"
+import Error from "./Error(old)"
 import ProfileBar from "./ProfileBar"
 import Banner from "./Banner"
 
@@ -9,10 +9,10 @@ function Layout(props) {
     return (
         <div className="flex bg-custom-bg-main h-screen">
             <NavBar />
-            <div className="flex flex-col w-full">
-                <Banner />
+            <div className="flex flex-col w-full h-full">
+                {props ? <Banner title={props.title} /> : <Banner />}
                 <Error />
-                <div className="p-3 h-full w-full">
+                <div className="flex p-3 w-full h-full overflow-hidden">
                     {props.children}
                 </div>
             </div>

@@ -14,7 +14,9 @@ module.exports = {
                         progress: "#555555",
                     },
                     color: {
-                        grey: "#707070"
+                        grey: "#707070",
+                        lightgrey: "#D2D2D2",
+                        darkblue: "#041A2F",
                     },
                     button: {
                         primary: "#FF4887",
@@ -42,17 +44,25 @@ module.exports = {
                         offline: "#757575",
                         accent: "#8955DF",
                         nav: "#693EBD",
+                        inactive: "#8F99A5"
                     },
                 }
             },
             boxShadow: {
-                'glow-left': '5px 5px 15px 5px rgba(255, 255, 255, 0.5)',
-                'glow-right': '15px 15px 15px -15px rgba(255, 255, 255, 0.5)',
+                "glow-left": "5px 5px 15px 5px rgba(255, 255, 255, 0.5)",
+                "glow-right": "15px 15px 15px -15px rgba(255, 255, 255, 0.5)",
             },
+            // gridTemplateColumns: {
+            //     "auto": "repeat(auto-fit, 175px)"
+            // },
         },
     },
     variants: {
+        scrollbar: ["rounded"],
         extend: {},
     },
-    plugins: [],
+    plugins: [
+        require("tailwind-scrollbar"),
+        require("tailwind-scrollbar-hide"),
+    ],
 }

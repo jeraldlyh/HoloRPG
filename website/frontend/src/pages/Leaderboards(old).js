@@ -3,7 +3,7 @@ import { BiSort } from "react-icons/bi"
 import { connect } from "react-redux"
 import Layout from "../components/Layout"
 import useSortableData from "../hooks/Sortable"
-import PageHeader from "../components/PageHeader"
+import PageHeader from "../components/PageHeader(old)"
 import { getAllProfile } from "../store/actions/Profile"
 
 
