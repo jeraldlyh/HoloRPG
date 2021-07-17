@@ -57,11 +57,11 @@ module.exports = {
         },
     },
     variants: {
-        scrollbar: ['rounded'],
+        scrollbar: ["rounded"],
         extend: {},
     },
     plugins: [
         require("tailwind-scrollbar"),
-        require('tailwind-scrollbar-hide'),
+        require("tailwind-scrollbar-hide"),
     ],
 }

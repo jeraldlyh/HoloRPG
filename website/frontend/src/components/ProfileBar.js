@@ -1,4 +1,5 @@
 import React from "react"
+import NumberFormat from "react-number-format"
 import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
 import { IoPersonAddOutline } from "react-icons/io5"
 import { connect } from "react-redux"
@@ -89,7 +90,9 @@ function ProfileBar() {
             {/* Currency */}
             <div className="flex flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary">
                 <p className="text-xs font-medium">Currency</p>
-                <p className="text-9x1 font-semibold">$12,345.67</p>
+                <p className="text-9x1 font-semibold">
+                    <NumberFormat value={"1234567"} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                </p>
             </div>
 
             {/* Income Stacked */}
@@ -107,7 +110,9 @@ function ProfileBar() {
                 {/* Income */}
                 <div className="flex-col items-center justify-center ml-2">
                     <p className="text-xs font-medium">Income Stacked</p>
-                    <p className="font-semibold mb-1">$326.80</p>
+                    <p className="font-semibold mb-1">
+                        <NumberFormat value={"12345"} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                    </p>
                     <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold">
                         COLLECT
                     </div>

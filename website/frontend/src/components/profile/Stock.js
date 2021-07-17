@@ -49,7 +49,7 @@ function Stocks() {
                 <StockCard name="Bitcoin" value="123456" quantity="3" />
             </div>
         </Card>
-    );
+    )
 }
 
 export default Stocks
