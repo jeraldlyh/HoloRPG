@@ -31,12 +31,12 @@ function Profile() {
     return (
         <Layout title={<BannerTitle />}>
             <div className="flex flex-col">
-                <div className="text-white font-semibold m-5 space-x-12">
+                <p className="text-white font-semibold m-5 space-x-12">
                     <span className="">Overview</span>
                     <span className="text-custom-misc-inactive">Stocks</span>
                     <span className="text-custom-misc-inactive">Entities</span>
                     <span className="text-custom-misc-inactive">Battles</span>
-                </div>
+                </p>
 
                 <div className="flex flex-col w-full h-full gap-y-3 overflow-y-auto scrollbar-hide">
                     <Statistics />

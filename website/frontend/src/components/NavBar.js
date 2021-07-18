@@ -72,7 +72,7 @@ function NavBar(props) {
                     <a href="/pvp" className={getFocusDesign(3)}>
                         <GiCrossedSwords size={24} />
                     </a>
-                    <a href="/stocks" className={getFocusDesign(4)}>
+                    <a href="/stock" className={getFocusDesign(4)}>
                         <GiMoneyStack size={24} />
                     </a>
                     <a href="/shop" className={getFocusDesign(5)}>

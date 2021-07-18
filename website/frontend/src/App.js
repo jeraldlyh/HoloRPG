@@ -19,7 +19,7 @@ function App() {
                 <CustomRoute exact path="/room" component={Room} />
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/bounty" component={Bounty} />
-                <CustomRoute exact path="/stock" component={Stock} />
+                <Route exact path="/stock" component={Stock} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/leaderboard" component={Leaderboards} />
