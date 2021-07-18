@@ -37,7 +37,7 @@ function Items() {
                 <hr className="border-0 w-px bg-custom-color-grey h-40 ml-5" />
 
                 {/* Add responsive gap-x-{n} */}
-                <div className="flex flex-wrap gap-x-3 w-full ml-5 pr-3 h-40 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+                <div className="flex flex-wrap gap-x-3 w-full ml-5 pr-4 h-40 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
                     <ItemCard name="test" health="100" attack="3" defence="3" />
                     <ItemCard name="test" health="100" attack="3" defence="3" />
                     <ItemCard name="test" health="100" attack="3" defence="3" />

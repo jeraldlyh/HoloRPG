@@ -25,7 +25,7 @@ function Entities() {
             <hr className="border-custom-color-grey w-full my-4"></hr>
 
             {/* Entities */}
-            <div className="flex flex-wrap h-40 pr-3 gap-x-3 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+            <div className="flex flex-wrap h-40 pr-4 gap-x-3 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
                 <EntityCard name="Farm" value="1234" />
                 <EntityCard name="Farm" value="1234" />
                 <EntityCard name="Farm" value="1234" />

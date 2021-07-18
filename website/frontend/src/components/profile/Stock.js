@@ -33,7 +33,7 @@ function Stocks() {
             <hr className="border-custom-color-grey w-full my-4"></hr>
 
             {/* Stocks */}
-            <div className="flex flex-wrap h-52 pr-3 gap-x-3 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+            <div className="flex flex-wrap h-52 pr-4 gap-x-3 gap-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
                 <StockCard name="Bitcoin" value="123456" quantity="3" />
                 <StockCard name="Bitcoin" value="123456" quantity="3" />
                 <StockCard name="Bitcoin" value="123456" quantity="3" />

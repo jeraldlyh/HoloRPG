@@ -31,7 +31,7 @@ function NavBar(props) {
             case "pvp":
                 setIndex(3)
                 break
-            case "stocks":
+            case "stock":
                 setIndex(4)
                 break
             case "shop":
@@ -59,8 +59,8 @@ function NavBar(props) {
                 <div className="flex flex-col justify-center items-center">
                     <a href="/" className={getFocusDesign(0)}>
                         <GiAxeSwing size={24} />
-                    </a> 
-                    <hr className="border-custom-color-grey w-4/5 mt-3"></hr>
+                    </a>
+                    <hr className="border-custom-color-grey w-4/5 mt-3" />
                 </div>
                 <div className="flex flex-col justify-center items-center space-y-5">
                     <a href="/profile" className={getFocusDesign(1)}>

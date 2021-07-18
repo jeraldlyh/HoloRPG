@@ -22,7 +22,7 @@ function Profile() {
                     </span>
                 </p>
                 <div className="ml-4">
-                    <Button width="auto" height="8" text="Place bounty" />
+                    <Button width="auto" height="8" text="Place bounty" background={true} />
                 </div>
             </div>
         )
