@@ -4,6 +4,7 @@ import Card from "../components/Card"
 import Layout from "../components/Layout"
 import CardLight from "../components/CardLight"
 import PurchaseBar from "../components/stocks/PurchaseBar"
+import Graph from "../components/stocks/Graph"
 
 function Stock() {
     return (
@@ -30,7 +31,12 @@ function Stock() {
                             <StockCard name="Bitcoin" symbol="BTC" value="123456" />
                         </div>
                     </div>
-                    <PurchaseBar />
+                    <div className="flex flex-col w-full">
+                    <p className="text-white font-semibold m-5">Market</p>
+
+                        <Graph />
+                        <PurchaseBar />
+                    </div>
                 </div>
             </Card>
         </Layout>
