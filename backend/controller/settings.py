@@ -15,7 +15,6 @@ from datetime import timedelta
 from decouple import config
 import os
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +28,6 @@ SECRET_KEY = 'django-insecure-9rbcejgw#bq9u1^*_nrg5l8+ier-!=*fn=hrjs_(d(4i+zc2n!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -60,8 +58,8 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -87,7 +85,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'controller.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -135,9 +132,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-# JWT
-JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -149,7 +143,20 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
-CORS_ORIGIN_ALLOW_TRUE = True
+# CORS_ORIGIN_ALLOW_TRUE = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF / SESSION
+# CSRF_COOKIE_SAMESITE = "Lax"
+# CSRF_COOKIE_HTTPONLY = True
+
+# SESSION_COOKIE_SAMESITE = "Lax"
+# SESSION_COOKIE_HTTPONLY = True
 
 # CronTab
 CRONJOBS = [

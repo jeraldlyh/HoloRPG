@@ -5,8 +5,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from .serializers import LoginSerializer, RegisterSerializer
 
-
-
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny, ]
 
