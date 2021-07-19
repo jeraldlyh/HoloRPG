@@ -4,6 +4,7 @@ id_rsa.pub
 debug.log
 /.vscode
 /discord/utils/updateDB.py
-/website/frontend/node_modules/*
+/archive/frontend/node_modules/*
 /website/.env
 /website/frontend/static/frontend/*
+/frontend/node_modules/*
