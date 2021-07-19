@@ -1,8 +1,10 @@
 import React from "react"
 import StockCard from "../components/stocks/stockCard"
 import Card from "../components/card"
+import CardLight from "../components/cardLight"
 import Layout from "../components/layout"
 import PurchaseBar from "../components/stocks/purchaseBar"
+import Graph from  "../components/stocks/graph"
 
 function Stock() {
     return (
@@ -29,7 +31,15 @@ function Stock() {
                             <StockCard name="Bitcoin" symbol="BTC" value="123456" />
                         </div>
                     </div>
-                    <PurchaseBar />
+                    <div className="flex flex-col w-full">
+                        <p className="text-white font-semibold m-5">Market</p>
+                        <div className="h-full mb-3">
+                            <CardLight height="full">
+                                <Graph />
+                            </CardLight>
+                        </div>
+                        <PurchaseBar />
+                    </div>
                 </div>
             </Card>
         </Layout>

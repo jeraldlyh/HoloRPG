@@ -7,7 +7,6 @@ import Button from "../Button"
 function PurchaseBar() {
     return (
         <div className="flex flex-col w-full h-full">
-            <p className="text-white font-semibold m-5">Market</p>
             <CardLight height="auto" width="full">
                 <p className="font-semibold mb-3">Bitcoin</p>
                 <div className="flex justify-between">

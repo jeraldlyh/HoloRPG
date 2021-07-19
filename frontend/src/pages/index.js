@@ -9,6 +9,7 @@ export default function Home() {
             <div className="flex w-full h-full justify-between">
                 <Activity />
                 <Leaderboard />
+                
             </div>
         </Layout>
     )
