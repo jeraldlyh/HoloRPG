@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9rbcejgw#bq9u1^*_nrg5l8+ier-!=*fn=hrjs_(d(4i+zc2n!'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'controller.middleware.jwt_token_middleware.JWTTokenMiddleware',
 ]
 
 ROOT_URLCONF = 'controller.urls'
@@ -118,13 +119,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Singapore'
+TIME_ZONE = 'Asia/Singapore'
 
 USE_I18N = True
 
@@ -144,12 +144,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 # CORS_ORIGIN_ALLOW_TRUE = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
-CORS_ALLOW_CREDENTIALS = True
 
 # CSRF / SESSION
 # CSRF_COOKIE_SAMESITE = "Lax"
@@ -157,6 +157,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 # SESSION_COOKIE_SAMESITE = "Lax"
 # SESSION_COOKIE_HTTPONLY = True
+
+# JWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+JWT_COOKIE_NAME = config("JWT_COOKIE_NAME", default="refresh_token")
+JWT_COOKIE_SECURE = config("JWT_COOKIE_SECURE", default=False)
+JWT_COOKIE_SAMESITE = config("JWT_COOKIESAMESITE", default="Lax")
 
 # CronTab
 CRONJOBS = [
