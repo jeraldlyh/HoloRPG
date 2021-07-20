@@ -1,73 +1,56 @@
-import React, { useEffect } from "react"
-import { Line } from "react-chartjs-2"
-import CardLight from "../cardLight"
+import React from "react"
+import ReactApexChart from "react-apexcharts"
 
-const data = {
-    labels: ["19 Jul", "20 Jul", "21 Jul", "22 Jul", "23 Jul", "24 Jul", "25 Jul"],
-    datasets: [{
-        label: "Price",
-        data: [33, 53, 3, 41, 44, 65, 50], //add $ prefix
-        fill: true,
-        color: "#000000",
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)",
-    }]
-}
+function Graph(){
+    const series= [{
+        name: "STOCK ABC",
+        data: [series.monthDataSeries1.prices]
+      }];
+      const options= {
+        chart: {
+          type: 'area',
+          height: 350,
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        
+        title: {
+          text: 'Fundamental Analysis of Stocks',
+          align: 'left'
+        },
+        subtitle: {
+          text: 'Price Movements',
+          align: 'left'
+        },
+        labels: series.monthDataSeries1.dates,
+        xaxis: {
+          type: 'datetime',
+        },
+        yaxis: {
+          opposite: true
+        },
+        legend: {
+          horizontalAlign: 'left'
+        }
+      }
+    
 
-const options = {
-    maintainAspectRatio: false,
-    scales: {
-        xAxes: [{
-        }],
-        yAxes: [
-            {
-                gridLines: {
-                    color: "white"
-                },
-                ticks: {
-                    beginAtZero: true
-                },
-                scaleLabel: {
-                    labelString: "Price",
-                    display: true
-                }
-            }]
-    }
-    // legend:{
-    //     display:false, //remove dataset label at top
-    //     labels:{
-    //         fontColor:"orange" //change font colour (& axis colours)
-    //     }
-    // }  
-}
-
-export default function Graph() {
-    return (
-        <div className="overflow-y-auto">
-            <Line width="full" height="300" data={data}
-                options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    title: {
-                        display: true,
-                        text: "Stock Price"
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                color: "white"
-                            }
-                        }],
-                        xAxes: [{
-
-                            
-                        }]
-                    }
-                }
-                }>
-            </Line>
+    return(
+        <div>
+            <ReactApexChart 
+            options={options} 
+            series={series} 
+            type="area" 
+            height={300}/>
         </div>
     )
 }
 
+export default Graph;
