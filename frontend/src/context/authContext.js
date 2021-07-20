@@ -45,9 +45,9 @@ export const AuthProvider = (props) => {
     }
 
     useEffect(() => {
-        if (!permitCurrentPath()) {
-            initializeAuth()        // Checks for expiry of token upon each load
-        }
+        // if (!permitCurrentPath()) {
+        //     initializeAuth()        // Checks for expiry of token upon each load
+        // }
     }, [])
 
     const refreshToken = async () => {
