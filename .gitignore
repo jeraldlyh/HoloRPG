@@ -1,3 +1,31 @@
 **/__pycache__
-debug.log
-/.vscode
+**/.vscode
+**/.DS_Store
+**/*.pem
+**/package-lock.json
+
+# Dependencies
+**/node_modules
+
+# Next.js
+/frontend/.vercel
+/frontend/.next/
+/frontend/out/
+/frontend/coverage
+/frontend/build
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/.pnp
+/frontend.pnp.js
+
+# Frontend Config
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# Backend
+/backend/.env
+/backend/venv/
+
