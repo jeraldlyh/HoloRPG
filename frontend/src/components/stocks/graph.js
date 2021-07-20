@@ -5,61 +5,66 @@ import CardLight from "../cardLight"
 const data = {
     labels: ["19 Jul", "20 Jul", "21 Jul", "22 Jul", "23 Jul", "24 Jul", "25 Jul"],
     datasets: [{
+        label: "Price",
         data: [33, 53, 3, 41, 44, 65, 50], //add $ prefix
         fill: true,
+        color: "#000000",
         backgroundColor: "rgba(75,192,192,0.2)",
         borderColor: "rgba(75,192,192,1)",
     }]
 }
 
 const options = {
-        maintainAspectRatio: false,
-        scales:{
-            xAxes:[{
-            }],
-            yAxes:[
+    maintainAspectRatio: false,
+    scales: {
+        xAxes: [{
+        }],
+        yAxes: [
             {
-                gridLines:{
-                    color:'white'
+                gridLines: {
+                    color: "white"
                 },
-                ticks:{
+                ticks: {
                     beginAtZero: true
                 },
-                scaleLabel:{                   
-                    labelString: "Price", 
-                    display:true 
+                scaleLabel: {
+                    labelString: "Price",
+                    display: true
                 }
             }]
-        }
-        // legend:{
-        //     display:false, //remove dataset label at top
-        //     labels:{
-        //         fontColor:'orange' //change font colour (& axis colours)
-        //     }
-        // }  
+    }
+    // legend:{
+    //     display:false, //remove dataset label at top
+    //     labels:{
+    //         fontColor:"orange" //change font colour (& axis colours)
+    //     }
+    // }  
 }
 
-export default function Graph(){
-    return(
+export default function Graph() {
+    return (
         <div className="overflow-y-auto">
-            <Line width="full" height="300" data ={data} 
+            <Line width="full" height="300" data={data}
                 options={{
+                    responsive: true,
                     maintainAspectRatio: false,
-                    scales:{
-                        yAxes:[
-                        {
-                            ticks:{
-                                beginAtZero: true
-                            },
-                            gridLines:{
-                                color:'blue'
-                            },
-                            scaleLabel:{                   
-                                labelString: "Price", 
-                                display:true 
+                    title: {
+                        display: true,
+                        text: "Stock Price"
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                color: "white"
                             }
+                        }],
+                        xAxes: [{
+
+                            
                         }]
-                }}
+                    }
+                }
                 }>
             </Line>
         </div>
