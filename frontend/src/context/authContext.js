@@ -13,7 +13,7 @@ export const AuthProvider = (props) => {
     const [isLoading, setIsLoading] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(true)        // Change to false
     const [accessToken, setAccessToken] = useState("")
-    const [accessTokenExpiry, setAccessTokenExpiry] = useState("")
+    const [accessTokenExpiry, setAccessTokenExpiry] = useState(null)
     const router = useRouter()
 
     const resetAuthentication = () => {
@@ -21,17 +21,20 @@ export const AuthProvider = (props) => {
         setAccessToken("")
         setAccessTokenExpiry("")
         setUsername("")
+        setIsLoading(false)
     }
 
     const setNewToken = (data) => {
         setAccessToken(data.access)
-        setAccessToken(data.access_expiry)
+        setAccessTokenExpiry(data.access_expiry)
         setIsAuthenticated(true)
+        setIsLoading(false)
     }
 
     const initializeAuth = async () => {
         setIsLoading(true)
         if (!isAccessTokenValid()) {
+            console.log("Invalid access token")
             await refreshToken()
         }
         setIsLoading(false)
@@ -43,28 +46,35 @@ export const AuthProvider = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        console.log(accessToken)
+        console.log(accessTokenExpiry)
+    }, [accessToken, accessTokenExpiry])
+
     const refreshToken = async () => {
         try {
             setIsLoading(true)
             console.log("Refreshing access token")
-            const response = await axiosInstance.post("/token/refresh/")
-            if (!response.ok) {             // Refresh token has expired
+            const response = await axiosInstance.post("auth/token/refresh/")
+
+            if (response.status !== 200) {             // Refresh token has expired
                 console.log("Failed to refresh token")
                 resetAuthentication()
-            } else {
-                setNewToken(response.data)
+                return
             }
-            setIsLoading(false)
+            setNewToken(response.data)
         } catch (error) {
             resetAuthentication()
         }
     }
 
     const isAccessTokenValid = () => {
+        console.log("checking", accessToken)
         if (!accessToken) {
             return false
         }
         const now = new Date().getTime() / 1000
+        console.log(now, accessTokenExpiry)
         return now > accessTokenExpiry
     }
 
@@ -72,14 +82,14 @@ export const AuthProvider = (props) => {
         try {
             setIsLoading(true)
             const response = await axiosInstance.post("auth/login/", { username, password })
-            console.log(response)
+
             if (response.status === 200) {
+                console.log("login success")
                 setUsername(username)
                 setNewToken(response.data)
-            } else {
-                resetAuthentication()
+                return
             }
-            setIsLoading(false)
+            resetAuthentication()
         } catch (error) {
             throw error
         }
