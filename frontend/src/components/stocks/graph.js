@@ -1,23 +1,56 @@
-import React, { useEffect } from 'react'
-import Chart from 'chart.js'
+import React from "react"
+import ReactApexChart from "react-apexcharts"
 
-export default function Graph() {
-    useEffect(() => {
-        const canvas = document.getElementById("chart").getContext('2d')
-        window.myLine = new Chart(canvas, {
-            type: 'line',
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-            }
-        })
-    }, [])
+function Graph(){
+    const series= [{
+        name: "STOCK ABC",
+        data: [series.monthDataSeries1.prices]
+      }];
+      const options= {
+        chart: {
+          type: 'area',
+          height: 350,
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        
+        title: {
+          text: 'Fundamental Analysis of Stocks',
+          align: 'left'
+        },
+        subtitle: {
+          text: 'Price Movements',
+          align: 'left'
+        },
+        labels: series.monthDataSeries1.dates,
+        xaxis: {
+          type: 'datetime',
+        },
+        yaxis: {
+          opposite: true
+        },
+        legend: {
+          horizontalAlign: 'left'
+        }
+      }
+    
 
-    return (
-        <div className="w-11/12 mx-auto mt-10">
-            <canvas id="chart" />
+    return(
+        <div>
+            <ReactApexChart 
+            options={options} 
+            series={series} 
+            type="area" 
+            height={300}/>
         </div>
     )
 }
 
-
+export default Graph;
