@@ -1,24 +1,21 @@
-// import axios from "axios"
-// import { createBrowserHistory } from "history"
-// import { useStore } from "../store/StoreConfig"
-// import { logoutUser } from "../store/actions/Auth"
+import axios from "axios"
+import nookies from "nookies"
 
-// const baseURL = "http://127.0.0.1:8000"
-// const { store } = useStore()
-// const router = createBrowserHistory()
-// var isRefreshing = false
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000"
 
-// const axiosInstance = axios.create({
-//     baseURL: baseURL,
-//     timeout: 5000,
-//     headers: {
-//         "Authorization": localStorage.getItem("access_token") 
-//             ? "Bearer " + localStorage.getItem("access_token") 
-//             : null,
-//         "Content-Type": "application/json",
-//         "accept": "application/json",
-//     }
-// })
+const axiosInstance = axios.create({
+    baseURL: baseURL,
+    timeout: 5000,
+    headers: {
+    //     "Authorization": localStorage.getItem("access_token") 
+    //         ? "Bearer " + localStorage.getItem("access_token") 
+    //         : null,
+        "Content-Type": "application/json",
+        "accept": "application/json",
+    }
+})
+
+axiosInstance.defaults.withCredentials = true
 
 // axiosInstance.interceptors.response.use(
 //     (response) => {
@@ -81,4 +78,4 @@
 //     }
 // )
 
-// export default axiosInstance
+export default axiosInstance

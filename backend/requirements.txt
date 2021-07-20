@@ -7,6 +7,5 @@ djangorestframework_simplejwt
 django-cors-headers
 django-crontab
 django-q
-redis
 python-dotenv
 python-decouple

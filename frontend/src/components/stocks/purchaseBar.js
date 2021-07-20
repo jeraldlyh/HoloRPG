@@ -1,8 +1,8 @@
 import React from "react"
-import CardLight from "../CardLight"
-import Card from "../Card"
+import CardLight from "../cardLight"
+import Card from "../card"
 import NumberFormat from "react-number-format"
-import Button from "../Button"
+import Button from "../button"
 
 function PurchaseBar() {
     return (

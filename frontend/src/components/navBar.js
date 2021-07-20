@@ -1,14 +1,14 @@
 import React, { useEffect, useState, Fragment } from "react"
 import { useRouter } from "next/router"
 import { MdPerson, MdSettings } from "react-icons/md"
+import { BiLogOut } from "react-icons/bi"
 import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
+import { useAuth } from "../context/authContext"
 
 function NavBar(props) {
     const [index, setIndex] = useState(0)
     const router = useRouter()
-    // const { user, isAuthenticated } = props.auth
-    let authenticated = true
-    let user = { username: "admin" }
+    const { isAuthenticated, logoutUser } = useAuth()
 
     useEffect(() => {
         getCurrentIndex()
@@ -52,7 +52,7 @@ function NavBar(props) {
     }
 
     return (
-        authenticated  // To be changed to IsAuthenticated
+        isAuthenticated
             ? <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right">
                 <div className="flex flex-col justify-center items-center">
                     <a href="/" className={getFocusDesign(0)}>
@@ -79,6 +79,12 @@ function NavBar(props) {
                     <a href="/settings" className={getFocusDesign(6)}>
                         <MdSettings size={24} />
                     </a>
+                    <div
+                        className="flex items-center justify-center w-14 h-14 text-custom-misc-offline cursor-pointer rounded transition duration-200 hover:bg-custom-misc-nav hover:text-white"
+                        onClick={() => logoutUser()}
+                    >
+                        <BiLogOut size={24} />
+                    </div>
                 </div>
             </div>
             : <Fragment />
