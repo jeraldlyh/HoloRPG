@@ -1,5 +1,5 @@
 import React from "react"
-import CardLight from "../CardLight"
+import CardLight from "../cardLight"
 import NumberFormat from "react-number-format"
 
 function StockCard(props) {
