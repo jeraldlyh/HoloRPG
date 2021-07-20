@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect, Fragment } from "react"
 import axiosInstance from "../axios/axiosInstance"
 import { useRouter } from "next/router"
 import _ from "lodash"
@@ -10,16 +10,14 @@ const AUTHORIZED_PATHS = ["/login", "/register"]
 
 export const AuthProvider = (props) => {
     const [username, setUsername] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
-    const [isAuthenticated, setIsAuthenticated] = useState(true)        // Change to false
+    const [isLoading, setIsLoading] = useState(true)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [accessToken, setAccessToken] = useState("")
     const [accessTokenExpiry, setAccessTokenExpiry] = useState(null)
     const router = useRouter()
 
     const resetAuthentication = () => {
         setIsAuthenticated(false)
-        setAccessToken("")
-        setAccessTokenExpiry("")
         setUsername("")
         setIsLoading(false)
     }
@@ -36,20 +34,21 @@ export const AuthProvider = (props) => {
         if (!isAccessTokenValid()) {
             console.log("Invalid access token")
             await refreshToken()
+        } else {
+            setIsAuthenticated(true)
+            setIsLoading(false)
         }
-        setIsLoading(false)
+    }
+
+    const permitCurrentPath = () => {
+        return _.includes(AUTHORIZED_PATHS, router.pathname)
     }
 
     useEffect(() => {
-        if (!(_.includes(AUTHORIZED_PATHS, router.pathname))) {
+        if (!permitCurrentPath()) {
             initializeAuth()        // Checks for expiry of token upon each load
         }
     }, [])
-
-    useEffect(() => {
-        console.log(accessToken)
-        console.log(accessTokenExpiry)
-    }, [accessToken, accessTokenExpiry])
 
     const refreshToken = async () => {
         try {
@@ -63,19 +62,20 @@ export const AuthProvider = (props) => {
                 return
             }
             setNewToken(response.data)
+            return response.data.access                 // Return token
         } catch (error) {
             resetAuthentication()
+            router.push("/login")
         }
     }
 
     const isAccessTokenValid = () => {
-        console.log("checking", accessToken)
-        if (!accessToken) {
+        if (accessToken === "") {
             return false
         }
         const now = new Date().getTime() / 1000
-        console.log(now, accessTokenExpiry)
-        return now > accessTokenExpiry
+        console.log("Check for expiry: ", now, accessTokenExpiry)
+        return accessTokenExpiry > now
     }
 
     const loginUser = async (username, password) => {
@@ -84,9 +84,9 @@ export const AuthProvider = (props) => {
             const response = await axiosInstance.post("auth/login/", { username, password })
 
             if (response.status === 200) {
-                console.log("login success")
                 setUsername(username)
                 setNewToken(response.data)
+                router.push("/")
                 return
             }
             resetAuthentication()
@@ -108,6 +108,7 @@ export const AuthProvider = (props) => {
         try {
             await axiosInstance.post("auth/logout/")
             resetAuthentication()
+            router.push("/login")
         } catch (error) {
             throw error
         }
@@ -130,7 +131,13 @@ export const AuthProvider = (props) => {
             registerUser,
             getToken
         }}>
-            {!isLoading && props.children}
+            {
+                (!isLoading || permitCurrentPath())
+                    ? <Fragment>
+                        {props.children}
+                    </Fragment>
+                    : <div>loading...</div>
+            }
         </AuthContext.Provider>
     )
 }

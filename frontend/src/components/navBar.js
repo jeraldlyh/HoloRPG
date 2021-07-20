@@ -52,42 +52,40 @@ function NavBar(props) {
     }
 
     return (
-        isAuthenticated
-            ? <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right">
-                <div className="flex flex-col justify-center items-center">
-                    <a href="/" className={getFocusDesign(0)}>
-                        <GiAxeSwing size={24} />
-                    </a>
-                    <hr className="border-custom-color-grey w-4/5 mt-3" />
-                </div>
-                <div className="flex flex-col justify-center items-center space-y-5">
-                    <a href="/profile" className={getFocusDesign(1)}>
-                        <MdPerson size={24} />
-                    </a>
-                    <a href="/bounty" className={getFocusDesign(2)}>
-                        <GiHumanTarget size={24} />
-                    </a>
-                    <a href="/pvp" className={getFocusDesign(3)}>
-                        <GiCrossedSwords size={24} />
-                    </a>
-                    <a href="/stock" className={getFocusDesign(4)}>
-                        <GiMoneyStack size={24} />
-                    </a>
-                    <a href="/shop" className={getFocusDesign(5)}>
-                        <GiShop size={24} />
-                    </a>
-                    <a href="/settings" className={getFocusDesign(6)}>
-                        <MdSettings size={24} />
-                    </a>
-                    <div
-                        className="flex items-center justify-center w-14 h-14 text-custom-misc-offline cursor-pointer rounded transition duration-200 hover:bg-custom-misc-nav hover:text-white"
-                        onClick={() => logoutUser()}
-                    >
-                        <BiLogOut size={24} />
-                    </div>
+        <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right">
+            <div className="flex flex-col justify-center items-center">
+                <a href="/" className={getFocusDesign(0)}>
+                    <GiAxeSwing size={24} />
+                </a>
+                <hr className="border-custom-color-grey w-4/5 mt-3" />
+            </div>
+            <div className="flex flex-col justify-center items-center space-y-5">
+                <a href="/profile" className={getFocusDesign(1)}>
+                    <MdPerson size={24} />
+                </a>
+                <a href="/bounty" className={getFocusDesign(2)}>
+                    <GiHumanTarget size={24} />
+                </a>
+                <a href="/pvp" className={getFocusDesign(3)}>
+                    <GiCrossedSwords size={24} />
+                </a>
+                <a href="/stock" className={getFocusDesign(4)}>
+                    <GiMoneyStack size={24} />
+                </a>
+                <a href="/shop" className={getFocusDesign(5)}>
+                    <GiShop size={24} />
+                </a>
+                <a href="/settings" className={getFocusDesign(6)}>
+                    <MdSettings size={24} />
+                </a>
+                <div
+                    className="flex items-center justify-center w-14 h-14 text-custom-misc-offline cursor-pointer rounded transition duration-200 hover:bg-custom-misc-nav hover:text-white"
+                    onClick={() => logoutUser()}
+                >
+                    <BiLogOut size={24} />
                 </div>
             </div>
-            : <Fragment />
+        </div>
     )
 }
 
