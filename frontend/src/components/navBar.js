@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { signOut } from "next-auth/client"
 import { useRouter } from "next/router"
 import { MdPerson, MdSettings } from "react-icons/md"
-import { BiLogOut } from "react-icons/bi"
+import { BiLogOut, BiLogIn } from "react-icons/bi"
 import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
 import axiosInstance from "../axios/axiosInstance"
 import { withAuth } from "../hooks/withAuth"
@@ -93,6 +93,9 @@ function NavBar(props) {
                 >
                     <BiLogOut size={24} />
                 </div>
+                <a href="/login" className={getFocusDesign(6)}>
+                    <BiLogIn size={24} />
+                </a>
             </div>
         </div>
     )
