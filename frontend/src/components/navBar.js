@@ -10,16 +10,17 @@ import { withAuth } from "../hooks/withAuth"
 function NavBar(props) {
     const [index, setIndex] = useState(0)
     const router = useRouter()
-    const { refreshToken } = props.session
-    console.log(refreshToken)
+    // const { refreshToken } = props.session
+    // console.log(refreshToken)
 
     useEffect(() => {
         getCurrentIndex()
     }, [])
 
     const logoutUser = () => {
-        axiosInstance.post("/api/auth/logout/", { refresh: refreshToken })
-            .then(() => signOut())
+        // axiosInstance.post("/api/auth/logout/", { refresh: refreshToken })
+        //     .then(() => signOut())
+        console.log("Logging out")
     }
 
     const getCurrentIndex = () => {
