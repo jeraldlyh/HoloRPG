@@ -28,10 +28,12 @@ class UserProfileDetail(views.APIView):
             "message": "Username parameter not specified",
         }, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserProfileList(views.APIView):
     def get(self, request, format=None):
         serializer = UserProfileSerializer(get_all_users(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UserRelationshipCreate(views.APIView):
     def post(self, request, format=None):
@@ -50,6 +52,7 @@ class UserRelationshipCreate(views.APIView):
             "message": serializer.error_messages,
         }, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserRelationshipDetail(views.APIView):
     def get(self, request, pk=None, format=None):
         if pk is not None:
@@ -66,6 +69,7 @@ class UserRelationshipDetail(views.APIView):
         return Response({
             "message": "Username parameter not specified",
         }, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserRelationshipViewSet(viewsets.ViewSet):
     serializer_class = UserRelationshipSerializer
@@ -116,6 +120,7 @@ class BountyListCreate(views.APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BountyPatch(views.APIView):
     def patch(self, request, pk=None, format=None):
         if pk is not None:
@@ -141,6 +146,7 @@ class BountyPatch(views.APIView):
             "message": "Bounty parameter not specified",
         }, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BountyViewSet(viewsets.ViewSet):
     serializer_class = BountySerializer
 
@@ -148,7 +154,7 @@ class BountyViewSet(viewsets.ViewSet):
         request_copy = request.data.copy()
         target_name = request.data["target"]
         target = get_user_by_username(target_name)
-        bounty_value = get_user_net_worth(target.user.username)                          # To be computed by a formula to determine player's net worth
+        bounty_value = get_user_net_worth(target.username)                          # To be computed by a formula to determine player's net worth
         request_copy["value"] = bounty_value
         serializer = self.serializer_class(data=request_copy)
 

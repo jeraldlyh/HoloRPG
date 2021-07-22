@@ -7,12 +7,6 @@ class JWTTokenMiddleware:
     def __init__(self, get_response=None):
         self.get_response = get_response
 
-    def process_request(self, request):
-        data = getattr(request, "_body", request.body)
-        request._body = data + "&refresh=" + request.COOKIES.get("refresh_token")
-        print(request.POST)
-        return None
-
 
     # def __call__(self, request):
     #     ALLOWED_URLS = ["/auth/login/", "/auth/register/"]

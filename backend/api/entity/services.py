@@ -3,7 +3,6 @@ from datetime import datetime
 from django.db.models.expressions import F
 from django.db.models.query import QuerySet
 
-from ..user.models import UserProfile
 from ..user.services import deduct_player_currency
 from ..user.selectors import get_user_by_username
 from .selectors import get_user_entities_by_username, get_user_entity_by_entityname

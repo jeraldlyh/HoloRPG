@@ -6,6 +6,8 @@ djangorestframework
 djangorestframework_simplejwt
 django-cors-headers
 django-crontab
-django-q
+dj-rest-auth
+django-allauth
 python-dotenv
 python-decouple
+wheel

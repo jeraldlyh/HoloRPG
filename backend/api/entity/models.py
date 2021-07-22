@@ -1,5 +1,5 @@
 from django.db import models
-from ..user.models import UserProfile
+from django.conf import settings
 
 
 class Entity(models.Model):
@@ -14,6 +14,6 @@ class UserEntity(models.Model):
         constraints = [models.UniqueConstraint(fields=["entity", "user"], name="unique_user_entity")]
 
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, to_field="user_id", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     last_collected = models.DateTimeField(auto_now_add=True, blank=True)

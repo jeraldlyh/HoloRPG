@@ -108,7 +108,7 @@ def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, User
     if target.current_health == 0:
         claim_bounty(player, bounty)
     
-    return damage, currency, exp, target.user.username
+    return damage, currency, exp, target.username
 
 def create_bounty(serializer_data: OrderedDict) -> None:
     """
@@ -124,10 +124,10 @@ def create_bounty(serializer_data: OrderedDict) -> None:
     target = data[2][1]
     bounty_value = data[0][1]
 
-    if player.user.username == target.user.username:
+    if player.username == target.username:
         raise SameUserError
     
-    if get_bounties_by_target_status(target.user.username, "UNCLAIMED").count() != 0:
+    if get_bounties_by_target_status(target.username, "UNCLAIMED").count() != 0:
         raise BountyExistError
     
     if target.current_health == 0:
@@ -147,7 +147,7 @@ def create_user_relationship(serializer_data: OrderedDict) -> None:
     user_from = data[0][1]
     user_to = data[1][1]
 
-    if user_from.user.username == user_to.user.username:
+    if user_from.username == user_to.username:
         raise SameUserError
 
-    UserRelationship.objects.create(**serializer_data)
+    UserRelationship.objects.create(**serializer_data) 

@@ -1,6 +1,5 @@
 from rest_framework.decorators import api_view
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
-from rest_framework import viewsets, status, views
+from rest_framework import status, views
 from rest_framework.response import Response
 from .serializers import EntitySerializer, UserEntitySerializer
 from .services import create_entity, deduct_user_entity, update_or_create_user_entity, claim_income

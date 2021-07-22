@@ -2,10 +2,10 @@ import React from "react"
 import Activity from "../components/home/activity"
 import Leaderboard from "../components/home/leaderboard"
 import Layout from "../components/layout"
-import { useAuth } from "../context/authContext"
+import { withAuth } from "../hooks/withAuth"
 
 
-export default function Home() {
+function Home(props) {
     return (
         <Layout>
             <div className="flex w-full h-full justify-between">
@@ -16,19 +16,5 @@ export default function Home() {
     )
 }
 
-export async function getServerSideProps(context) {
-    try {
-        const { isAuthenticated } = useAuth()
-        if (!isAuthenticated) {
-            return {
-                redirect: {
-                    destination: "/login",
-                    permanent: false
-                }
-            }
-        }
-        return { props: {} }
-    } catch (error) {
-        return { props: {} }
-    }
-}
+export default withAuth(60)(Home)
+// export default Home

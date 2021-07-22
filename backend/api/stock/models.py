@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from django.conf import settings
 
-from ..user.models import UserProfile
 
 class Stock(models.Model):
     VOLATILE = "VOLATILE"
@@ -43,7 +43,7 @@ class UserStock(models.Model):
         (SELL, _("Sell"))
     )
 
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
     quantity = models.IntegerField()

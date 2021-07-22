@@ -7,7 +7,6 @@ from .serializers import RoomSerializer, DungeonSerializer
 from .selectors import get_all_dungeons, get_all_rooms
 
 class RoomViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated]
     serializer_class = RoomSerializer
 
     def create(self, request):

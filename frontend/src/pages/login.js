@@ -1,18 +1,14 @@
 import React, { useState } from "react"
 import { FaUser, FaUnlockAlt } from "react-icons/fa"
-import { useRouter } from "next/router"
-import { useAuth } from "../context/authContext"
-
+import { signIn } from "next-auth/client"
 
 function LoginForm(props) {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const { loginUser } = useAuth()
-    const router = useRouter()
 
     const onSubmit = async () => {
-        await loginUser(username, password)
-        // router.push("/")
+        signIn("credentials", { username, password, callbackURL: `${process.env.NEXTAUTH_URL}/` })
+        // signIn("google", { callbackUrl: `${process.env.NEXTAUTH_URL}/api/auth/signIn` })
     }
 
     return (

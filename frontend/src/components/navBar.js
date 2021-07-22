@@ -1,18 +1,26 @@
-import React, { useEffect, useState, Fragment } from "react"
+import React, { useEffect, useState } from "react"
+import { signOut } from "next-auth/client"
 import { useRouter } from "next/router"
 import { MdPerson, MdSettings } from "react-icons/md"
 import { BiLogOut } from "react-icons/bi"
 import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
-import { useAuth } from "../context/authContext"
+import axiosInstance from "../axios/axiosInstance"
+import { withAuth } from "../hooks/withAuth"
 
 function NavBar(props) {
     const [index, setIndex] = useState(0)
     const router = useRouter()
-    const { isAuthenticated, logoutUser } = useAuth()
+    const { refreshToken } = props.session
+    console.log(refreshToken)
 
     useEffect(() => {
         getCurrentIndex()
     }, [])
+
+    const logoutUser = () => {
+        axiosInstance.post("/api/auth/logout/", { refresh: refreshToken })
+            .then(() => signOut())
+    }
 
     const getCurrentIndex = () => {
         const path = router.pathname.toString().replaceAll("/", "")
@@ -89,4 +97,4 @@ function NavBar(props) {
     )
 }
 
-export default NavBar
+export default withAuth(60)(NavBar)
