@@ -97,4 +97,4 @@ function NavBar(props) {
     )
 }
 
-export default withAuth(60)(NavBar)
+export default NavBar
