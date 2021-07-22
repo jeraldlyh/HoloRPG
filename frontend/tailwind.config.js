@@ -49,12 +49,12 @@ module.exports = {
                 }
             },
             boxShadow: {
-                "glow-left": "-3px 0 12px rgba(255, 255, 255, 0.5)",
-                "glow-right": "3px 0 12px rgba(255, 255, 255, 0.5)",
+                "glow-left": "-1px 0 10px rgba(255, 255, 255, 0.5)",
+                "glow-right": "1px 0 10px rgba(255, 255, 255, 0.5)",
                 hp: "-1px 0 5px 1px rgba(241, 94, 108, 0.5)",
                 xp: "-1px 0 5px 1px  rgba(255, 195, 93, 0.5)",
                 progress:"1px 0 5px 1px rgba(85, 85, 85, 0.5)",
-                button: "0 0 10px 2px rgba(255, 72, 135, 0.5)"
+                button: "0 0 5px 1px rgba(255, 72, 135, 0.5)"
             },
             // gridTemplateColumns: {
             //     "auto": "repeat(auto-fit, 175px)"

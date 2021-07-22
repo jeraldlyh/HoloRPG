@@ -27,7 +27,7 @@ function ProfileBar() {
     }
 
     return (
-        <div className="bg-custom-bg-nav shadow-glow-left text-white w-80 py-4 px-5 h-full">
+        <div className="bg-custom-bg-nav shadow-glow-left text-white w-80 py-4 px-5 h-full z-10">
             {/* User Profile */}
             <div className="flex items-center">
                 {/* Avatar */}
@@ -94,7 +94,7 @@ function ProfileBar() {
             </div>
 
             {/* Income Stacked */}
-            <div className="flex justify-around px-2 items-center rounded-lg w-full h-24 mt-3 bg-custom-card-light">
+            <div className="flex justify-around px-3 items-center rounded-lg w-full h-24 mt-3 bg-custom-card-light">
                 <CountdownCircleTimer
                     isPlaying
                     size={80}
@@ -106,12 +106,12 @@ function ProfileBar() {
                 />
 
                 {/* Income */}
-                <div className="flex-col items-center justify-center ml-2">
+                <div className="flex flex-col items-center justify-center ml-2">
                     <p className="text-xs font-medium">Income Stacked</p>
                     <p className="font-semibold mb-1">
                         <NumberFormat value={"12345"} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                     </p>
-                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold">
+                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold shadow-button">
                         COLLECT
                     </div>
                 </div>
