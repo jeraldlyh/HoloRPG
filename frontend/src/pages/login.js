@@ -14,29 +14,36 @@ function LoginForm(props) {
 
     return (
         <div className="flex bg-custom-bg-main h-screen text-white">
-            <div className="container flex justify-center max-h-96 self-start">
+            <div className="container flex justify-center max-h-96">
                 <div className="flex flex-col w-96 p-10 bg-black bg-opacity-25 rounded-lg items-center">
-                    <div classname="flex justify-around gap-x-5">
-                        <button className="font-semibold text-lg mb-3 text-white">Login</button>
-                        <button className="font-semibold text-lg mb-3 text-white">Register</button>
+                    
+                    <div className="flex w-full justify-around mb-10">
+                        <button className="text-lg font-semibold">Login</button>
+                        {/* add underline for active tab */}
+                        {/* <hr className="border-t-2 border-white w-full h-px mb-5 "></hr> */}
+                        <button className="text-lg font-semibold text-custom-misc-inactive">Register</button>                       
                     </div>
-                    <div className="flex flex-col w-full items-center space-y-2 text-left border-white font-light italic text-sm">
-                        <div className="flex items-center w-full h-10 rounded-lg px-3 border glow-white ">Username </div>
-                        <div className="flex items-center w-full h-10 rounded-lg px-3 border glow-white ">Password </div>
-                        {/* <input className="w-10/12 h-full px-3 border-white text-left text-white placeholder-gray-900" type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
-                        <input className="w-10/12 h-full px-3 border-white text-left text-white placeholder-gray-900" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /> */}
+                    
+                    <div className="flex flex-col w-full items-center space-y-2 text-left border-white text-sm">
+                        <input className="w-full h-10 bg-transparent px-3 rounded-lg border shadow-white placeholder-gray-300 font-light italic outline-none type="text placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}/>
+                        <input className="w-full h-10 bg-transparent px-3 rounded-lg border shadow-white placeholder-gray-300 font-light italic outline-none type="text placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
+            
+
                     </div>
-                    <div className="flex justify-between space-x-3">
+
+                    <div className="flex w-full justify-between">
                         <div className="flex items-center space-x-2">
-                            <div className="w-3 h-3 border border-white rounded-sm"></div>
-                            <p className="my-3 text-sm text-gray-300">Remember me</p> 
+                            {/* style checked: */}
+                            <input className="w-3 h-3 border border-white rounded-sm bg-transparent checked:bg-transparent" type="checkbox"></input>
+                            <p className="my-3 text-xs text-gray-300">Remember me</p> 
                         </div>
                          
-                        <p className="my-3 text-sm text-gray-300">Forgot Password?</p>
+                        <a href="#" className="my-3 text-xs text-gray-300 italic hover:underline hover:text-white">Forgot Password?</a>
                         {/* <p className="my-3 text-sm text-gray-300">Forgot Password? <a href="#" className="underline hover:text-white">Click here</a></p> */}
                     </div>
-                    <button className="mt-2 py-3 rounded-full w-full bg-custom-button-primary text-center text-xs font-semibold shadow-button cursor-pointer" onClick={onSubmit}>SIGN IN</button>
-                    <button className="flex items-center gap-x-3 justify-center mt-2 py-3 rounded-full w-full border border-custom-button-primary text-center text-xs font-semibold shadow-button cursor-pointer" onClick={onSubmit}>
+
+                    <button className="mt-2 py-3 rounded-full w-full bg-custom-button-primary text-center text-sm font-semibold shadow-button cursor-pointer" onClick={onSubmit}>SIGN IN</button>
+                    <button className="flex items-center gap-x-3 justify-center mt-2 py-3 rounded-full w-full border border-custom-button-primary text-center text-sm font-semibold shadow-button cursor-pointer" onClick={onSubmit}>
                         <FcGoogle size={20} />
                         SIGN IN WITH GOOGLE</button>
 
