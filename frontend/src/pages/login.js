@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import { FaUser, FaUnlockAlt } from "react-icons/fa"
+import { FcGoogle } from "react-icons/fc"
 import { signIn } from "next-auth/client"
+import Layout from "../components/layout"
 
 function LoginForm(props) {
     const [username, setUsername] = useState("")
@@ -12,28 +13,35 @@ function LoginForm(props) {
     }
 
     return (
-        <div className="container flex justify-center max-h-96 self-start">
-            <div className="flex flex-col w-96 p-8 bg-gray-700 bg-opacity-25 items-center">
-                <span className="font-bold text-2xl pb-3 text-opacity-75">
-                    USER LOGIN
-                </span>
-                <div className="flex flex-row w-full items-center">
-                    <span className="h-full p-2 bg-white bg-opacity-25">
-                        <FaUser style={{ fontSize: "20px", margin: "5px" }} />
-                    </span>
-                    <input className="w-full h-full px-3 bg-gray-100 bg-opacity-75 text-left text-black placeholder-gray-900 outline-none" type="text" placeholder="USERNAME" value={username} onChange={e => setUsername(e.target.value)} />
-                </div>
-                <div className="flex flex-row w-full items-center my-3">
-                    <span className="h-full p-2 bg-white bg-opacity-25">
-                        <FaUnlockAlt style={{ fontSize: "20px", margin: "5px" }} />
-                    </span>
-                    <input className="w-full h-full px-3 bg-gray-100 bg-opacity-75 text-left text-black placeholder-gray-900 outline-none" type="password" placeholder="PASSWORD" value={password} onChange={e => setPassword(e.target.value)} />
-                </div>
-                <div className="mt-2 py-3 w-10/12 bg-black bg-opacity-50 text-center cursor-pointer" onClick={onSubmit}>LOGIN</div>
-                <p className="my-3 text-sm text-gray-500">Forgot Password? <a href="#" className="underline hover:text-white">Click here</a></p>
+        <div className="flex bg-custom-bg-main h-screen text-white">
+            <div className="container flex justify-center max-h-96 self-start">
+                <div className="flex flex-col w-96 p-10 bg-black bg-opacity-25 rounded-lg items-center">
+                    <div classname="flex justify-around gap-x-5">
+                        <button className="font-semibold text-lg mb-3 text-white">Login</button>
+                        <button className="font-semibold text-lg mb-3 text-white">Register</button>
+                    </div>
+                    <div className="flex flex-col w-full items-center space-y-2 text-left border-white font-light italic text-sm">
+                        <div className="flex items-center w-full h-10 rounded-lg px-3 border glow-white ">Username </div>
+                        <div className="flex items-center w-full h-10 rounded-lg px-3 border glow-white ">Password </div>
+                        {/* <input className="w-10/12 h-full px-3 border-white text-left text-white placeholder-gray-900" type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                        <input className="w-10/12 h-full px-3 border-white text-left text-white placeholder-gray-900" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /> */}
+                    </div>
+                    <div className="flex justify-between space-x-3">
+                        <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 border border-white rounded-sm"></div>
+                            <p className="my-3 text-sm text-gray-300">Remember me</p> 
+                        </div>
+                         
+                        <p className="my-3 text-sm text-gray-300">Forgot Password?</p>
+                        {/* <p className="my-3 text-sm text-gray-300">Forgot Password? <a href="#" className="underline hover:text-white">Click here</a></p> */}
+                    </div>
+                    <button className="mt-2 py-3 rounded-full w-full bg-custom-button-primary text-center text-xs font-semibold shadow-button cursor-pointer" onClick={onSubmit}>SIGN IN</button>
+                    <button className="flex items-center gap-x-3 justify-center mt-2 py-3 rounded-full w-full border border-custom-button-primary text-center text-xs font-semibold shadow-button cursor-pointer" onClick={onSubmit}>
+                        <FcGoogle size={20} />
+                        SIGN IN WITH GOOGLE</button>
 
-                <hr className="h-0.5 w-full bg-gray-100 bg-opacity-75" />
-                <a className="mt-3 py-3 w-10/12 bg-black bg-opacity-50 text-center" href="/register">CREATE AN ACCOUNT</a>
+
+                </div>
             </div>
         </div>
     )
