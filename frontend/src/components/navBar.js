@@ -61,7 +61,7 @@ function NavBar(props) {
     }
 
     return (
-        <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right z-10">
+        <div className="bg-custom-bg-nav w-24 space-y-6 py-4 px-2 h-full shadow-white-lg z-10">
             <div className="flex flex-col justify-center items-center">
                 <a href="/" className={getFocusDesign(0)}>
                     <GiAxeSwing size={24} />
