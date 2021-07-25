@@ -26,7 +26,7 @@ function RegisterForm(props) {
                 </div>
             </form>
                 
-            <button className="py-3 rounded-full w-full bg-custom-button-primary text-center text-sm font-semibold hover:shadow-button cursor-pointer" onClick={onSubmit}>SIGN UP</button>                  
+            <button className="py-3 rounded-full w-full bg-custom-button-primary text-center text-sm font-semibold uppercase hover:shadow-button cursor-pointer " onClick={onSubmit}>Sign Up</button>                  
         </div>
     )
 }

@@ -35,10 +35,10 @@ function LoginForm(props) {
 
             </form>
 
-            <button className="py-3 rounded-full w-full bg-custom-button-primary text-center text-sm font-semibold hover:bg-opacity-90 cursor-pointer" onClick={onSubmit}>SIGN IN</button>
-            <button className="flex items-center gap-x-4 justify-center mt-2 py-3 rounded-full w-full border border-custom-button-primary text-center text-sm font-semibold hover:shadow-button cursor-pointer" onClick={onSubmit}>
+            <button className="py-3 rounded-full w-full bg-custom-button-primary text-center text-sm font-semibold uppercase hover:bg-opacity-90 cursor-pointer" onClick={onSubmit}>Sign In</button>
+            <button className="flex items-center gap-x-4 justify-center mt-2 py-3 rounded-full w-full border border-custom-button-primary text-center text-sm font-semibold uppercase hover:shadow-button cursor-pointer" onClick={onSubmit}>
                 <FcGoogle size={20} />
-                SIGN IN WITH GOOGLE</button>
+                Sign in with Google</button>
 
 
         </div>
