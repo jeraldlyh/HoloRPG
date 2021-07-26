@@ -13,18 +13,8 @@ export const withAuth = (refreshInterval) => {
             }
 
             if (!loading && !session) {
-                return (
-                    <div className="flex flex-col h-screen justify-center items-center">
-                        <p>You are not authorized</p>
-                        <div className="flex items-center justify-center space-x-1">
-                            <p>CLICK</p>
-                            <button className="font-bold text-xl" onClick={() => router.push("/login")}>
-                                ME
-                            </button>
-                            <p>TO GO LOGIN PAGE</p>
-                        </div>
-                    </div>
-                )
+                router.push("/login")
+                return
             }
             return <Component session={session} {...props} />
         }

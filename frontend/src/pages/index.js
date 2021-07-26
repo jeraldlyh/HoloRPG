@@ -2,10 +2,9 @@ import React from "react"
 import Activity from "../components/home/activity"
 import Leaderboard from "../components/home/leaderboard"
 import Layout from "../components/layout"
-import { withAuth } from "../hooks/withAuth"
 
 
-function Home(props) {
+function Home() {
     return (
         <Layout>
             <div className="flex w-full h-full justify-between">
@@ -16,5 +15,4 @@ function Home(props) {
     )
 }
 
-// export default withAuth(60)(Home)
 export default Home

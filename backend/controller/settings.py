@@ -170,7 +170,7 @@ CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(config('ACCESS_TOKEN_EXPIRY_MINS'))),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=int(config('REFRESH_TOKEN_EXPIRY_DAYS'))),
-    'ROTATE_REFRESH_TOKENS': True,
+    'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True, 
     'UPDATE_LAST_LOGIN': True,
     'SIGNING_KEY': config('JWT_SECRET_KEY')

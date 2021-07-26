@@ -3,6 +3,7 @@ import Providers from "next-auth/providers"
 import axios from "axios"
 import axiosInstance from "../../../axios/axiosInstance"
 import { isAccessTokenExpired, refreshToken } from "../../../utils/jwt"
+import { redirect } from "next/dist/next-server/server/api-utils"
 
 const settings = {
     debug: process.env.NODE_ENV === "development",
@@ -43,6 +44,9 @@ const settings = {
             session.refreshToken = user.refreshToken
             return session
         },
+        async redirect(url, baseUrl) {
+            return baseUrl
+        },
         async jwt(token, user, account, profile, isNewUser) {
             if (user) {
                 if (account.provider === "google") {
@@ -72,13 +76,13 @@ const settings = {
             }
 
             if (isAccessTokenExpired(token.accessToken)) {
-                const [newAccessToken, newRefreshToken] = await refreshToken(token.refreshToken)
+                const [newAccessToken] = await refreshToken(token.refreshToken)
 
-                if (newAccessToken && newRefreshToken) {
+                if (newAccessToken) {
                     token = {
                         ...token,
                         accessToken: newAccessToken,
-                        refreshToken: newRefreshToken,
+                        // refreshToken: newRefreshToken,
                         iat: Math.floor(Date.now() / 1000),
                         exp: Math.floor(Date.now() / 1000 + process.env.JWT_EXPIRY_MINS * 60 * 60)
                     }

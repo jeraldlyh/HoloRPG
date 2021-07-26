@@ -27,14 +27,14 @@ function Login() {
                     <div className="flex w-full justify-around mb-5 text-lg font-semibold text-center">
                         <span className={isActive(0)} onClick={() => setPageIndex(0)}>Login</span>
                         <span className={isActive(1)} onClick={() => setPageIndex(1)}>Register</span>
+                    </div>
+                    {
+                        pageIndex === 0
+                            ? <LoginForm />
+                            : <RegisterForm />
+                    }
                 </div>
-                {
-                    pageIndex === 0
-                        ? <LoginForm />
-                        : <RegisterForm />
-                }
             </div>
-        </div>
         </div >
     )
 }

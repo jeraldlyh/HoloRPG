@@ -64,10 +64,6 @@ module.exports = {
     },
     variants: {
         scrollbar: ["rounded"],
-        extend: {
-            opacity: ["disabled"]
-            
-        },
     },
     plugins: [
         require("tailwind-scrollbar"),
