@@ -16,5 +16,5 @@ function Home(props) {
     )
 }
 
-export default withAuth(60)(Home)
-// export default Home
+// export default withAuth(60)(Home)
+export default Home

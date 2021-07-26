@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { signOut } from "next-auth/client"
 import { useRouter } from "next/router"
 import { MdPerson, MdSettings } from "react-icons/md"
-import { BiLogOut } from "react-icons/bi"
+import { BiLogOut, BiLogIn } from "react-icons/bi"
 import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
 import axiosInstance from "../axios/axiosInstance"
 import { withAuth } from "../hooks/withAuth"
@@ -10,16 +10,17 @@ import { withAuth } from "../hooks/withAuth"
 function NavBar(props) {
     const [index, setIndex] = useState(0)
     const router = useRouter()
-    const { refreshToken } = props.session
-    console.log(refreshToken)
+    // const { refreshToken } = props.session
+    // console.log(refreshToken)
 
     useEffect(() => {
         getCurrentIndex()
     }, [])
 
     const logoutUser = () => {
-        axiosInstance.post("/api/auth/logout/", { refresh: refreshToken })
-            .then(() => signOut())
+        // axiosInstance.post("/api/auth/logout/", { refresh: refreshToken })
+        //     .then(() => signOut())
+        console.log("Logging out")
     }
 
     const getCurrentIndex = () => {
@@ -60,7 +61,7 @@ function NavBar(props) {
     }
 
     return (
-        <div className="bg-custom-bg-nav w-24 space-y-6 py-3 px-2 h-full shadow-glow-right">
+        <div className="bg-custom-bg-nav w-24 space-y-6 py-4 px-2 h-full shadow-white-lg z-10">
             <div className="flex flex-col justify-center items-center">
                 <a href="/" className={getFocusDesign(0)}>
                     <GiAxeSwing size={24} />
@@ -92,9 +93,12 @@ function NavBar(props) {
                 >
                     <BiLogOut size={24} />
                 </div>
+                <a href="/login" className={getFocusDesign(6)}>
+                    <BiLogIn size={24} />
+                </a>
             </div>
         </div>
     )
 }
 
-export default withAuth(60)(NavBar)
+export default NavBar

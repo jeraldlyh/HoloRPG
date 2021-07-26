@@ -1,43 +1,43 @@
 import React, { useState } from "react"
-import { FaUser, FaUnlockAlt } from "react-icons/fa"
-import { signIn } from "next-auth/client"
+import { GiAxeSwing } from "react-icons/gi"
+import LoginForm from "../components/landing/loginForm"
+import RegisterForm from "../components/landing/registerForm";
 
-function LoginForm(props) {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+function Login() {
+    const [pageIndex, setPageIndex] = useState(0);
 
-    const onSubmit = async () => {
-        signIn("credentials", { username, password, callbackURL: `${process.env.NEXTAUTH_URL}/` })
-        // signIn("google", { callbackUrl: `${process.env.NEXTAUTH_URL}/api/auth/signIn` })
+    const isActive = (index) => {
+        if (index === pageIndex) {
+            return "w-2/5 border-b-2 border-white py-2"
+        }
+        return "w-2/5 py-2"
     }
 
     return (
-        <div className="container flex justify-center max-h-96 self-start">
-            <div className="flex flex-col w-96 p-8 bg-gray-700 bg-opacity-25 items-center">
-                <span className="font-bold text-2xl pb-3 text-opacity-75">
-                    USER LOGIN
-                </span>
-                <div className="flex flex-row w-full items-center">
-                    <span className="h-full p-2 bg-white bg-opacity-25">
-                        <FaUser style={{ fontSize: "20px", margin: "5px" }} />
-                    </span>
-                    <input className="w-full h-full px-3 bg-gray-100 bg-opacity-75 text-left text-black placeholder-gray-900 outline-none" type="text" placeholder="USERNAME" value={username} onChange={e => setUsername(e.target.value)} />
+        <div className="flex flex-col items-center justify-center bg-custom-bg-main h-screen text-white">
+            <div className="flex flex-col">
+                <div className="self-center">
+                    <GiAxeSwing size={36} />
                 </div>
-                <div className="flex flex-row w-full items-center my-3">
-                    <span className="h-full p-2 bg-white bg-opacity-25">
-                        <FaUnlockAlt style={{ fontSize: "20px", margin: "5px" }} />
-                    </span>
-                    <input className="w-full h-full px-3 bg-gray-100 bg-opacity-75 text-left text-black placeholder-gray-900 outline-none" type="password" placeholder="PASSWORD" value={password} onChange={e => setPassword(e.target.value)} />
+                <div className="flex text-4xl justify-around my-10">
+                    <span>H</span> <span>O</span> <span>L</span> <span>O</span>
                 </div>
-                <div className="mt-2 py-3 w-10/12 bg-black bg-opacity-50 text-center cursor-pointer" onClick={onSubmit}>LOGIN</div>
-                <p className="my-3 text-sm text-gray-500">Forgot Password? <a href="#" className="underline hover:text-white">Click here</a></p>
 
-                <hr className="h-0.5 w-full bg-gray-100 bg-opacity-75" />
-                <a className="mt-3 py-3 w-10/12 bg-black bg-opacity-50 text-center" href="/register">CREATE AN ACCOUNT</a>
+                <div className="flex flex-col w-96 p-10 bg-black bg-opacity-25 rounded-xl items-center">
+                    <div className="flex w-full justify-around mb-5 text-lg font-semibold text-center">
+                        <span className={isActive(0)} onClick={() => setPageIndex(0)}>Login</span>
+                        <span className={isActive(1)} onClick={() => setPageIndex(1)}>Register</span>
+                </div>
+                {
+                    pageIndex === 0
+                        ? <LoginForm />
+                        : <RegisterForm />
+                }
             </div>
         </div>
+        </div >
     )
 }
 
 
-export default LoginForm
+export default Login

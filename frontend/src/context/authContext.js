@@ -10,7 +10,7 @@ const AUTHORIZED_PATHS = ["/login", "/register"]
 
 export const AuthProvider = (props) => {
     const [username, setUsername] = useState("")
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [accessToken, setAccessToken] = useState("")
     const [accessTokenExpiry, setAccessTokenExpiry] = useState(null)
@@ -45,9 +45,9 @@ export const AuthProvider = (props) => {
     }
 
     useEffect(() => {
-        if (!permitCurrentPath()) {
-            initializeAuth()        // Checks for expiry of token upon each load
-        }
+        // if (!permitCurrentPath()) {
+        //     initializeAuth()        // Checks for expiry of token upon each load
+        // }
     }, [])
 
     const refreshToken = async () => {

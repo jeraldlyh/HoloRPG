@@ -1,36 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { connect } from "react-redux"
 import Layout from "../components/layout"
 import Activity from "../components/home/activity"
 import CardLight from "../components/cardLight"
-import { attackPlayer, getBountyList } from "../store/actions/bounty"
 import { GiSwordWound } from "react-icons/gi"
 
 function Bounty(props) {
-    const { user, current_health } = props.profile
-    const [bounties, setBounties] = useState([])
-
-    useEffect(() => {
-        props.getBountyList().then((response) => {
-            setBounties(response.data)
-        })
-    }, [])
-
-    const attackPlayer = (index) => {
-        const body = {
-            bounty: bounties[index],
-            attacker: user,
-        }
-        props
-            .attackPlayer(bounties[index].id, body)
-            .then((response) => setBounties(response.data.bounty))
-            .catch((error) => console.log(error))
-    }
-
-    const hasInsufficientHP = () => {
-        return current_health === 0
-    }
-
     return (
         <Layout>
             {/* <div className="self-start grid grid-cols-6 my-5 mx-10 border-2 border-custom-green">
