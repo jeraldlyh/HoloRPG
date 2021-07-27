@@ -6,20 +6,23 @@ import { BiLogOut, BiLogIn } from "react-icons/bi"
 import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
 import { useAuth } from "../hooks/useAuth"
 import axiosInstance from "../axios/axiosInstance"
-import { withAuth } from "../hooks/withAuth"
 
 
-function NavBar(props) {
+function NavBar() {
     const [index, setIndex] = useState(0)
     const router = useRouter()
-    const { session: { refreshToken } } = useAuth()
+    const { session, loading } = useAuth()
+
+    if (loading) {
+        return <div>Loading</div>
+    }
 
     useEffect(() => {
         getCurrentIndex()
     }, [])
 
     const logoutUser = async () => {
-        await axiosInstance.post("/api/auth/logout/", { refresh: refreshToken })
+        await axiosInstance.post("/api/auth/logout/", { refresh: session.refreshToken })
         await signOut()
         router.push("/login")
     }
@@ -56,7 +59,10 @@ function NavBar(props) {
     const getFocusDesign = (pageIndex) => {
         const isHomeButton = pageIndex === 0
         if (pageIndex === index) {
-            return `flex items-center justify-center w-14 h-14 rounded bg-${isHomeButton ? "white" : "custom-misc-nav"} text-${isHomeButton ? "custom-misc-nav" : "white"}`
+            if (isHomeButton) {
+                return "flex items-center justify-center w-14 h-14 rounded bg-white text-custom-misc-nav"
+            }
+            return "flex items-center justify-center w-14 h-14 rounded bg-custom-misc-nav text-white"
         }
         return `flex items-center justify-center w-14 h-14 text-custom-misc-offline rounded transition duration-200 hover:bg-custom-misc-nav hover:text-white`
     }

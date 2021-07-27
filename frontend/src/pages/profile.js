@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import NumberFormat from "react-number-format"
 import Layout from "../components/layout"
 import Items from "../components/profile/items"
@@ -12,6 +12,17 @@ import { useEntity } from "../hooks/useEntity"
 function Profile() {
     const { statistics, loading: profileLoading } = useProfile()
     const { entities, loading: entityLoading } = useEntity()
+
+    if (profileLoading) {
+        return <div>Loading</div>
+    }
+
+    const [currentIndex, setCurrentIndex]= useState(0)
+    const statsRef = useRef(null)
+    const itemsRef = useRef(null)
+    const stocksRef = useRef(null)
+    const entitiesRef = useRef(null)
+
 
 
     const BannerTitle = () => {

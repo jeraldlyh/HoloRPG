@@ -27,11 +27,11 @@ function Modal({ header, itemData, toggleModal, entityData, entityMutate, profil
 
     useEffect(() => {                                   // Update total cost upon changes in quantity
         const limit = clampQuantity(quantity)
-
+    
+        if (showSuccess) {                          // Clear success message after user purchase
+            setShowSuccess(false)
+        }
         if (limit > 0) {
-            if (showSuccess) {                          // Clear success message after user purchase
-                setShowSuccess(false)
-            }
             setQuantity(limit)
             setCost(itemCost * limit)
         } else {
@@ -87,7 +87,6 @@ function Modal({ header, itemData, toggleModal, entityData, entityMutate, profil
         entityMutate(() => handleEntityMutation(), false)
         profileMutate(() => handleProfileMutation(), false)
         setShowSuccess(true)
-        setQuantity(0)
         const response = await axiosInstance.post("/api/entity/purchase/", body)
         entityMutate(response.data, false)
         profileMutate()
@@ -144,7 +143,7 @@ function Modal({ header, itemData, toggleModal, entityData, entityMutate, profil
                                 : null
                         }
                     </p>
-                    <Button width="auto" height="8" background={true} text="confirm" onClick={() => handleSubmit()} disabled={isDisabled()} />
+                    <Button width="auto" height="8" background={true} text="confirm" onClick={() => handleSubmit()} disabled={isDisabled() || quantity === 0} />
                 </div>
             </div>
         </div>

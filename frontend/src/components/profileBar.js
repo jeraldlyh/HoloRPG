@@ -8,9 +8,15 @@ import FriendCard from "./friendCard"
 import { useRelationship } from "../hooks/useRelationship"
 import { useProfile } from "../hooks/useProfile"
 
+
 function ProfileBar() {
     const { data: relationshipData, loading: relationshipLoading } = useRelationship()
     const { statistics: profileData, loading: profileLoading } = useProfile()
+
+    if (relationshipLoading || profileLoading) {
+        return <div>Loading</div>
+    }
+
     const { username, character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age, income_accumulated, last_collected } = profileData
 
     const getHealthPercent = () => {
@@ -18,12 +24,10 @@ function ProfileBar() {
     }
 
     const getCountdownDuration = () => {
-        console.log("test")
         if (last_collected) {
             const dateNow = moment()
             const dateLastCollected = moment(last_collected)
-            const diff = dateNow.diff(dateLastCollected)
-            return diff
+            return dateNow.diff(dateLastCollected)
         }
         return 0
     }
