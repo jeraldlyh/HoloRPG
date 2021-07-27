@@ -7,8 +7,6 @@ export const useRelationship = () => {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
-        refreshWhenOffline: false,
-        refreshWhenHidden: false,
         refreshInterval: 0
     })
 

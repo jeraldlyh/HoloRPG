@@ -9,7 +9,7 @@ import { clampQuantity } from "../utils/utils"
 import _ from "lodash"
 
 
-function Modal({ header, itemData, toggleModal, entities, entityMutate, profileData, profileMutate }) {
+function Modal({ header, itemData, toggleModal, entityData, entityMutate, profileData, profileMutate }) {
     const { itemName, itemImage, itemCost } = itemData
     const { session } = useAuth()
     const [showSuccess, setShowSuccess] = useState(false)
@@ -40,7 +40,7 @@ function Modal({ header, itemData, toggleModal, entities, entityMutate, profileD
     }, [quantity])
 
     const getEntityOwned = () => {
-        const entity = _.find(entities, { entity: itemName })
+        const entity = _.find(entityData, { entity: itemName })
         return entity ? entity.quantity : 0
     }
 
@@ -60,7 +60,7 @@ function Modal({ header, itemData, toggleModal, entities, entityMutate, profileD
     }
 
     const handleEntityMutation = () => {
-        const updatedData = _.map(entities, item => {
+        const updatedData = _.map(entityData, item => {
             if (item.entity === itemName) {
                 item.quantity += quantity
             }
@@ -88,8 +88,8 @@ function Modal({ header, itemData, toggleModal, entities, entityMutate, profileD
         profileMutate(() => handleProfileMutation(), false)
         setShowSuccess(true)
         setQuantity(0)
-        await axiosInstance.post("/api/entity/purchase/", body)
-        entityMutate()
+        const response = await axiosInstance.post("/api/entity/purchase/", body)
+        entityMutate(response.data, false)
         profileMutate()
     }
 

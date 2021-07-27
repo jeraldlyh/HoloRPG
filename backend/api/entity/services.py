@@ -34,7 +34,7 @@ def update_or_create_user_entity(serializer_data: OrderedDict) -> QuerySet:
     cost = quantity * entity.cost
     deduct_player_currency(user, cost)
 
-    # return get_user_entities_by_username(user.username)
+    return get_user_entities_by_username(user.username)
 
 
 def reset_income_collected(username: str) -> None:

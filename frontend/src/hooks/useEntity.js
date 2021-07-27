@@ -8,8 +8,6 @@ export const useEntity = () => {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
-        refreshWhenOffline: false,
-        refreshWhenHidden: false,
         refreshInterval: 0
     })
 

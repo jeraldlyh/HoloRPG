@@ -29,9 +29,9 @@ class UserEntityCreate(views.APIView):
 
         if serializer.is_valid():
             updated_entities = update_or_create_user_entity(serializer.validated_data)
-            # serialized_data = UserEntitySerializer(updated_entities, many=True)
+            serialized_data = UserEntitySerializer(updated_entities, many=True)
 
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(serialized_data.data, status=status.HTTP_201_CREATED)
         return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
 
