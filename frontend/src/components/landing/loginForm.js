@@ -66,7 +66,6 @@ function LoginForm() {
                                 peer-focus:text-xs">Password</label>
                     </div>
                 </div>
-
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         {/* checkbox can't be styled*/}
