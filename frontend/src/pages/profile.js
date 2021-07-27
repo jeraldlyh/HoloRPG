@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import NumberFormat from "react-number-format"
 import Layout from "../components/layout"
 import Items from "../components/profile/items"
@@ -6,8 +6,14 @@ import Statistics from "../components/profile/statistics"
 import Stocks from "../components/profile/stock"
 import Entities from "../components/profile/entities"
 import Button from "../components/button"
+import { useProfile } from "../hooks/useProfile"
+import { useEntity } from "../hooks/useEntity"
 
 function Profile() {
+    const { statistics, loading: profileLoading } = useProfile()
+    const { entity, loading: entityLoading } = useEntity()
+
+
     const BannerTitle = () => {
         return (
             <div className="flex items-center text-white">
@@ -38,10 +44,10 @@ function Profile() {
                 </p>
 
                 <div className="flex flex-col w-full h-full gap-y-3 overflow-y-auto scrollbar-hide">
-                    <Statistics />
+                    <Statistics data={statistics} />
                     <Items />
                     <Stocks />
-                    <Entities />
+                    <Entities data={entity} />
                 </div>
             </div>
         </Layout>

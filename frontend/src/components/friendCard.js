@@ -1,7 +1,7 @@
 import React from "react"
 import { BiChat } from "react-icons/bi"
 
-function FriendCard(props) {
+function FriendCard({ username, level, character }) {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -15,11 +15,10 @@ function FriendCard(props) {
 
                 {/* Username/Level/Class */}
                 <div className="ml-4 text-xs text-gray-300">
-                    <p className="font-semibold">Player_456</p>
-                    <p>Lv. 56 Mage</p>
+                    <p className="font-semibold">{username}</p>
+                    <p>Lv. {level} {character}</p>
                 </div>
             </div>
-
             <BiChat size={16} />
         </div>
     )

@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
@@ -104,6 +105,11 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
         return get_user_net_worth(self.username) + self.currency
 
+    @property
+    def get_last_collected(self) -> datetime:
+        from ..entity.selectors import get_last_collected_time_by_username
+
+        return get_last_collected_time_by_username(self.username)
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"

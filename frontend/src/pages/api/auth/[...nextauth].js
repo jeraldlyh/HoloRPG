@@ -39,9 +39,10 @@ const settings = {
         })
     ],
     callbacks: {
-        async session(session, user) {
-            session.accessToken = user.accessToken
-            session.refreshToken = user.refreshToken
+        async session(session, token) {
+            session.accessToken = token.accessToken
+            session.refreshToken = token.refreshToken
+            session.user = token.userProfile
             return session
         },
         async redirect(url, baseUrl) {
@@ -65,11 +66,13 @@ const settings = {
                         return null
                     }
                 } else if (account.type === "credentials") {
-                    const { access_token, refresh_token } = user
+                    const { access_token, refresh_token, user: user_profile } = user
+
                     token = {
                         ...token,
                         accessToken: access_token,
                         refreshToken: refresh_token,
+                        userProfile: user_profile
                     }
                     return token
                 }
@@ -86,6 +89,7 @@ const settings = {
                         iat: Math.floor(Date.now() / 1000),
                         exp: Math.floor(Date.now() / 1000 + process.env.JWT_EXPIRY_MINS * 60 * 60)
                     }
+                    console.log(token)
                     return token
                 }
                 return {

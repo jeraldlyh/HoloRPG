@@ -1,3 +1,4 @@
+import { withAuth } from "../hooks/withAuth"
 import "../styles/globals.css"
 
 function MyApp({ Component, pageProps }) {
@@ -6,4 +7,4 @@ function MyApp({ Component, pageProps }) {
     )
 }
 
-export default MyApp
+export default withAuth(60)(MyApp)

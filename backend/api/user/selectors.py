@@ -11,7 +11,7 @@ def get_all_user_levels() -> QuerySet:
     return UserProfile.objects.all().values_list("level", flat=True)
 
 def get_user_by_username(username: str) -> UserProfile:
-    query = Q(user__username=username)
+    query = Q(username=username)
     return UserProfile.objects.get(query)
 
 def get_user_by_profile_id(id: str) -> UserProfile:
@@ -19,11 +19,11 @@ def get_user_by_profile_id(id: str) -> UserProfile:
     return UserProfile.objects.get(query)
 
 def get_user_by_user_id(id: str) -> UserProfile:
-    query = Q(user__id=id)
+    query = Q(id=id)
     return UserProfile.objects.get(query)
 
 def get_users_by_relationships(relationships: QuerySet) -> QuerySet:
-    query = Q(user__username__in=relationships)
+    query = Q(username__in=relationships)
     return UserProfile.objects.filter(query)
 
 def get_all_bounties() -> QuerySet:
@@ -42,5 +42,5 @@ def get_bounties_by_target_status(target: str,  status: str) -> QuerySet:
     return Bounty.objects.filter(query)
 
 def get_list_of_relationships_by_username(username: str) -> QuerySet:
-    query = Q(user_from__user_id=username)
-    return UserRelationship.objects.filter(query).values_list("user_to")
+    query = Q(user_from__username=username)
+    return UserRelationship.objects.filter(query).values_list("user_to__username")

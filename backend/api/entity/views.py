@@ -13,27 +13,15 @@ class EntityListCreate(views.APIView):
         serializer = EntitySerializer(get_all_entities(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def post(self, request, format=None):
-        serializer = EntitySerializer(data=request.data)
-        if serializer.is_valid():
-            create_entity(serializer.validated_data)
-            entity_name = request.data.get("name")
+    # def post(self, request, format=None):
+    #     serializer = EntitySerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         create_entity(serializer.validated_data)
+    #         entity_name = request.data.get("name")
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
-# class EntityViewSet(viewsets.ViewSet):
-#     serializer_class = EntitySerializer
-
-#     def list(self, request):
-#         serializer = self.serializer_class(get_all_entities(), many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-#     def create(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             create_entity(serializer.validated_data)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserEntityCreate(views.APIView):
     def post(self, request, format=None):
@@ -46,6 +34,7 @@ class UserEntityCreate(views.APIView):
 
             return Response(serialized_data.data, status=status.HTTP_201_CREATED)
         return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserEntityDetail(views.APIView):
     def get(self, request, pk=None, format=None):

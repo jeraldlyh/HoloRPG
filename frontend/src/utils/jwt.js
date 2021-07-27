@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken"
 import axiosInstance from "../axios/axiosInstance"
+import moment from "moment"
 
 export const isAccessTokenExpired = (token) => {
     const currentTime = Math.round(Date.now() / 1000 + 60)      // Checks for expiry one minute in advance to prevent errors
     const expiry = getExpiryTime(token)
-    console.log(`Current (+60s): ${currentTime} | JWT Expiry: ${expiry}`)
+    console.log(`Current (+60s): ${moment(currentTime).format()} | JWT Expiry: ${moment(expiry).format()}`)
 
     if (expiry) {
         if (expiry < currentTime) {
