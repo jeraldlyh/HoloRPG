@@ -4,9 +4,9 @@ import Card from "../card"
 import { GiMoneyStack } from "react-icons/gi"
 import StockCard from "./stockCard"
 
-function Stocks() {
+function Stocks({ setRef }) {
     return (
-        <Card height="auto" width="auto" title="Stocks" icon={<GiMoneyStack />}>
+        <Card setRef={setRef} height="auto" width="auto" title="Stocks" icon={<GiMoneyStack />}>
             <div className="flex flex-col">
                 {/* Summary */}
                 <div className="flex gap-x-10">

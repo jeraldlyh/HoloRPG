@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import NumberFormat from "react-number-format"
 import Layout from "../components/layout"
 import Items from "../components/profile/items"
@@ -12,18 +12,49 @@ import { useEntity } from "../hooks/useEntity"
 function Profile() {
     const { statistics, loading: profileLoading } = useProfile()
     const { entities, loading: entityLoading } = useEntity()
-
-    if (profileLoading) {
-        return <div>Loading</div>
-    }
-
-    const [currentIndex, setCurrentIndex]= useState(0)
+    const [currentIndex, setCurrentIndex] = useState(0)
     const statsRef = useRef(null)
     const itemsRef = useRef(null)
     const stocksRef = useRef(null)
     const entitiesRef = useRef(null)
 
+    const handleScrollView = (ref) => {
+        ref.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "start"
+        })
+    }
 
+    const executeScroll = (index) => {
+        switch (index) {
+            case 0:
+                handleScrollView(statsRef)
+                setCurrentIndex(0)
+                break
+            case 1:
+                handleScrollView(itemsRef)
+                setCurrentIndex(1)
+                break
+            case 2:
+                handleScrollView(stocksRef)
+                setCurrentIndex(2)
+                break
+            case 3:
+                handleScrollView(entitiesRef)
+                setCurrentIndex(3)
+                break
+            default:
+                break
+        }
+    }
+
+    const getFocusDesign = (index) => {
+        if (index === currentIndex) {
+            return "text-white"
+        }
+        return "text-custom-misc-inactive"
+    }
 
     const BannerTitle = () => {
         return (
@@ -47,18 +78,18 @@ function Profile() {
     return (
         <Layout title={<BannerTitle />}>
             <div className="flex flex-col">
-                <p className="text-white font-semibold m-5 space-x-12">
-                    <span className="">Overview</span>
-                    <span className="text-custom-misc-inactive">Stocks</span>
-                    <span className="text-custom-misc-inactive">Entities</span>
-                    <span className="text-custom-misc-inactive">Battles</span>
+                <p className="font-semibold m-5 space-x-12">
+                    <span className={getFocusDesign(0)} onClick={() => executeScroll(0)}>Overview</span>
+                    <span className={getFocusDesign(1)} onClick={() => executeScroll(1)}>Items</span>
+                    <span className={getFocusDesign(2)} onClick={() => executeScroll(2)}>Stocks</span>
+                    <span className={getFocusDesign(3)} onClick={() => executeScroll(3)}>Entities</span>
                 </p>
 
                 <div className="flex flex-col w-full h-full gap-y-3 overflow-y-auto scrollbar-hide">
-                    <Statistics data={statistics} />
-                    <Items />
-                    <Stocks />
-                    <Entities entityData={entities} />
+                    <Statistics setRef={statsRef} data={statistics} />
+                    <Items setRef={itemsRef} />
+                    <Stocks setRef={stocksRef} />
+                    <Entities setRef={entitiesRef} entityData={entities} />
                 </div>
             </div>
         </Layout>

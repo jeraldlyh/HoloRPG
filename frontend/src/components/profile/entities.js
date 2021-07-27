@@ -5,7 +5,7 @@ import { FaCoins } from "react-icons/fa"
 import EntityCard from "./entityCard"
 import _ from "lodash"
 
-function Entities({ entityData }) {
+function Entities({ entityData, setRef }) {
     const getNumberOfEntities = () => {
         return _.sumBy(entityData, "quantity")
     }
@@ -17,7 +17,7 @@ function Entities({ entityData }) {
     }
 
     return (
-        <Card height="auto" width="auto" title="Entities" icon={<FaCoins />}>
+        <Card setRef={setRef} height="auto" width="auto" title="Entities" icon={<FaCoins />}>
             <div className="flex flex-col">
                 {/* Summary */}
                 <div className="flex gap-x-10">

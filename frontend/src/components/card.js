@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 
-function Card({ height, width, icon, title, children }) {
+function Card({ height, width, icon, title, children, setRef }) {
     const isWidthContainFraction = () => {
         return width.includes("/")
     }
@@ -38,6 +38,7 @@ function Card({ height, width, icon, title, children }) {
 
     return (
         <div
+            ref={setRef}
             className={`rounded-lg h-${height} w-${width} p-4 bg-custom-card-normal text-white`}
             style={hasFraction() ? getStyles() : {}}
         >

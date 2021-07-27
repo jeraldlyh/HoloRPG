@@ -1,7 +1,7 @@
 import React from "react"
 
 
-function CardLight({ width, height, title, header, icon, children}) {
+function CardLight({ width, height, title, header, icon, children, setRef }) {
     const isWidthContainFraction = () => {
         return width.includes("/")
     }
@@ -39,6 +39,7 @@ function CardLight({ width, height, title, header, icon, children}) {
 
     return (
         <div
+            ref={setRef}
             className={`rounded-lg h-${height} w-${width} p-4 bg-custom-card-light border border-custom-color-grey text-white`}
             style={hasFraction() ? getStyles() : {}}
         >

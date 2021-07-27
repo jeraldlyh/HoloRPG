@@ -5,9 +5,9 @@ import { IoMdCube } from "react-icons/io"
 import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
-function Items() {
+function Items({ setRef }) {
     return (
-        <Card height="auto" width="auto" title="Items" icon={<IoMdCube />}>
+        <Card setRef={setRef} height="auto" width="auto" title="Items" icon={<IoMdCube />}>
             <div className="flex">
                 <div className="flex flex-col w-auto ">
                     {/* Enhancements */}

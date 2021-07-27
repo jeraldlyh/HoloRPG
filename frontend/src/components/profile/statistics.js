@@ -7,7 +7,7 @@ import { PieChart } from "react-minimal-pie-chart"
 import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
-function Statistics({ data }) {
+function Statistics({ data, setRef }) {
     const { character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age } = data
 
     const getPercentage = (value) => {
@@ -20,7 +20,7 @@ function Statistics({ data }) {
     }
 
     return (
-        <Card height="auto" width="auto" title="Statistics" icon={<IoStatsChart />}>
+        <Card setRef={setRef} height="auto" width="auto" title="Statistics" icon={<IoStatsChart />}>
             <div className="flex w-full h-full">
                 {/* Profile Card */}
                 <CardLight height="auto" width="96">

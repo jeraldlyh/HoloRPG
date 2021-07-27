@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { useState } from "react"
 import Layout from "../components/layout"
 import CardLight from "../components/cardLight"
 import { useShop } from "../hooks/useShop"
@@ -11,8 +11,12 @@ import { useEntity } from "../hooks/useEntity"
 function Shop() {
     const { data: shopData } = useShop()
     const [showModal, setShowModal] = useState(false)
-    const { data: profileData, mutate: profileMutate } = useProfile()
-    const { entities, mutate: entityMutate } = useEntity()
+    const { data: profileData, mutate: profileMutate, loading: profileLoading } = useProfile()
+    const { entities, mutate: entityMutate, loading: entityLoading } = useEntity()
+
+    if (entityLoading) {
+        return <div>Loading</div>
+    }
 
     const [purchaseData, setPurchaseData] = useState({
         itemName: "",
