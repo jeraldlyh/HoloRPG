@@ -40,29 +40,29 @@ function LoginForm() {
 
     return (
         <Fragment>
-            <div className="flex flex-col w-full px-3 mb-5">
+            <div className="flex flex-col w-full px-3 mb-6">
                 {/* peer, focus: not working // change pw dots to asterisks */}
-                <div className="border-white text-left text-sm space-y-6 mb-4">
+                <div className="border-white text-left text-sm space-y-6 mb-5 text-white">
                     <div className="relative">
-                        <input id="username" className="peer w-full h-9 bg-transparent px-1 placeholder-gray-300 placeholder-transparent font-light outline-none focus:text-white" type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                        <input id="username" className="peer w-full h-9 bg-transparent px-1 placeholder-transparent font-light outline-none" type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
                         <hr className="shadow-white"></hr>
-                        <label htmlFor="username" className="absolute left-1 -top-3.5 text-xs text-gray-100 font-light transition-all
+                        <label htmlFor="username" autocomplete="off" className="absolute left-1 -top-3.5 text-xs text-gray-300 font-light transition-all
                             peer-placeholder-shown:text-sm
-                            peer-placeholder-shown:text-gray-300
+                            peer-placeholder-shown:text-white
                             peer-placeholder-shown:top-2
                             peer-focus:-top-3.5
-                            peer-focus:text-gray-100
+                            peer-focus:text-gray-300
                             peer-focus:text-xs">Username</label>
                     </div>
                     <div className="relative">
-                        <input id="password" className="peer w-full h-9 bg-transparent px-1 placeholder-gray-300 placeholder-transparent font-light outline-none focus:text-white" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+                        <input id="password" className="peer w-full h-9 bg-transparent px-1 placeholder-transparent font-light outline-none" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                         <hr className="shadow-white"></hr>
-                        <label htmlFor="password" className="absolute left-1 -top-3.5 text-xs text-gray-100 font-light transition-all
+                        <label htmlFor="password"  className="absolute left-1 -top-3.5 text-xs text-gray-300 font-light transition-all
                                 peer-placeholder-shown:text-sm
-                                peer-placeholder-shown:text-gray-300
+                                peer-placeholder-shown:text-white
                                 peer-placeholder-shown:top-2
                                 peer-focus:-top-3.5
-                                peer-focus:text-gray-100
+                                peer-focus:text-gray-300
                                 peer-focus:text-xs">Password</label>
                     </div>
                 </div>
