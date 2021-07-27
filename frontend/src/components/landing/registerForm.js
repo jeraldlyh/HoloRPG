@@ -52,7 +52,7 @@ function RegisterForm() {
                     <label className="text-xs text-white">I agree to the <a href="#" className="hover:underline">terms &amp; conditions</a></label>
                 </div>
             </div>
-            <button className="py-3 rounded-full w-full bg-custom-button-primary text-center text-sm font-semibold uppercase hover:shadow-button disabled:opacity-50 disabled:cursor-not-allowed" onClick={onSubmit} disabled={isDisabled()}>Sign Up</button>
+            <button className="py-3 rounded-full w-full text-white bg-custom-button-primary text-center text-sm font-semibold uppercase hover:shadow-button disabled:opacity-50 disabled:cursor-not-allowed" onClick={onSubmit} disabled={isDisabled()}>Sign Up</button>
         </Fragment>
     )
 }

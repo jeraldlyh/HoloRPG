@@ -8,7 +8,7 @@ function Login() {
 
     const isActive = (index) => {
         if (index === pageIndex) {
-            return "w-2/5 text-white border-b  py-2"
+            return "w-2/5 text-white border-b border-custom-button-primary py-2"
         }
         return "w-2/5 py-2"
     }
