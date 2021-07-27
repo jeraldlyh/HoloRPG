@@ -10,3 +10,5 @@ class UserEntitySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserEntity
         fields = "__all__"
+    
+    income = serializers.ReadOnlyField(source="get_income")

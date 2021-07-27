@@ -11,7 +11,7 @@ import { useEntity } from "../hooks/useEntity"
 
 function Profile() {
     const { statistics, loading: profileLoading } = useProfile()
-    const { entity, loading: entityLoading } = useEntity()
+    const { entities, loading: entityLoading } = useEntity()
 
 
     const BannerTitle = () => {
@@ -47,7 +47,7 @@ function Profile() {
                     <Statistics data={statistics} />
                     <Items />
                     <Stocks />
-                    <Entities data={entity} />
+                    <Entities entityData={entities} />
                 </div>
             </div>
         </Layout>

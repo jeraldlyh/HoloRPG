@@ -20,7 +20,7 @@ export const useAuth = () => {
     const { data, error } = useSWR(SESSION_URL, fetchSession, {
         revalidateOnFocus: true,
         revalidateOnReconnect: true,
-        refreshInterval: 30 * 1000          // Default 30 seconds
+        refreshInterval: 60 * 1000          // 1 minute
     })
 
     return {

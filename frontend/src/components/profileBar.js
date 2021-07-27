@@ -18,10 +18,12 @@ function ProfileBar() {
     }
 
     const getCountdownDuration = () => {
+        console.log("test")
         if (last_collected) {
             const dateNow = moment()
             const dateLastCollected = moment(last_collected)
-            console.log(dateNow.diff(dateLastCollected))
+            const diff = dateNow.diff(dateLastCollected)
+            return diff
         }
         return 0
     }

@@ -17,3 +17,7 @@ class UserEntity(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     last_collected = models.DateTimeField(auto_now_add=True, blank=True)
+
+    @property
+    def get_income(self) -> int:
+        return self.entity.income

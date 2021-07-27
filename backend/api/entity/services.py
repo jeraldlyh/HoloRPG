@@ -12,7 +12,8 @@ from .models import Entity, UserEntity
 def create_entity(serializer_data: OrderedDict) -> None:
     Entity.objects.create(**serializer_data)
 
-def update_or_create_user_entity(serializer_data: OrderedDict)-> QuerySet:
+
+def update_or_create_user_entity(serializer_data: OrderedDict) -> QuerySet:
     """
         Creates a new user entity object if it does not exist for the user
         Returns updated list of user entities to be rendered on frontend
@@ -24,7 +25,7 @@ def update_or_create_user_entity(serializer_data: OrderedDict)-> QuerySet:
     quantity = data[0][1]
 
     try:
-        existing = get_user_entity_by_entityname(user.user.username, entity.name)
+        existing = get_user_entity_by_entityname(user.username, entity.name)
         existing.quantity = F("quantity") + quantity
         existing.save()
     except UserEntity.DoesNotExist:
@@ -33,9 +34,10 @@ def update_or_create_user_entity(serializer_data: OrderedDict)-> QuerySet:
     cost = quantity * entity.cost
     deduct_player_currency(user, cost)
 
-    return get_user_entities_by_username(user.user.username)
+    # return get_user_entities_by_username(user.username)
 
-def reset_income_collected(username: str)-> None:
+
+def reset_income_collected(username: str) -> None:
     entities = get_user_entities_by_username(username)
     for entity in entities:
         entity.last_collected = datetime.now()
@@ -47,6 +49,7 @@ def claim_income(username: str, amount: int) -> None:
     user.currency = F("currency") + amount
     user.save()
     reset_income_collected(user)
+
 
 def deduct_user_entity(user_entity: UserEntity, quantity: int) -> None:
     if user_entity.quantity - quantity <= 0:

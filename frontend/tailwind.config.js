@@ -19,6 +19,10 @@ module.exports = {
                         lightgrey: "#D2D2D2",
                         darkblue: "#041A2F",
                     },
+                    modal: {
+                        header: "#18181C",
+                        body: "#212123",
+                    },
                     button: {
                         primary: "#FF4887",
                     },

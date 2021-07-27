@@ -1,12 +1,14 @@
 import React from "react"
 
-function Button(props) {
+function Button({ width, height, background, text, onClick, disabled }) {
     return (
-        <div
-            className={`flex w-${props.width} h-${props.height} ${props.background ? "bg-custom-button-primary"  : "border border-custom-button-primary"} shadow-button text-white text-sm uppercase font-semibold py-2 px-4 rounded-lg justify-center items-center`}
+        <button
+            className={`flex w-${width} h-${height} ${background ? "bg-custom-button-primary" : "border border-custom-button-primary"} shadow-button text-white text-sm uppercase font-semibold py-2 px-4 rounded-lg justify-center items-center disabled:cursor-not-allowed hover:bg-opacity-90 disabled:opacity-50`}
+            onClick={onClick}
+            disabled={disabled}
         >
-            {props.text}
-        </div>
+            {text}
+        </button>
     )
 }
 
