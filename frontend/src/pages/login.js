@@ -8,7 +8,7 @@ function Login() {
 
     const isActive = (index) => {
         if (index === pageIndex) {
-            return "w-2/5 border-b-2 border-white py-2"
+            return "w-2/5 text-white border-b  py-2"
         }
         return "w-2/5 py-2"
     }
@@ -23,8 +23,8 @@ function Login() {
                     <span>H</span> <span>O</span> <span>L</span> <span>O</span>
                 </div>
 
-                <div className="flex flex-col w-96 p-10 bg-black bg-opacity-25 rounded-xl items-center">
-                    <div className="flex w-full justify-around mb-5 text-lg font-semibold text-center">
+                <div className="flex flex-col w-96 p-10 bg-black bg-opacity-25 rounded-xl items-center text-custom-misc-inactive">
+                    <div className="flex w-full justify-around mb-8 text-lg font-semibold text-center">
                         <span className={isActive(0)} onClick={() => setPageIndex(0)}>Login</span>
                         <span className={isActive(1)} onClick={() => setPageIndex(1)}>Register</span>
                     </div>
