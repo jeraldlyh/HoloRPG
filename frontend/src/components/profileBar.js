@@ -149,8 +149,8 @@ function ProfileBar() {
                 </div>
                 {
                     relationshipData && relationshipData.length !== 0
-                        ? relationshipData.map(relationship => {
-                            return <FriendCard username={relationship.username} level={relationship.level} character={relationship.character} />
+                        ? relationshipData.map((relationship, index) => {
+                            return <FriendCard key={index} username={relationship.username} level={relationship.level} character={relationship.character} />
                         })
                         : null
                 }

@@ -6,11 +6,12 @@ import _ from "lodash"
 
 const PERMITTED_URLS = ["/login", "/register"]
 
-export const withAuth = (refreshInterval) => {
+export const withAuth = () => {
     return function (Component) {
         return function (props) {
-            const { session, loading } = useAuth(refreshInterval)
-            console.log("loading: ", loading)
+            const { session, loading } = useAuth()
+            console.log("Loading: ", loading)
+
             const router = useRouter()
             const isPermitted = _.includes(PERMITTED_URLS, router.pathname)
 

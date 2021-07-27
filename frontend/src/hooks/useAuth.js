@@ -16,11 +16,11 @@ const fetchSession = async (url) => {
     return session
 }
 
-export const useAuth = (refreshInterval) => {
+export const useAuth = () => {
     const { data, error } = useSWR(SESSION_URL, fetchSession, {
         revalidateOnFocus: true,
         revalidateOnReconnect: true,
-        refreshInterval: refreshInterval * 1000 || 30 * 1000          // Default 30 seconds
+        refreshInterval: 30 * 1000          // Default 30 seconds
     })
 
     return {

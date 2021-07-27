@@ -7,4 +7,4 @@ function MyApp({ Component, pageProps }) {
     )
 }
 
-export default withAuth(60)(MyApp)
+export default withAuth()(MyApp)

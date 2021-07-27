@@ -4,7 +4,8 @@ import Card from "../card"
 import { FaCoins } from "react-icons/fa"
 import EntityCard from "./entityCard"
 
-function Entities() {
+function Entities({ data }) {
+    console.log(data)
     return (
         <Card height="auto" width="auto" title="Entities" icon={<FaCoins />}>
             <div className="flex flex-col">
