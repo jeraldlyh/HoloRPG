@@ -100,10 +100,10 @@ function Modal({ header, itemData, toggleModal, entityData, entityMutate, profil
         <div className={`absolute flex items-center justify-center w-full h-full text-white bg-black/75`}>
             <div className="flex flex-col w-2/3 h-full p-36">
                 {/* Header */}
-                <div className="flex items-center justify-between w-full h-14 bg-custom-modal-header px-8">
+                <div className="flex rounded-t-lg items-center justify-between w-full h-12 bg-custom-modal-header px-8">
                     <div className="flex items-center space-x-1.5">
                         <BiPurchaseTagAlt />
-                        <p className="uppercase font-semibold">{header}</p>
+                        <p className="uppercase font-semibold text-sm">{header}</p>
                     </div>
                     <div
                         className="font-bold text-custom-color-lightgrey cursor-pointer hover:text-custom-misc-status"
@@ -114,7 +114,7 @@ function Modal({ header, itemData, toggleModal, entityData, entityMutate, profil
                 </div>
 
                 {/* Body */}
-                <div className="flex flex-col gap-y-2 items-center h-2/3 bg-custom-modal-body px-8 py-4">
+                <div className="flex flex-col rounded-b-lg gap-y-2 items-center h-4/5 bg-custom-modal-body px-8 py-4">
                     <div className="flex flex-col items-center">
                         <p>{itemName}</p>
                         <div className="w-14 h-14 bg-custom-color-grey" />

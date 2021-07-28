@@ -14,9 +14,9 @@ function Shop() {
     const { data: profileData, mutate: profileMutate, loading: profileLoading } = useProfile()
     const { entities, mutate: entityMutate, loading: entityLoading } = useEntity()
 
-    if (entityLoading) {
-        return <div>Loading</div>
-    }
+    // if (entityLoading) {
+    //     return <div>Loading</div>
+    // }
 
     const [purchaseData, setPurchaseData] = useState({
         itemName: "",
