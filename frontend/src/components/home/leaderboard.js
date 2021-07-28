@@ -35,7 +35,7 @@ function Leaderboard({ leaderboardData }) {
 
             leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>#{profile.rank}</div>)
             leaderboards.push(
-                <div className={`flex items-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>
+                <div className={`flex items-center h-full py-2 ${evenInteration ? "bg-custom-card-normal" : null}`}>
                     <div className="w-8 h-8 bg-white"></div>
                     <p className="flex flex-col ml-3">
                         <span>{profile.username}</span>
@@ -51,14 +51,12 @@ function Leaderboard({ leaderboardData }) {
                 </div>
             )
         })
-
-        console.log(leaderboards)
         return leaderboards
     }
 
     return (
         <CardLight height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
-            <div className="grid grid-cols-5 items-center text-sm gap-y-2">
+            <div className="grid grid-cols-5 items-center text-sm gap-y-1">
                 <span className="text-center font-semibold">RANK</span>
                 <span className="text-center font-semibold">PLAYER</span>
                 <span className="text-center font-semibold">CLASS</span>
