@@ -54,7 +54,8 @@ function EntityShop({ shopData, playerId, profileData, profileMutate, entityData
                             ? shopData.map((item, index) => {
                                 return (
                                     <div key={index} className="flex w-full justify-around items-center text-sm my-2">
-                                        <div className="w-12 h-12 bg-custom-color-lightgrey" />
+                                        {/* <div className="w-12 h-12 bg-custom-color-lightgrey" /> */}
+                                        <img className="w-12 h-12" src="assets/shop/farm.png" />
                                         <p className="w-40 text-center">{item.name}</p>
                                         <p className="w-20 text-center">${item.income}</p>
                                         <p className="w-20 text-center">${item.upkeep}</p>

@@ -22,7 +22,7 @@ function Entities({ entityData, setRef }) {
                 {/* Summary */}
                 <div className="flex gap-x-10">
                     <p className="flex flex-col">
-                        <span className="text-xs text-custom-color-lightgrey">Total income stacked</span>
+                        <span className="text-xs text-custom-color-lightgrey">Total income per hour</span>
                         <span className="text-lg font-semibold">
                             <NumberFormat value={getTotalIncome()} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                         </span>

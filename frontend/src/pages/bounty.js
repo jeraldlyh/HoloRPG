@@ -4,7 +4,7 @@ import Activity from "../components/home/activity"
 import CardLight from "../components/cardLight"
 import { GiSwordWound } from "react-icons/gi"
 
-function Bounty(props) {
+function Bounty() {
     return (
         <Layout>
             <div className="flex w-full h-full justify-between">
@@ -32,7 +32,6 @@ function Bounty(props) {
                 </CardLight>
                 <Activity />
             </div>
-
         </Layout>
     )
 }
