@@ -7,8 +7,8 @@ import { PieChart } from "react-minimal-pie-chart"
 import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
-function Statistics({ data, setRef }) {
-    const { character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age } = data
+function Statistics({ profileData, setRef }) {
+    const { character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age } = profileData
 
     const getPercentage = (value) => {
         const total = max_health + attack + defence

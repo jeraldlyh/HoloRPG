@@ -6,25 +6,22 @@ import Modal from "../components/modal"
 import _ from "lodash"
 import { useProfile } from "../hooks/useProfile"
 import { useEntity } from "../hooks/useEntity"
+import { useRelationship } from "../hooks/useRelationship"
 
+function Shop({ session }) {
+    const { accessToken, user: { username } } = session
+    const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
+    const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
+    const { data: entityData, loading: entityLoading, mutate: entityMutate } = useEntity(username, accessToken)
+    const { data: shopData } = useShop(accessToken)
 
-function Shop() {
-    const { data: shopData } = useShop()
     const [showModal, setShowModal] = useState(false)
-    const { data: profileData, mutate: profileMutate, loading: profileLoading } = useProfile()
-    const { entities, mutate: entityMutate, loading: entityLoading } = useEntity()
-
-    // if (entityLoading) {
-    //     return <div>Loading</div>
-    // }
-
     const [purchaseData, setPurchaseData] = useState({
         itemName: "",
         itemImage: "",
         itemCost: 0,
         owned: ""
     })
-
 
     const handleButton = (item) => {
         setPurchaseData({
@@ -36,7 +33,10 @@ function Shop() {
     }
 
     return (
-        <Layout>
+        <Layout
+            profileData={profileData} profileMutate={profileMutate}
+            relationshipData={relationshipData}
+        >
             {/* tabs */}
             <div className="relative flex flex-col w-full h-full overflow-y-auto scrollbar-hide">
                 {showModal
@@ -46,7 +46,7 @@ function Shop() {
                         toggleModal={() => setShowModal(false)}
                         profileData={profileData}
                         profileMutate={profileMutate}
-                        entityData={entities}
+                        entityData={entityData}
                         entityMutate={entityMutate}
                     />
                     : null}

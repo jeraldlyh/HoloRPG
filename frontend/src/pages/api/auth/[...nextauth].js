@@ -3,7 +3,6 @@ import Providers from "next-auth/providers"
 import axios from "axios"
 import axiosInstance from "../../../axios/axiosInstance"
 import { isAccessTokenExpired, refreshToken } from "../../../utils/jwt"
-import { redirect } from "next/dist/next-server/server/api-utils"
 
 const settings = {
     debug: process.env.NODE_ENV === "development",
@@ -43,6 +42,9 @@ const settings = {
             session.accessToken = token.accessToken
             session.refreshToken = token.refreshToken
             session.user = token.userProfile
+            if (token.error) {
+                session.error = token.error
+            }
             return session
         },
         async redirect(url, baseUrl) {
@@ -89,11 +91,11 @@ const settings = {
                         iat: Math.floor(Date.now() / 1000),
                         exp: Math.floor(Date.now() / 1000 + process.env.JWT_EXPIRY_MINS * 60 * 60)
                     }
-                    console.log(token)
                     return token
                 }
                 return {
                     ...token,
+                    error: "Unable to refresh token",
                     exp: 0,
                 }
             }

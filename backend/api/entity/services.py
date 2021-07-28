@@ -44,9 +44,9 @@ def reset_income_collected(username: str) -> None:
         entity.save()
 
 
-def claim_income(username: str, amount: int) -> None:
+def claim_income(username: str) -> None:
     user = get_user_by_username(username)
-    user.currency = F("currency") + amount
+    user.currency = F("currency") + user.get_income_accumulated
     user.save()
     reset_income_collected(user)
 

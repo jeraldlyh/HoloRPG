@@ -4,9 +4,10 @@ import { BiSort } from "react-icons/bi"
 import NumberFormat from "react-number-format"
 import CardLight from "../cardLight"
 import useSortableData from "../../hooks/sortable"
+import _ from "lodash"
 
 
-function Leaderboard(props) {
+function Leaderboard({ leaderboardData }) {
     const [userProfiles, setUserProfiles] = useState([])
     const { items, requestSort } = useSortableData(userProfiles)
 
@@ -22,48 +23,56 @@ function Leaderboard(props) {
     }
 
     useEffect(() => {
-        // props.getAllProfile()
-        //     .then(response => {
-        //         const sortedData = sortData(response.data)
-        //         setUserProfiles(sortedData)
-        //     })
+        const sortedData = sortData(leaderboardData)
+        setUserProfiles(sortedData)
     }, [])
+
+    const populateLeaderboards = (data) => {
+        const leaderboards = []
+
+        _.each(data, function (profile, index) {
+            const evenInteration = index % 2 === 0
+
+            leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>#{profile.rank}</div>)
+            leaderboards.push(
+                <div className={`flex items-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>
+                    <div className="w-8 h-8 bg-white"></div>
+                    <p className="flex flex-col ml-3">
+                        <span>{profile.username}</span>
+                        <span>Lv. {profile.level}</span>
+                    </p>
+                </div>
+            )
+            leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>{profile.character ? profile.character : "None"}</div>)
+            leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>{profile.account_age} days</div>)
+            leaderboards.push(
+                <div className={`flex items-center justify-center h-full text-custom-stats-net_worth ${evenInteration ? "bg-custom-card-normal" : null}`}>
+                    <NumberFormat value={profile.net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                </div>
+            )
+        })
+
+        console.log(leaderboards)
+        return leaderboards
+    }
 
     return (
         <CardLight height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
-            <div className="flex justify-around mb-3 text-sm">
-                <span className="w-14 text-center font-semibold">RANK</span>
-                <span className="w-32 text-center font-semibold">PLAYER</span>
-                <span className="w-14 text-center font-semibold">CLASS</span>
-                <span className="w-20 text-center font-semibold">AGE</span>
-                <div className="flex items-center cursor-pointer" onClick={() => requestSort("net_worth")}>
-                    <span className="w-24 text-center font-semibold">NET WORTH</span>
+            <div className="grid grid-cols-5 items-center text-sm gap-y-2">
+                <span className="text-center font-semibold">RANK</span>
+                <span className="text-center font-semibold">PLAYER</span>
+                <span className="text-center font-semibold">CLASS</span>
+                <span className="text-center font-semibold">AGE</span>
+                <div className="flex justify-center items-center cursor-pointer" onClick={() => requestSort("net_worth")}>
+                    <span className="text-center font-semibold">NET WORTH</span>
                     <BiSort />
                 </div>
+                {
+                    items
+                        ? populateLeaderboards(items)
+                        : null
+                }
             </div>
-            {
-                items
-                    ? items.map((profile, index) => {
-                        return (
-                            <div key={index} className={`flex justify-around items-center text-sm h-14 ${index % 2 === 0 ? "bg-custom-card-normal" : ""} `}>
-                                <p className="w-14 text-center">#{profile.rank}</p>
-                                <div className="flex items-center w-32">
-                                    <div className="w-8 h-8 bg-white"></div>
-                                    <p className="flex flex-col ml-3">
-                                        <span>{profile.user}</span>
-                                        <span>Lv. {profile.level}</span>
-                                    </p>
-                                </div>
-                                <p className="w-14 text-center">{profile.character}</p>
-                                <p className="w-20 text-center">{profile.account_age} days</p>
-                                <p className="w-24 text-center text-custom-stats-net_worth">
-                                    <NumberFormat value={profile.net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                                </p>
-                            </div>
-                        )
-                    })
-                    : null
-            }
         </CardLight>
     )
 }

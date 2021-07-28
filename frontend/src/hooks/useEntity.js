@@ -1,10 +1,8 @@
 import useSWR from "swr"
-import { useAuth } from "./useAuth"
 
 
-export const useEntity = () => {
-    const { session, loading } = useAuth()
-    const { data, error, mutate } = useSWR([`/api/entity/${session.user.username}`, session.accessToken], {
+export const useEntity = (username, token) => {
+    const { data, error, mutate } = useSWR([`/api/entity/${username}`, token], {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
@@ -12,7 +10,7 @@ export const useEntity = () => {
     })
 
     return {
-        entities: data,
+        data: data,
         mutate: mutate,
         loading: typeof data === "undefined" && typeof error === "undefined",
     }

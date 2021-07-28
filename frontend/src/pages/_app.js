@@ -20,10 +20,12 @@ const fetcher = async (endpoint, token) => {
 }
 
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, session }) {
     return (
-        <SWRConfig value={{ fetcher }}>
-            <Component {...pageProps} />
+        <SWRConfig value={{
+            fetcher: fetcher,
+        }}>
+            <Component session={session} {...pageProps} />
         </SWRConfig>
     )
 }

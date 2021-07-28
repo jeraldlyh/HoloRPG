@@ -5,18 +5,11 @@ import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
 import { IoPersonAddOutline } from "react-icons/io5"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import FriendCard from "./friendCard"
-import { useRelationship } from "../hooks/useRelationship"
-import { useProfile } from "../hooks/useProfile"
+import axiosInstance from "../axios/axiosInstance"
+import Button from "./button"
 
 
-function ProfileBar() {
-    const { data: relationshipData, loading: relationshipLoading } = useRelationship()
-    const { statistics: profileData, loading: profileLoading } = useProfile()
-
-    if (relationshipLoading || profileLoading) {
-        return <div>Loading</div>
-    }
-
+function ProfileBar({ profileData, relationshipData, profileMutate, accessToken }) {
     const { username, character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age, income_accumulated, last_collected } = profileData
 
     const getHealthPercent = () => {
@@ -50,6 +43,21 @@ function ProfileBar() {
         }
 
         return `${minutes}:${seconds}`
+    }
+
+    const collectIncome = async () => {
+        axiosInstance.interceptors.request.use(function (config) {
+            config.headers.Authorization = "Bearer " + accessToken
+            return config
+        })
+        profileMutate(() => {
+            profileData.currency += profileData.income_accumulated
+            profileData.income_accumulated = 0
+            profileData.last_collected = ""
+            return profileData
+        }, false)
+        const response = await axiosInstance.post("/api/income/", { username: username })
+        profileMutate(response.data, false)
     }
 
     return (
@@ -137,9 +145,7 @@ function ProfileBar() {
                     <p className="font-semibold mb-1">
                         <NumberFormat value={income_accumulated} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                     </p>
-                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold shadow-button">
-                        COLLECT
-                    </div>
+                    <Button width="auto" height="8" background={true} text="Collect" onClick={() => collectIncome()} disabled={income_accumulated === 0} />
                 </div>
             </div>
 
@@ -158,7 +164,7 @@ function ProfileBar() {
                         ? relationshipData.map((relationship, index) => {
                             return <FriendCard key={index} username={relationship.username} level={relationship.level} character={relationship.character} />
                         })
-                        : null
+                        : <p className="flex justify-center items-center">You currently do not have any friends!</p>
                 }
             </div>
         </div>

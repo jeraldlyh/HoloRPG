@@ -1,10 +1,8 @@
 import useSWR from "swr"
-import { useAuth } from "./useAuth"
 
 
-export const useProfile = () => {
-    const { session, loading } = useAuth()
-    const { data, error, mutate } = useSWR([`/api/profile/${session.user.username}`, session.accessToken], {
+export const useProfile = (username, token) => {
+    const { data, error, mutate } = useSWR([`/api/profile/${username}`, token], {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
@@ -12,10 +10,7 @@ export const useProfile = () => {
     })
 
     return {
-        data: data,
-        mutate: mutate,
-        loading: typeof data === "undefined" && typeof error === "undefined",
-        statistics: {
+        data: {
             username: data ? data.username : "",
             character: data ? data.character : "",
             attack: data ? data.attack : 0,
@@ -30,5 +25,8 @@ export const useProfile = () => {
             income_accumulated: data ? data.income_accumulated : 0,
             last_collected: data ? data.last_collected : 0
         },
+        mutate: mutate,
+        loading: typeof data === "undefined" && typeof error === "undefined",
+        error: error
     }
 }

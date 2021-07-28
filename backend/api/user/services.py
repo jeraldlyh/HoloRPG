@@ -9,6 +9,7 @@ from .serializers import BountySerializer
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
 from .selectors import get_bounties_by_status, get_bounties_by_target_status, get_bounty_by_id, get_user_by_username
 
+
 def damage_dealt(player: UserProfile, target: UserProfile) -> int:
     damage = player.attack**2 / (player.attack / player.defence)
 
@@ -19,6 +20,7 @@ def damage_dealt(player: UserProfile, target: UserProfile) -> int:
 
     target.save()
     return damage
+
 
 def get_user_net_worth(username: str) -> int:
     """
@@ -36,11 +38,13 @@ def get_user_net_worth(username: str) -> int:
 
     return net_worth * 3
 
+
 def exp_gained(player: UserProfile, target: UserProfile) -> int:
     experience = (8 * (target.level**3)) / 4
     player.experience = F("experience") + experience
 
     return experience
+
 
 def plunder(player: UserProfile, target: UserProfile) -> int:
     """
@@ -69,6 +73,7 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
 
     return damage, currency, experience
 
+
 def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
     bounty.status = "CLAIMED"
     bounty.claimed_by = player
@@ -77,19 +82,23 @@ def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
 
     add_player_currency(player, bounty.value)
 
+
 def get_unclaimed_bounties() -> List[dict]:
     bounty_queryset = get_bounties_by_status("UNCLAIMED")
     bounty_serializer = BountySerializer(bounty_queryset, many=True)
     result = [dict(OrderedDict(bounty)) for bounty in bounty_serializer.data]
     return result
 
+
 def add_player_currency(player: UserProfile, value) -> None:
     player.currency = F("currency") + value
     player.save()
 
+
 def deduct_player_currency(player: UserProfile, value) -> None:
     player.currency = F("currency") - value
     player.save()
+
 
 def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, UserProfile]:
     """
@@ -109,6 +118,7 @@ def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, User
         claim_bounty(player, bounty)
     
     return damage, currency, exp, target.username
+
 
 def create_bounty(serializer_data: OrderedDict) -> None:
     """
@@ -138,6 +148,7 @@ def create_bounty(serializer_data: OrderedDict) -> None:
     
     deduct_player_currency(player, bounty_value)
     Bounty.objects.create(**serializer_data)
+
 
 def create_user_relationship(serializer_data: OrderedDict) -> None:
     """
