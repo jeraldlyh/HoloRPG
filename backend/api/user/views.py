@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 from django.contrib.auth.models import User
@@ -6,7 +7,7 @@ from .models import UserProfile
 from .serializers import UserProfileSerializer, BountySerializer, UserRelationshipSerializer
 from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_unclaimed_bounties, get_user_net_worth
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
-from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_user_id, get_user_by_username, get_users_by_relationships
+from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_user_id, get_user_by_username, get_users_by_relationships, get_x_random_users
 
 class UserProfileDetail(views.APIView):
     def get_object(self, pk):
@@ -87,9 +88,20 @@ class UserRelationshipViewSet(viewsets.ViewSet):
 
 class BountyListCreate(views.APIView):
     def get(self, request, format=None):
-        serializer = BountySerializer(get_bounties_by_status("UNCLAIMED"), many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
+        """
+            Retrieves unclaimed buonties and 10 random players
+        """
+        bounty_serializer = BountySerializer(get_bounties_by_status("UNCLAIMED"), many=True)
+        player_serializer = UserProfileSerializer(get_x_random_users(10), many=True)
+        bounty_data = [dict(OrderedDict(bounty)) for bounty in bounty_serializer.data]
+        player_data = [dict(OrderedDict(player)) for player in player_serializer.data]
+        data = {
+            "bounty": bounty_data,
+            "player": player_data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+
     def post(self, request, format=None):
         request_copy = request.data.copy()              # Deep clone a copy of request data
         target_name = request.data["target"]

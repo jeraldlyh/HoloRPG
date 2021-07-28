@@ -15,7 +15,7 @@ function Bounty() {
     const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
-    const { data: bountyData, loading: bountyLoading } = useBounty(accessToken)
+    const { bountyData, playerData, loading: bountyLoading } = useBounty(accessToken)
 
     if (relationshipLoading || profileLoading || bountyLoading) {
         return <div className="flex items-center justify-center">Loading...</div>
@@ -39,7 +39,7 @@ function Bounty() {
                     </div>
                     <hr className="border-custom-color-grey w-full mt-1 mb-2" />
                     {
-                        bountyData
+                        bountyData && bountyData.length !== 0
                             ? bountyData.map(bounty => {
                                 return (
                                     <div key={bounty.id} className="flex justify-around items-center text-sm my-2">
@@ -56,7 +56,7 @@ function Bounty() {
                                     </div>
                                 )
                             })
-                            : null
+                            : <p className="text-center">There's currently no bounties available</p>
                     }
                 </CardLight>
                 <Activity />
