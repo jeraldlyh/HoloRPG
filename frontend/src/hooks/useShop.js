@@ -1,10 +1,8 @@
 import useSWR from "swr"
-import { useAuth } from "./useAuth"
 
 
-export const useShop = () => {
-    const { session, loading } = useAuth()
-    const { data, error } = useSWR(["/api/entity", session.accessToken], {
+export const useShop = (token) => {
+    const { data, error } = useSWR(["/api/entity", token], {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,

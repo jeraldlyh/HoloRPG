@@ -1,55 +1,67 @@
-import React from "react"
+import React, { useState } from "react"
 import moment from "moment"
 import NumberFormat from "react-number-format"
 import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
 import { IoPersonAddOutline } from "react-icons/io5"
-import { CountdownCircleTimer } from "react-countdown-circle-timer"
+import Countdown from "react-countdown"
 import FriendCard from "./friendCard"
-import { useRelationship } from "../hooks/useRelationship"
-import { useProfile } from "../hooks/useProfile"
+import axiosInstance from "../axios/axiosInstance"
+import { v4 as uuidv4 } from 'uuid'
 
 
-function ProfileBar() {
-    const { data: relationshipData, loading: relationshipLoading } = useRelationship()
-    const { statistics: profileData, loading: profileLoading } = useProfile()
-
-    if (relationshipLoading || profileLoading) {
-        return <div>Loading</div>
-    }
-
-    const { username, character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age, income_accumulated, last_collected } = profileData
+function ProfileBar({ profileData, relationshipData, profileMutate, accessToken }) {
+    const { username, character, attack, defence, current_health, max_health, currency, level, reputation, income_accumulated, last_collected } = profileData
+    const [key, setKey] = useState(0)
 
     const getHealthPercent = () => {
         return Math.ceil((current_health / max_health) * 100) + "%"
     }
 
-    const getCountdownDuration = () => {
-        if (last_collected) {
-            const dateNow = moment()
-            const dateLastCollected = moment(last_collected)
-            return dateNow.diff(dateLastCollected)
-        }
-        return 0
+    const getNextCooldown = (time) => {
+        var nextHour = moment(time).add(1, "hour")
+        var currentTime = moment()
+        // while (nextHour.diff(currentTime) < 0) {
+        //     nextHour = nextHour.add(1, "hour")
+        // }
+        var duration = nextHour.diff(currentTime)
+        return duration > 0 ? duration : 0
     }
 
-    const children = ({ remainingTime }) => {
-        // const hours = Math.floor(remainingTime / 3600)
-        var minutes = Math.floor((remainingTime % 3600) / 60)
-        var seconds = remainingTime % 60
-
-        if (seconds === 0) {
-            seconds = "00"
-        } else if (seconds < 10) {
-            seconds = `0${seconds}`
+    const addPaddingToNumber = (number) => {
+        if (number === 0) {
+            return "00"
+        } else if (number < 10) {
+            return "0" + number
         }
+        return number
+    }
 
-        if (minutes === 0) {
-            minutes = "00"
-        } else if (minutes < 10) {
-            minutes = `0${minutes}`
+    const renderer = ({ hours, minutes, seconds, completed }) => {
+        if (completed) {
+            return <p>Collect now</p>
         }
+        return <p>Collect in {addPaddingToNumber(minutes)}:{addPaddingToNumber(seconds)}</p>
+    }
 
-        return `${minutes}:${seconds}`
+    const collectIncome = async () => {
+        axiosInstance.interceptors.request.use(function (config) {
+            config.headers.Authorization = "Bearer " + accessToken
+            return config
+        })
+        profileMutate(() => {
+            profileData.currency += profileData.income_accumulated
+            profileData.income_accumulated = 0
+            profileData.last_collected = ""
+            return profileData
+        }, false)
+
+        axiosInstance.interceptors.request.use(function (config) {
+            config.headers.Authorization = "Bearer " + accessToken
+            return config
+        })
+        const response = await axiosInstance.post("/api/income/", { username: username })
+        await profileMutate(response.data, false)
+        setKey(uuidv4())
     }
 
     return (
@@ -121,25 +133,25 @@ function ProfileBar() {
 
             {/* Income Stacked */}
             <div className="flex justify-around px-3 items-center rounded-lg w-full h-24 mt-3 bg-custom-card-light">
-                <CountdownCircleTimer
-                    isPlaying
-                    size={80}
-                    duration={getCountdownDuration()}
-                    strokeWidth={5}
-                    trailColor="#555555"
-                    colors="#FFFFFF"
-                    children={children}
-                />
-
                 {/* Income */}
+
                 <div className="flex flex-col items-center justify-center ml-2">
                     <p className="text-xs font-medium">Income Stacked</p>
                     <p className="font-semibold mb-1">
                         <NumberFormat value={income_accumulated} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                     </p>
-                    <div className="w-24 h-7 pt-1.5 rounded-full bg-custom-button-primary text-center text-xs font-semibold shadow-button">
-                        COLLECT
-                    </div>
+                    {/* <Button width="auto" height="8" background={true} text="Collect" onClick={() => collectIncome()} disabled={income_accumulated === 0} /> */}
+                    <button
+                        className="bg-custom-button-primary shadow-button rounded-lg  text-white text-sm  uppercase font-semibold py-2 px-4  justify-center items-center  disabled:cursor-not-allowed  disabled:opacity-50 hover:bg-opacity-90"
+                        disabled={!getNextCooldown(last_collected) || getNextCooldown(last_collected) !== 0}
+                        onClick={() => collectIncome()}
+                    >
+                        <Countdown
+                            key={key}
+                            date={Date.now() + getNextCooldown(last_collected)}
+                            renderer={renderer}
+                        />
+                    </button>
                 </div>
             </div>
 
@@ -158,7 +170,7 @@ function ProfileBar() {
                         ? relationshipData.map((relationship, index) => {
                             return <FriendCard key={index} username={relationship.username} level={relationship.level} character={relationship.character} />
                         })
-                        : null
+                        : <p>You currently do not have any friends!</p>
                 }
             </div>
         </div>

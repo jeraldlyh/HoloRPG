@@ -1,7 +1,8 @@
 import useSWR from "swr"
 
-export const useRelationship = (username, token) => {
-    const { data, error } = useSWR([`/api/relationship/${username}`, token], {
+
+export const useLeaderboard = (token) => {
+    const { data, error } = useSWR(["/api/profile", token], {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,

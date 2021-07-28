@@ -9,4 +9,5 @@ urlpatterns = [
     path("api/", include("api.stock.urls")),          # Permits URL links for stocks
     path("api/auth/", include("accounts.urls")),      # Permits URL links in accounts
     path("api/auth/", include("dj_rest_auth.urls")),
+    path("api/auth/register/", include("dj_rest_auth.registration.urls")),
 ]

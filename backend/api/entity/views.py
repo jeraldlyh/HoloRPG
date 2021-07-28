@@ -74,12 +74,11 @@ class UserEntityDetail(views.APIView):
 
 @api_view(["POST"])
 def claim_stacked_income(request):
-    username = request.data["user"]
-    amount = request.data["amount"]
+    username = request.data["username"]
 
-    if username and amount:
-        claim_income(username, int(amount))
+    if username:
+        claim_income(username)
         user_profile = get_user_by_username(username)
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response({"message": "User or amount is not specified"}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"message": "User parameter not specified"}, status=status.HTTP_400_BAD_REQUEST)

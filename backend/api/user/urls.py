@@ -4,8 +4,6 @@ from .views import BountyListCreate, BountyPatch, UserProfileDetail, UserProfile
 
 
 router = DefaultRouter()
-# router.register(r"profile", UserProfileViewSet, basename="profile")
-# router.register(r"skill", SkillViewSet, basename="skill")
 router.register(r"relationshipcreate", UserRelationshipViewSet, basename="relationship")
 router.register(r"bountycreate", BountyViewSet, basename="bountycreate")
 

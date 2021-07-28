@@ -1,11 +1,12 @@
 import useSWR from "swr"
 
-export const useRelationship = (username, token) => {
-    const { data, error } = useSWR([`/api/relationship/${username}`, token], {
+
+export const useBounty = (token) => {
+    const { data, error } = useSWR(["/api/bounty", token], {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
-        refreshInterval: 0
+        refreshInterval: 10000
     })
 
     return {

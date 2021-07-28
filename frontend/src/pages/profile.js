@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef } from "react"
 import NumberFormat from "react-number-format"
 import Layout from "../components/layout"
 import Items from "../components/profile/items"
@@ -8,15 +8,25 @@ import Entities from "../components/profile/entities"
 import Button from "../components/button"
 import { useProfile } from "../hooks/useProfile"
 import { useEntity } from "../hooks/useEntity"
+import { useRelationship } from "../hooks/useRelationship"
+import { useAuth } from "../hooks/useAuth"
 
 function Profile() {
-    const { statistics, loading: profileLoading } = useProfile()
-    const { entities, loading: entityLoading } = useEntity()
+    const { session } = useAuth()
+    const { accessToken, user: { username } } = session
+    const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
+    const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
+    const { data: entityData, loading: entityLoading } = useEntity(username, accessToken)
     const [currentIndex, setCurrentIndex] = useState(0)
+
     const statsRef = useRef(null)
     const itemsRef = useRef(null)
     const stocksRef = useRef(null)
     const entitiesRef = useRef(null)
+
+    if (relationshipLoading || profileLoading || entityLoading) {
+        return <div className="flex items-center justify-center">Loading...</div>
+    }
 
     const handleScrollView = (ref) => {
         ref.current.scrollIntoView({
@@ -51,9 +61,9 @@ function Profile() {
 
     const getFocusDesign = (index) => {
         if (index === currentIndex) {
-            return "text-white"
+            return "text-white cursor-default"
         }
-        return "text-custom-misc-inactive"
+        return "text-custom-misc-inactive cursor-pointer"
     }
 
     const BannerTitle = () => {
@@ -76,7 +86,12 @@ function Profile() {
     }
 
     return (
-        <Layout title={<BannerTitle />}>
+        <Layout
+            title={<BannerTitle />}
+            profileData={profileData} profileMutate={profileMutate}
+            relationshipData={relationshipData}
+            accessToken={accessToken}
+        >
             <div className="flex flex-col">
                 <p className="font-semibold m-5 space-x-12">
                     <span className={getFocusDesign(0)} onClick={() => executeScroll(0)}>Overview</span>
@@ -86,10 +101,10 @@ function Profile() {
                 </p>
 
                 <div className="flex flex-col w-full h-full gap-y-3 overflow-y-auto scrollbar-hide">
-                    <Statistics setRef={statsRef} data={statistics} />
+                    <Statistics setRef={statsRef} profileData={profileData} />
                     <Items setRef={itemsRef} />
                     <Stocks setRef={stocksRef} />
-                    <Entities setRef={entitiesRef} entityData={entities} />
+                    <Entities setRef={entitiesRef} entityData={entityData} />
                 </div>
             </div>
         </Layout>

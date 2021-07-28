@@ -11,11 +11,7 @@ import axiosInstance from "../axios/axiosInstance"
 function NavBar() {
     const [index, setIndex] = useState(0)
     const router = useRouter()
-    const { session, loading } = useAuth()
-
-    if (loading) {
-        return <div>Loading</div>
-    }
+    const { session } = useAuth()
 
     useEffect(() => {
         getCurrentIndex()
@@ -100,9 +96,6 @@ function NavBar() {
                 >
                     <BiLogOut size={24} />
                 </div>
-                <a href="/login" className={getFocusDesign(6)}>
-                    <BiLogIn size={24} />
-                </a>
             </div>
         </div>
     )

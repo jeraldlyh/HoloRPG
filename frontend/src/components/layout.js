@@ -4,17 +4,22 @@ import ProfileBar from "./profileBar"
 import Banner from "./banner"
 
 
-function Layout(props) {
+function Layout({ children, title, profileData, profileMutate, relationshipData, accessToken }) {
     return (
         <div className="flex bg-custom-bg-main h-screen">
             <NavBar />
             <div className="flex flex-col w-full h-full z-0">
-                {props ? <Banner title={props.title} /> : <Banner />}
+                {title ? <Banner title={title} /> : <Banner />}
                 <div className="flex p-3 w-full h-full overflow-hidden">
-                    {props.children}
+                    {children}
                 </div>
             </div>
-            <ProfileBar />
+            <ProfileBar
+                profileData={profileData}
+                profileMutate={profileMutate}
+                relationshipData={relationshipData}
+                accessToken={accessToken}
+            />
         </div>
     )
 }
