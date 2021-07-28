@@ -10,11 +10,11 @@ import { v4 as uuidv4 } from 'uuid'
 
 
 function ProfileBar({ profileData, relationshipData, profileMutate, accessToken }) {
-    const { username, character, attack, defence, current_health, max_health, currency, level, reputation, income_accumulated, last_collected } = profileData
+    const { username, character, attack, defence, current_health, max_health, currency, level, reputation, income_accumulated, last_collected, experience, exp_required } = profileData
     const [key, setKey] = useState(0)
 
-    const getHealthPercent = () => {
-        return Math.ceil((current_health / max_health) * 100) + "%"
+    const getPercent = (value, max_value) => {
+        return Math.ceil((value / max_value) * 100) + "%"
     }
 
     const getNextCooldown = (time) => {
@@ -88,7 +88,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                 <p>HP</p>
                 <div className="flex w-3/5 h-1 rounded-full bg-custom-bg-progress shadow-progress">
                     <div
-                        style={{ width: getHealthPercent() }}
+                        style={{ width: getPercent(current_health, max_health) }}
                         className="rounded-full bg-custom-stats-health shadow-hp"
                     />
                 </div>
@@ -100,11 +100,11 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                 <p>XP</p>
                 <div className="flex w-3/5 h-1 rounded-full bg-custom-bg-progress shadow-progress">
                     <div
-                        style={{ width: "52%" }}
+                        style={{ width: getPercent(experience, exp_required) }}
                         className="rounded-full bg-custom-stats-attack shadow-xp"
                     />
                 </div>
-                <p className="w-1/5 text-left font-semibold">52%</p>
+                <p className="w-1/5 text-left font-semibold">{getPercent(experience, exp_required)}</p>
             </div>
 
             {/* Stats */}

@@ -24,7 +24,9 @@ export const useProfile = (username, token) => {
             reputation: data ? data.reputation : 0,
             account_age: data ? data.account_age : 0,
             income_accumulated: data ? data.income_accumulated : 0,
-            last_collected: data ? data.last_collected : 0
+            last_collected: data ? data.last_collected : 0,
+            experience: data ? data.experience : 0,
+            exp_required: data ? data.exp_required : 0
         },
         mutate: mutate,
         loading: typeof data === "undefined" && typeof error === "undefined",

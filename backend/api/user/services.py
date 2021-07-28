@@ -10,7 +10,18 @@ from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyErr
 from .selectors import get_bounties_by_status, get_bounties_by_target_status, get_bounty_by_id, get_user_by_username
 
 
+def exp_required(level: int) -> int:
+    """
+        Current formula: (8 * (Level^3)) / 4
+    """
+    BASE_EXP = 8
+    return (BASE_EXP * (level ** 3)) / 4
+
+
 def damage_dealt(player: UserProfile, target: UserProfile) -> int:
+    """
+        Current formula: Attack^2 / (Attack + Defence)
+    """
     damage = player.attack**2 / (player.attack / player.defence)
 
     if target.current_health - damage > 0:
@@ -161,4 +172,4 @@ def create_user_relationship(serializer_data: OrderedDict) -> None:
     if user_from.username == user_to.username:
         raise SameUserError
 
-    UserRelationship.objects.create(**serializer_data) 
+    UserRelationship.objects.create(**serializer_data)

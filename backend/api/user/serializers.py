@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import UserProfile, Character
 from .models import Bounty, UserRelationship
 
@@ -13,6 +14,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     income_accumulated = serializers.ReadOnlyField(source="get_income_accumulated")
     net_worth = serializers.ReadOnlyField(source="get_net_worth")
     last_collected = serializers.ReadOnlyField(source="get_last_collected")
+    exp_required = serializers.ReadOnlyField(source="get_exp_required")
 
 
 class CharacterSerializer(serializers.ModelSerializer):

@@ -19,7 +19,7 @@ function NavBar() {
 
     const logoutUser = async () => {
         await axiosInstance.post("/api/auth/logout/", { refresh: session.refreshToken })
-        await signOut()
+        await signOut({ redirect: false })
         router.push("/login")
     }
 

@@ -1,14 +1,12 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
-from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext as _
-from django.conf import settings
-from django.dispatch import receiver
-from django.db.models.signals import post_save
 
 from .utils import get_duration, clamp
+
 
 class Character(models.Model):
     main_class = models.CharField(default="DEFAULT", max_length=32, primary_key=True)
@@ -110,6 +108,12 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         from ..entity.selectors import get_last_collected_time_by_username
 
         return get_last_collected_time_by_username(self.username)
+    
+    @property
+    def get_exp_required(self) -> int:
+        from .services import exp_required
+
+        return exp_required(self.level)
 
 class Relationship(models.Model):
     FRIEND = "FRIEND"
@@ -119,7 +123,6 @@ class Relationship(models.Model):
         (FRIEND, _("Friend")),
         (FAMILY, _("Family"))
     )
-
     name = models.CharField(choices=RELATIONSHIP_CHOICES, max_length=10, primary_key=True)
 
 

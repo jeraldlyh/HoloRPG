@@ -8,15 +8,15 @@ import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
 function Statistics({ profileData, setRef }) {
-    const { character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age } = profileData
+    const { character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age, experience, exp_required } = profileData
 
-    const getPercentage = (value) => {
+    const getProportion = (value) => {
         const total = max_health + attack + defence
         return Math.ceil((value / total) * 100)
     }
 
-    const getHealthPercent = () => {
-        return Math.ceil((current_health / max_health) * 100) + "%"
+    const getPercentage = (value, max_value) => {
+        return Math.ceil((value / max_value) * 100) + "%"
     }
 
     return (
@@ -79,9 +79,9 @@ function Statistics({ profileData, setRef }) {
                                 <PieChart
                                     lineWidth={35}
                                     data={[
-                                        { value: getPercentage(max_health), color: "#F15E6C" },
-                                        { value: getPercentage(attack), color: "#FFC35D" },
-                                        { value: getPercentage(defence), color: "#49B79F" }
+                                        { value: getProportion(max_health), color: "#F15E6C" },
+                                        { value: getProportion(attack), color: "#FFC35D" },
+                                        { value: getProportion(defence), color: "#49B79F" }
                                     ]}
                                 />
                                 <p className="absolute font-semibold">
@@ -95,9 +95,9 @@ function Statistics({ profileData, setRef }) {
                                     <p>HP</p>
                                     <div className="w-10/12 h-1 flex rounded-full bg-custom-bg-progress">
                                         <div
-                                            style={{ width: getHealthPercent() }}
-                                            className="rounded-full bg-white"
-                                        ></div>
+                                            style={{ width: getPercentage(current_health, max_health) }}
+                                            className="rounded-full bg-white shadow-white"
+                                        />
                                     </div>
                                     <p className="w-1/12 text-left">{current_health}/{max_health}</p>
                                 </div>
@@ -105,11 +105,11 @@ function Statistics({ profileData, setRef }) {
                                     <p>XP</p>
                                     <div className="w-10/12 h-1 flex rounded-full bg-custom-bg-progress">
                                         <div
-                                            style={{ width: "52%" }}
-                                            className="rounded-full bg-white"
-                                        ></div>
+                                            style={{ width: getPercentage(experience, exp_required) }}
+                                            className="rounded-full bg-white shadow-white"
+                                        />
                                     </div>
-                                    <p className="w-1/12 text-left">52%</p>
+                                    <p className="w-1/12 text-left">{getPercentage(experience, exp_required)}</p>
                                 </div>
 
                                 {/* Health/Attack/Defence */}
