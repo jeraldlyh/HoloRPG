@@ -1,4 +1,8 @@
 import React, { useState, Fragment } from "react"
+import axiosInstance from "../../axios/axiosInstance"
+import _ from "lodash"
+import { signIn } from "next-auth/client"
+
 
 function RegisterForm() {
     const [username, setUsername] = useState("")
@@ -6,7 +10,7 @@ function RegisterForm() {
     const [rePassword, setRePassword] = useState("")
     const [email, setEmail] = useState("")
     const [agreeConditions, setAgreeConditions] = useState(false)
-    const [isPasswordError, setIsPasswordError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
 
     const resetLabels = () => {
         setUsername("")
@@ -14,27 +18,44 @@ function RegisterForm() {
         setRePassword("")
         setEmail("")
     }
-    
-    const onSubmit = (e) => {
-        e.preventDefault()
-        if (password !== rePassword) {      // Reset password labels
-            setIsPasswordError(true)
-            setPassword("")
-            setRePassword("")
-        } else {
-            console.log("submitting")
+
+    const parseErrorMessage = (errors) => {
+        var objToArray = _.values(errors)
+        var flatArray = _.flatMap(objToArray)
+        setErrorMessage(_.join(flatArray, " "))
+    }
+
+    const onSubmit = async (e) => {
+        try {
+            e.preventDefault()
+
+            const body = {
+                username: username,
+                password1: password,
+                password2: rePassword,
+                email: email
+            }
+            await axiosInstance.post("/api/auth/register/", body)                       // Register on backend
+            await signIn("credentials", { username: username, password: password })     // Redirect login to nextAuth
             resetLabels()
+        } catch (error) {
+            parseErrorMessage(error.response.data)
         }
     }
 
     const isDisabled = () => {
-        return !(username && password && rePassword && email && agreeConditions)
+        return !(username && password && rePassword && email && agreeConditions && password === rePassword)
     }
 
     return (
         <Fragment>
             <div className="flex flex-col w-full px-3 mb-6">
                 <div className="border-white text-left text-sm space-y-6 mb-6 text-white">
+                    {
+                        errorMessage
+                            ? <p className="text-red-500 text-sm -mt-1 text-center">{errorMessage}</p>
+                            : null
+                    }
                     <div className="relative">
                         <input id="username" className="peer w-full h-9 bg-transparent px-1 placeholder-transparent font-light outline-none" type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
                         <hr className="shadow-white"></hr>
@@ -80,7 +101,12 @@ function RegisterForm() {
                                 peer-focus:text-xs">Re-enter password</label>
                     </div>
                     {
-                        isPasswordError
+                        errorMessage
+                            ? null
+                            : null
+                    }
+                    {
+                        password && rePassword && password !== rePassword
                             ? <p className="text-red-500 text-sm -mt-1 text-center">Passwords do not match!</p>
                             : null
                     }

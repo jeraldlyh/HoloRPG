@@ -8,7 +8,7 @@ import { clampQuantity } from "../../utils/utils"
 import _ from "lodash"
 import Modal from "../modal"
 
-function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profileData, profileMutate, accessToken, playerId }) {
+function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profileData, profileMutate, accessToken }) {
     const { itemName, itemImage, itemCost } = itemData
     const [showSuccess, setShowSuccess] = useState(false)
     const [showError, setShowError] = useState(false)
@@ -82,7 +82,7 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
             return config
         })
         const body = {
-            user: playerId,
+            user: profileData.username,
             quantity: quantity,
             entity: itemName,
         }

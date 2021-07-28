@@ -143,7 +143,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                     {/* <Button width="auto" height="8" background={true} text="Collect" onClick={() => collectIncome()} disabled={income_accumulated === 0} /> */}
                     <button
                         className="bg-custom-button-primary shadow-button rounded-lg  text-white text-sm  uppercase font-semibold py-2 px-4  justify-center items-center  disabled:cursor-not-allowed  disabled:opacity-50 hover:bg-opacity-90"
-                        disabled={getNextCooldown(last_collected) !== 0}
+                        disabled={!getNextCooldown(last_collected) || getNextCooldown(last_collected) !== 0}
                         onClick={() => collectIncome()}
                     >
                         <Countdown
@@ -170,7 +170,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                         ? relationshipData.map((relationship, index) => {
                             return <FriendCard key={index} username={relationship.username} level={relationship.level} character={relationship.character} />
                         })
-                        : <p className="flex justify-center items-center">You currently do not have any friends!</p>
+                        : <p>You currently do not have any friends!</p>
                 }
             </div>
         </div>

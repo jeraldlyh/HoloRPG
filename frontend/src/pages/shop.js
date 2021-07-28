@@ -11,7 +11,7 @@ import EntityShop from "../components/shop/entityShop"
 
 function Shop() {
     const { session } = useAuth()
-    const { accessToken, user: { username, pk } } = session
+    const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
     const { data: entityData, loading: entityLoading, mutate: entityMutate } = useEntity(username, accessToken)
@@ -43,7 +43,6 @@ function Shop() {
                     currentIndex === 0
                         ? <EntityShop
                             shopData={shopData}
-                            playerId={pk}
                             profileData={profileData}
                             profileMutate={profileMutate}
                             entityData={entityData}

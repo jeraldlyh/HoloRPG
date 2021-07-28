@@ -46,7 +46,7 @@ function LoginForm() {
                     <div className="relative">
                         <input id="username" className="peer w-full h-9 bg-transparent px-1 placeholder-transparent font-light outline-none" type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
                         <hr className="shadow-white"></hr>
-                        <label htmlFor="username" autocomplete="off" className="absolute left-1 -top-3.5 text-xs text-gray-300 font-light transition-all
+                        <label htmlFor="username" autoComplete="off" className="absolute left-1 -top-3.5 text-xs text-gray-300 font-light transition-all
                             peer-placeholder-shown:text-sm
                             peer-placeholder-shown:text-white
                             peer-placeholder-shown:top-2

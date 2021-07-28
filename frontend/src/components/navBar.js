@@ -96,9 +96,6 @@ function NavBar() {
                 >
                     <BiLogOut size={24} />
                 </div>
-                <a href="/login" className={getFocusDesign(6)}>
-                    <BiLogIn size={24} />
-                </a>
             </div>
         </div>
     )

@@ -38,9 +38,9 @@ class UserManager(BaseUserManager):
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     # Default credentials
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=254, unique=True, null=False, blank=False)
-    username = models.CharField(max_length=16, unique=True, null=False, blank=False)
+    username = models.CharField(primary_key=True, max_length=16, unique=True, null=False, blank=False)
     is_staff = models.BooleanField(default=False, blank=True)
     is_superuser = models.BooleanField(default=False, blank=True)
     is_active = models.BooleanField(default=True)
@@ -53,7 +53,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True)
     level = models.IntegerField(default=1)
     experience = models.IntegerField(default=0)
-    currency = models.IntegerField(default=0)
+    currency = models.IntegerField(default=1000)
     reputation = models.IntegerField(default=0)
     current_health = models.IntegerField(default=100)
     max_health = models.IntegerField(default=100)
