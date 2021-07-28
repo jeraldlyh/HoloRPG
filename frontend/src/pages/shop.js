@@ -18,6 +18,10 @@ function Shop() {
     const { data: shopData } = useShop(accessToken)
     const [currentIndex, setCurrentIndex] = useState(0)
 
+    if (relationshipLoading || profileLoading || entityLoading) {
+        return <div className="flex items-center justify-center">Loading...</div>
+    }
+
     const getFocusDesign = (index) => {
         if (index === currentIndex) {
             return "text-white cursor-default"

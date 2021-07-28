@@ -17,7 +17,6 @@ function Bounty() {
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
     const { data: bountyData, loading: bountyLoading } = useBounty(accessToken)
 
-
     if (relationshipLoading || profileLoading || bountyLoading) {
         return <div className="flex items-center justify-center">Loading...</div>
     }
