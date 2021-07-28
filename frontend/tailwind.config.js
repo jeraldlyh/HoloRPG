@@ -58,6 +58,7 @@ module.exports = {
                 xp: "-1px 0 5px 1px rgba(255, 195, 93, 0.5)",
                 progress:"1px 0 5px 1px rgba(85, 85, 85, 0.5)",
                 button: "0 0 5px 1px rgba(255, 72, 135, 0.5)",
+                "modal-button": "0 0 5px 1px rgba(137, 85, 223, 0.5)",
                 white: "0 0 5px rgba(255, 255, 255, 0.5)",
                 "white-lg": "0 0 10px 1px rgba(255, 255, 255, 0.5)"
             },
