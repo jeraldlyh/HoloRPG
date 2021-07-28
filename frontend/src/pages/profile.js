@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef } from "react"
 import NumberFormat from "react-number-format"
 import Layout from "../components/layout"
 import Items from "../components/profile/items"
@@ -9,8 +9,10 @@ import Button from "../components/button"
 import { useProfile } from "../hooks/useProfile"
 import { useEntity } from "../hooks/useEntity"
 import { useRelationship } from "../hooks/useRelationship"
+import { useAuth } from "../hooks/useAuth"
 
-function Profile({ session }) {
+function Profile() {
+    const { session } = useAuth()
     const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
@@ -59,9 +61,9 @@ function Profile({ session }) {
 
     const getFocusDesign = (index) => {
         if (index === currentIndex) {
-            return "text-white"
+            return "text-white cursor-default"
         }
-        return "text-custom-misc-inactive"
+        return "text-custom-misc-inactive cursor-pointer"
     }
 
     const BannerTitle = () => {

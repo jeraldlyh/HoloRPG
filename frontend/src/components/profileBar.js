@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import moment from "moment"
 import NumberFormat from "react-number-format"
 import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
@@ -11,18 +11,32 @@ import Button from "./button"
 
 function ProfileBar({ profileData, relationshipData, profileMutate, accessToken }) {
     const { username, character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age, income_accumulated, last_collected } = profileData
+    const [countdown, setCountdown] = useState(0)
 
     const getHealthPercent = () => {
         return Math.ceil((current_health / max_health) * 100) + "%"
     }
 
-    const getCountdownDuration = () => {
+    useEffect(() => {
+        setCountdownTimer()
+    }, [])
+
+    useEffect(() => {
+        console.log(countdown)
+    }, [countdown])
+
+    useEffect(() => {
+        setCountdownTimer()
+    }, [last_collected])
+
+    const setCountdownTimer = () => {
         if (last_collected) {
             const dateNow = moment()
             const dateLastCollected = moment(last_collected)
-            return dateNow.diff(dateLastCollected)
+            setCountdown(dateNow.diff(dateLastCollected))
+        } else {
+            setCountdown(0)
         }
-        return 0
     }
 
     const children = ({ remainingTime }) => {
@@ -56,7 +70,13 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
             profileData.last_collected = ""
             return profileData
         }, false)
+
+        axiosInstance.interceptors.request.use(function (config) {
+            config.headers.Authorization = "Bearer " + accessToken
+            return config
+        })
         const response = await axiosInstance.post("/api/income/", { username: username })
+
         profileMutate(response.data, false)
     }
 
@@ -132,7 +152,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                 <CountdownCircleTimer
                     isPlaying
                     size={80}
-                    duration={getCountdownDuration()}
+                    duration={countdown}
                     strokeWidth={5}
                     trailColor="#555555"
                     colors="#FFFFFF"

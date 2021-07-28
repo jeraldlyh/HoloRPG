@@ -4,3 +4,13 @@ export const clampQuantity = (amount) => {
     }
     return amount
 }
+
+export const isContainFraction = (text) => {
+    return text.includes("/")
+}
+
+export const convertFractionToPercentage = (text) => {
+    const textSplit = text.split("/")
+    const length = Math.ceil((parseInt(textSplit[0]) / parseInt(textSplit[1]) * 100))
+    return length + "%"
+}

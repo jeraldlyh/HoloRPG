@@ -5,9 +5,11 @@ import Layout from "../components/layout"
 import { useProfile } from "../hooks/useProfile"
 import { useRelationship } from "../hooks/useRelationship"
 import { useLeaderboard } from "../hooks/useLeaderboard"
+import { useAuth } from "../hooks/useAuth"
 
 
-function Home({ session }) {
+function Home() {
+    const { session } = useAuth()
     const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)

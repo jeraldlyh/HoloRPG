@@ -1,37 +1,25 @@
 import React, { Fragment } from "react"
+import { convertFractionToPercentage, isContainFraction } from "../utils/utils"
+
 
 function Card({ height, width, icon, title, children, setRef }) {
-    const isWidthContainFraction = () => {
-        return width.includes("/")
-    }
-
-    const isHeightContainFraction = () => {
-        return height.includes("/")
-    }
-
-    const parseFraction = (text) => {
-        const textSplit = text.split("/")
-        const length = Math.ceil((parseInt(textSplit[0]) / parseInt(textSplit[1]) * 100))
-        return length + "%"
-    }
-
     const hasFraction = () => {
-        return isWidthContainFraction() || isHeightContainFraction()
+        return isContainFraction(width) || isContainFraction(height)
     }
 
     const getStyles = () => {
-        if (isWidthContainFraction() && isHeightContainFraction()) {
+        if (isContainFraction(width) && isContainFraction(height)) {
             return {
-                width: parseFraction(width),
-                height: parseFraction(height)
+                width: convertFractionToPercentage(width),
+                height: convertFractionToPercentage(height)
             }
-        } else if (isHeightContainFraction()) {
+        } else if (isContainFraction(height)) {
             return {
-                height: parseFraction(height)
+                height: convertFractionToPercentage(height)
             }
-        } else if (isWidthContainFraction) {
+        } else if (isContainFraction(width)) {
             return {
-                width: parseFraction(width)
+                width: convertFractionToPercentage(width)
             }
         }
     }
