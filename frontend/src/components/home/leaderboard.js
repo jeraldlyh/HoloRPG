@@ -27,33 +27,6 @@ function Leaderboard({ leaderboardData }) {
         setUserProfiles(sortedData)
     }, [])
 
-    const populateLeaderboards = (data) => {
-        const leaderboards = []
-
-        _.each(data, function (profile, index) {
-            const evenInteration = index % 2 === 0
-
-            leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>#{profile.rank}</div>)
-            leaderboards.push(
-                <div className={`flex items-center h-full py-2 ${evenInteration ? "bg-custom-card-normal" : null}`}>
-                    <div className="w-8 h-8 bg-white"></div>
-                    <p className="flex flex-col ml-3">
-                        <span>{profile.username}</span>
-                        <span>Lv. {profile.level}</span>
-                    </p>
-                </div>
-            )
-            leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>{profile.character ? profile.character : "None"}</div>)
-            leaderboards.push(<div className={`flex items-center justify-center h-full ${evenInteration ? "bg-custom-card-normal" : null}`}>{profile.account_age} days</div>)
-            leaderboards.push(
-                <div className={`flex items-center justify-center h-full text-custom-stats-net_worth ${evenInteration ? "bg-custom-card-normal" : null}`}>
-                    <NumberFormat value={profile.net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                </div>
-            )
-        })
-        return leaderboards
-    }
-
     return (
         <CardLight height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
             <div className="flex flex-col h-full text-sm">
@@ -73,7 +46,7 @@ function Leaderboard({ leaderboardData }) {
                             ? items.map((profile, index) => {
                                 const isEven = index % 2 === 0
                                 return (
-                                    <div className={`flex items-center justify-around w-full ${isEven ? "bg-custom-card-normal" : null}`} style={{ height: "9%" }}>
+                                    <div key={profile.id} className={`flex items-center justify-around w-full ${isEven ? "bg-custom-card-normal" : null}`} style={{ height: "9%" }}>
                                         <span className="w-1/6  text-center">#{profile.rank}</span>
                                         <div className="flex w-1/6  justify-start items-center">
                                             <div className="w-8 h-8 bg-white" />
