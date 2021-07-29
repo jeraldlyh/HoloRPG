@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from datetime import datetime
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 from django.contrib.auth.models import User
@@ -97,7 +98,8 @@ class BountyListCreate(views.APIView):
         player_data = [dict(OrderedDict(player)) for player in player_serializer.data]
         data = {
             "bounty": bounty_data,
-            "player": player_data
+            "player": player_data,
+            "lastUpdated": datetime.now()
         }
 
         return Response(data, status=status.HTTP_200_OK)

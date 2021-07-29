@@ -14,3 +14,10 @@ export const convertFractionToPercentage = (text) => {
     const length = Math.ceil((parseInt(textSplit[0]) / parseInt(textSplit[1]) * 100))
     return length + "%"
 }
+
+export const getFocusDesign = (index, currentIndex) => {
+    if (index === currentIndex) {
+        return "text-white cursor-default"
+    }
+    return "text-custom-misc-inactive cursor-pointer"
+}

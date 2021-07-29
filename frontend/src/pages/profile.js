@@ -6,6 +6,7 @@ import Statistics from "../components/profile/statistics"
 import Stocks from "../components/profile/stock"
 import Entities from "../components/profile/entities"
 import Button from "../components/button"
+import { getFocusDesign } from "../utils/utils"
 import { useProfile } from "../hooks/useProfile"
 import { useEntity } from "../hooks/useEntity"
 import { useRelationship } from "../hooks/useRelationship"
@@ -59,13 +60,6 @@ function Profile() {
         }
     }
 
-    const getFocusDesign = (index) => {
-        if (index === currentIndex) {
-            return "text-white cursor-default"
-        }
-        return "text-custom-misc-inactive cursor-pointer"
-    }
-
     const BannerTitle = () => {
         return (
             <div className="flex items-center text-white">
@@ -94,10 +88,10 @@ function Profile() {
         >
             <div className="flex flex-col">
                 <p className="font-semibold m-5 space-x-12">
-                    <span className={getFocusDesign(0)} onClick={() => executeScroll(0)}>Overview</span>
-                    <span className={getFocusDesign(1)} onClick={() => executeScroll(1)}>Items</span>
-                    <span className={getFocusDesign(2)} onClick={() => executeScroll(2)}>Stocks</span>
-                    <span className={getFocusDesign(3)} onClick={() => executeScroll(3)}>Entities</span>
+                    <span className={getFocusDesign(0, currentIndex)} onClick={() => executeScroll(0)}>Overview</span>
+                    <span className={getFocusDesign(1, currentIndex)} onClick={() => executeScroll(1)}>Items</span>
+                    <span className={getFocusDesign(2, currentIndex)} onClick={() => executeScroll(2)}>Stocks</span>
+                    <span className={getFocusDesign(3, currentIndex)} onClick={() => executeScroll(3)}>Entities</span>
                 </p>
 
                 <div className="flex flex-col w-full h-full gap-y-3 overflow-y-auto scrollbar-hide">

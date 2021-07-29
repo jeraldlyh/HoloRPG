@@ -6,7 +6,7 @@ from .models import Bounty, UserRelationship
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        exclude = ["is_active", "is_staff", "is_superuser", "password", "user_permissions", "date_joined", "groups"]
+        exclude = ["is_active", "is_staff", "is_superuser", "password", "user_permissions", "date_joined", "groups", "last_login"]
 
     account_age = serializers.ReadOnlyField(source="get_account_age")
     character_class = serializers.ReadOnlyField(source="get_character_class")

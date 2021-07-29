@@ -8,11 +8,11 @@ export const useBounty = (token) => {
         revalidateOnReconnect: false,
         refreshInterval: 10000
     })
-    console.log(data)
 
     return {
         bountyData: data ? data.bounty : null,
         playerData: data ? data.player : null,
+        lastUpdated: data ? data.lastUpdated : null,
         loading: typeof data === "undefined" && typeof error === "undefined",
     }
 }

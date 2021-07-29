@@ -56,22 +56,43 @@ function Leaderboard({ leaderboardData }) {
 
     return (
         <CardLight height="full" width="7/12" header={true} title="Leaderboards" icon={<IoPodiumOutline />}>
-            <div className="grid grid-cols-5 items-center text-sm gap-y-1">
-                <span className="text-center font-semibold">RANK</span>
-                <span className="text-center font-semibold">PLAYER</span>
-                <span className="text-center font-semibold">CLASS</span>
-                <span className="text-center font-semibold">AGE</span>
-                <div className="flex justify-center items-center cursor-pointer" onClick={() => requestSort("net_worth")}>
-                    <span className="text-center font-semibold">NET WORTH</span>
-                    <BiSort />
+            <div className="flex flex-col h-full text-sm">
+                <div className="flex w-full items-center justify-around mb-2">
+                    <span className="w-1/6 text-center font-semibold">RANK</span>
+                    <span className="w-1/6 text-center font-semibold">PLAYER</span>
+                    <span className="w-1/6 text-center font-semibold">CLASS</span>
+                    <span className="w-1/6 text-center font-semibold">AGE</span>
+                    <div className="flex w-1/6 justify-center items-center cursor-pointer" onClick={() => requestSort("net_worth")}>
+                        <span className="text-center font-semibold">NET WORTH</span>
+                        <BiSort />
+                    </div>
                 </div>
-                {
-                    items
-                        ? populateLeaderboards(items)
-                        : null
-                }
+                <div className="flex flex-col w-full h-full">
+                    {
+                        items
+                            ? items.map((profile, index) => {
+                                const isEven = index % 2 === 0
+                                return (
+                                    <div className={`flex items-center justify-around w-full ${isEven ? "bg-custom-card-normal" : null}`} style={{ height: "9%" }}>
+                                        <span className="w-1/6  text-center">#{profile.rank}</span>
+                                        <div className="flex w-1/6  justify-start items-center">
+                                            <div className="w-8 h-8 bg-white" />
+                                            <p className="flex flex-col ml-3">
+                                                <span>{profile.username}</span>
+                                                <span>Lv. {profile.level}</span>
+                                            </p>
+                                        </div>
+                                        <span className="w-1/6 text-center">{profile.character ? profile.character : "None"}</span>
+                                        <span className="w-1/6 text-center">{profile.account_age} days</span>
+                                        <span className="w-1/6 text-center"><NumberFormat value={profile.net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} /></span>
+                                    </div>
+                                )
+                            })
+                            : null
+                    }
+                </div>
             </div>
-        </CardLight>
+        </CardLight >
     )
 }
 
