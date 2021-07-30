@@ -77,7 +77,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                 </div>
 
                 {/* Username/Level/Class */}
-                <div className="ml-4">
+                <div className="flex flex-col ml-4">
                     <span className="text-white">{username}</span>
                     <span className="text-xs text-gray-300 font-semibold">Lv. {level} {character}</span>
                 </div>

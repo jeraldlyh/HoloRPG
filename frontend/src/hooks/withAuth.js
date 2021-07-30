@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import React from "react"
-import Error from "../pages/error"
+import Error from "../components/error"
 import { useAuth } from "./useAuth"
 import _ from "lodash"
 import { signOut } from "next-auth/client"
