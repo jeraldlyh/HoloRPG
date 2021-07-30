@@ -21,16 +21,16 @@ function Entities({ entityData, setRef }) {
             <div className="flex flex-col">
                 {/* Summary */}
                 <div className="flex gap-x-10">
-                    <p className="flex flex-col">
+                    <div className="flex flex-col">
                         <span className="text-xs text-custom-color-lightgrey">Total income per hour</span>
                         <span className="text-lg font-semibold">
                             <NumberFormat value={getTotalIncome()} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                         </span>
-                    </p>
-                    <p className="flex flex-col">
+                    </div>
+                    <div className="flex flex-col">
                         <span className="text-xs text-custom-color-lightgrey">Number of entities</span>
                         <span className="text-lg font-semibold">{getNumberOfEntities()}</span>
-                    </p>
+                    </div>
                 </div>
             </div>
             <hr className="border-custom-color-grey w-full my-4"></hr>

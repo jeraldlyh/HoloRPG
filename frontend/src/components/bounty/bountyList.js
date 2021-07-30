@@ -34,7 +34,7 @@ function BountyList({ bountyData }) {
                             </div>
                         )
                     })
-                    : <p className="text-center">There's currently no bounties available</p>
+                    : <span className="text-center">There's currently no bounties available</span>
             }
         </Fragment>
     )

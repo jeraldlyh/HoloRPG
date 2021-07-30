@@ -10,24 +10,24 @@ function Stocks({ setRef }) {
             <div className="flex flex-col">
                 {/* Summary */}
                 <div className="flex gap-x-10">
-                    <p className="flex flex-col">
+                    <div className="flex flex-col">
                         <span className="text-xs text-custom-color-lightgrey">Total holdings</span>
                         <span className="text-lg font-semibold">
                             <NumberFormat value={"999888"} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                         </span>
-                    </p>
-                    <p className="flex flex-col">
+                    </div>
+                    <div className="flex flex-col">
                         <span className="text-xs text-custom-color-lightgrey">Number of Passive</span>
                         <span className="text-lg font-semibold">2</span>
-                    </p>
-                    <p className="flex flex-col">
+                    </div>
+                    <div className="flex flex-col">
                         <span className="text-xs text-custom-color-lightgrey">Number of Volatile</span>
                         <span className="text-lg font-semibold">8</span>
-                    </p>
-                    <p className="flex flex-col">
+                    </div>
+                    <div className="flex flex-col">
                         <span className="text-xs text-custom-color-lightgrey">Number of Stocks</span>
                         <span className="text-lg font-semibold">10</span>
-                    </p>
+                    </div>
                 </div>
             </div>
             <hr className="border-custom-color-grey w-full my-4"></hr>

@@ -53,7 +53,7 @@ function RegisterForm() {
                 <div className="border-white text-left text-sm space-y-6 mb-6 text-white">
                     {
                         errorMessage
-                            ? <p className="text-red-500 text-sm -mt-1 text-center">{errorMessage}</p>
+                            ? <span className="text-red-500 text-sm -mt-1 text-center">{errorMessage}</span>
                             : null
                     }
                     <div className="relative">
@@ -107,7 +107,7 @@ function RegisterForm() {
                     }
                     {
                         password && rePassword && password !== rePassword
-                            ? <p className="text-red-500 text-sm -mt-1 text-center">Passwords do not match!</p>
+                            ? <span className="text-red-500 text-sm -mt-1 text-center">Passwords do not match!</span>
                             : null
                     }
                 </div>

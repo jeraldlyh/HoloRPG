@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { GiAxeSwing } from "react-icons/gi";
-import LoginForm from "../components/landing/loginForm";
-import RegisterForm from "../components/landing/registerForm";
+import React, { useState } from "react"
+import { GiAxeSwing } from "react-icons/gi"
+import LoginForm from "../components/landing/loginForm"
+import RegisterForm from "../components/landing/registerForm"
 
 function Login() {
-    const [pageIndex, setPageIndex] = useState(0);
+    const [pageIndex, setPageIndex] = useState(0)
 
     const isActive = (index) => {
         if (index === pageIndex) {
-            return "w-2/5 text-white border-b border-custom-button-primary py-2";
+            return "w-2/5 text-white border-b border-custom-button-primary py-2 cursor-default"
         }
-        return "w-2/5 py-2";
-    };
+        return "w-2/5 py-2 cursor-pointer"
+    }
 
     return (
         <div className="flex flex-col items-center bg-custom-bg-main h-screen text-white">
@@ -36,7 +36,7 @@ function Login() {
                 {pageIndex === 0 ? <LoginForm /> : <RegisterForm />}
             </div>
         </div>
-    );
+    )
 }
 
-export default Login;
+export default Login

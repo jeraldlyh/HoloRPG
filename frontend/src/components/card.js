@@ -36,7 +36,7 @@ function Card({ height, width, icon, title, children, setRef }) {
                         <div className="flex flex-col items-center max-w-max">
                             <div className="flex justify-around items-center">
                                 &nbsp;{icon}
-                                <p className="ml-3 font-semibold">{title}&nbsp;</p>
+                                <span className="ml-3 font-semibold">{title}&nbsp;</span>
                             </div>
                             <hr className="border-t-2 border-custom-misc-accent w-full h-px mt-1" />
                         </div>

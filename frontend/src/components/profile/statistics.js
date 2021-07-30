@@ -7,6 +7,7 @@ import { PieChart } from "react-minimal-pie-chart"
 import { RiHeartPulseFill } from "react-icons/ri"
 import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
+
 function Statistics({ profileData, setRef }) {
     const { character, attack, defence, current_health, max_health, net_worth, currency, level, reputation, account_age, experience, exp_required } = profileData
 
@@ -31,10 +32,10 @@ function Statistics({ profileData, setRef }) {
                     </div>
                     <div className="flex flex-col h-full text-center justify-center text-custom-color-lightgrey mt-1">
                         <div className="whitespace-nowrap">centralized profile card</div>
-                        <p>{character}</p>
-                        <p>level</p>
-                        <p>economy grade</p>
-                        <p>date joined</p>
+                        <span>{character}</span>
+                        <span>level</span>
+                        <span>economy grade</span>
+                        <span>date joined</span>
                     </div>
                 </CardLight>
 
@@ -44,30 +45,30 @@ function Statistics({ profileData, setRef }) {
                     <div className="flex gap-x-3 mb-2">
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
-                                <p className="text-xs text-custom-color-lightgrey">Net Worth</p>
-                                <p className="font-semibold">
+                                <span className="text-xs text-custom-color-lightgrey">Net Worth</span>
+                                <span className="font-semibold">
                                     <NumberFormat value={net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                                </p>
+                                </span>
                             </div>
                         </CardLight>
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
-                                <p className="text-xs text-custom-color-lightgrey">Currency</p>
-                                <p className="font-semibold">
+                                <span className="text-xs text-custom-color-lightgrey">Currency</span>
+                                <span className="font-semibold">
                                     <NumberFormat value={currency} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                                </p>
+                                </span>
                             </div>
                         </CardLight>
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
-                                <p className="text-xs text-custom-color-lightgrey">Account Age</p>
-                                <p className="font-semibold">{account_age} days</p>
+                                <span className="text-xs text-custom-color-lightgrey">Account Age</span>
+                                <span className="font-semibold">{account_age} days</span>
                             </div>
                         </CardLight>
                         <CardLight height="18" width="full">
                             <div className="flex flex-col justify-center">
-                                <p className="text-xs text-custom-color-lightgrey">Reputation</p>
-                                <p className="font-semibold">{reputation} ★</p>
+                                <span className="text-xs text-custom-color-lightgrey">Reputation</span>
+                                <span className="font-semibold">{reputation} ★</span>
                             </div>
                         </CardLight>
                     </div>
@@ -84,32 +85,32 @@ function Statistics({ profileData, setRef }) {
                                         { value: getProportion(defence), color: "#49B79F" }
                                     ]}
                                 />
-                                <p className="absolute font-semibold">
+                                <span className="absolute font-semibold">
                                     <span>Lv. </span>
                                     <span className="text-lg">{level}</span>
-                                </p>
+                                </span>
                             </div>
 
                             <div className="flex flex-col w-full ml-6">
                                 <div className="flex items-center w-full justify-between">
-                                    <p>HP</p>
+                                    <span>HP</span>
                                     <div className="w-10/12 h-1 flex rounded-full bg-custom-bg-progress">
                                         <div
                                             style={{ width: getPercentage(current_health, max_health) }}
                                             className="rounded-full bg-white shadow-white"
                                         />
                                     </div>
-                                    <p className="w-1/12 text-left">{current_health}/{max_health}</p>
+                                    <span className="w-1/12 text-left">{current_health}/{max_health}</span>
                                 </div>
                                 <div className="flex items-center w-full justify-between">
-                                    <p>XP</p>
+                                    <span>XP</span>
                                     <div className="w-10/12 h-1 flex rounded-full bg-custom-bg-progress">
                                         <div
                                             style={{ width: getPercentage(experience, exp_required) }}
                                             className="rounded-full bg-white shadow-white"
                                         />
                                     </div>
-                                    <p className="w-1/12 text-left">{getPercentage(experience, exp_required)}</p>
+                                    <span className="w-1/12 text-left">{getPercentage(experience, exp_required)}</span>
                                 </div>
 
                                 {/* Health/Attack/Defence */}
@@ -119,8 +120,8 @@ function Statistics({ profileData, setRef }) {
                                             <RiHeartPulseFill className="text-custom-stats-health" size={32} />
                                             <hr className="border-0 w-px bg-custom-color-grey h-14" />
                                             <div className="flex flex-col">
-                                                <p className="text-lg font-semibold">{max_health}</p>
-                                                <p className="text-sm">Health</p>
+                                                <span className="text-lg font-semibold">{max_health}</span>
+                                                <span className="text-sm">Health</span>
                                             </div>
                                         </div>
                                     </Card>
@@ -129,8 +130,8 @@ function Statistics({ profileData, setRef }) {
                                             <GiPiercingSword className="text-custom-stats-attack" size={32} />
                                             <hr className="border-0 w-px bg-custom-color-grey h-14" />
                                             <div className="flex flex-col">
-                                                <p className="text-lg font-semibold">{attack}</p>
-                                                <p className="text-sm">Attack</p>
+                                                <span className="text-lg font-semibold">{attack}</span>
+                                                <span className="text-sm">Attack</span>
                                             </div>
                                         </div>
                                     </Card>
@@ -139,8 +140,8 @@ function Statistics({ profileData, setRef }) {
                                             <GiCheckedShield className="text-custom-stats-defence" size={32} />
                                             <hr className="border-0 w-px bg-custom-color-grey h-14" />
                                             <div className="flex flex-col">
-                                                <p className="text-lg font-semibold">{defence}</p>
-                                                <p className="text-sm">Defence</p>
+                                                <span className="text-lg font-semibold">{defence}</span>
+                                                <span className="text-sm">Defence</span>
                                             </div>
                                         </div>
                                     </Card>

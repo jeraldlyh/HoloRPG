@@ -38,9 +38,9 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
 
     const renderer = ({ hours, minutes, seconds, completed }) => {
         if (completed) {
-            return <p>Collect now</p>
+            return <span>Collect now</span>
         }
-        return <p>Collect in {addPaddingToNumber(minutes)}:{addPaddingToNumber(seconds)}</p>
+        return <span>Collect in {addPaddingToNumber(minutes)}:{addPaddingToNumber(seconds)}</span>
     }
 
     const collectIncome = async () => {
@@ -78,57 +78,57 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
 
                 {/* Username/Level/Class */}
                 <div className="ml-4">
-                    <p className="text-white">{username}</p>
-                    <p className="text-xs text-gray-300 font-semibold">Lv. {level} {character}</p>
+                    <span className="text-white">{username}</span>
+                    <span className="text-xs text-gray-300 font-semibold">Lv. {level} {character}</span>
                 </div>
             </div>
 
             {/* HP */}
             <div className="flex mt-3 text-xs text-white items-center justify-between">
-                <p>HP</p>
+                <span>HP</span>
                 <div className="flex w-3/5 h-1 rounded-full bg-custom-bg-progress shadow-progress">
                     <div
                         style={{ width: getPercent(current_health, max_health) }}
                         className="rounded-full bg-custom-stats-health shadow-hp"
                     />
                 </div>
-                <p className="w-1/5 text-left font-semibold">{current_health}/{max_health}</p>
+                <span className="w-1/5 text-left font-semibold">{current_health}/{max_health}</span>
             </div>
 
             {/* XP */}
             <div className="flex text-xs text-white items-center justify-between">
-                <p>XP</p>
+                <span>XP</span>
                 <div className="flex w-3/5 h-1 rounded-full bg-custom-bg-progress shadow-progress">
                     <div
                         style={{ width: getPercent(experience, exp_required) }}
                         className="rounded-full bg-custom-stats-attack shadow-xp"
                     />
                 </div>
-                <p className="w-1/5 text-left font-semibold">{getPercent(experience, exp_required)}</p>
+                <span className="w-1/5 text-left font-semibold">{getPercent(experience, exp_required)}</span>
             </div>
 
             {/* Stats */}
             <div className="flex justify-between items-center mt-3 text-sm">
                 <div className="flex items-center">
                     <GiPiercingSword size={16} />
-                    <p className="ml-2">{attack}</p>
+                    <span className="ml-2">{attack}</span>
                 </div>
                 <div className="flex items-center">
                     <GiCheckedShield size={16} />
-                    <p className="ml-2">{defence}</p>
+                    <span className="ml-2">{defence}</span>
                 </div>
                 <div className="flex items-center">
                     <GiRoundStar size={16} />
-                    <p className="ml-2">{reputation}</p>
+                    <span className="ml-2">{reputation}</span>
                 </div>
             </div>
 
             {/* Currency */}
             <div className="flex flex-col justify-center px-5 rounded-lg w-full h-16 mt-3 bg-gradient-to-r from-custom-currency-primary to-custom-currency-secondary shadow-white">
-                <p className="text-xs font-medium">Currency</p>
-                <p className="text-9x1 font-semibold">
+                <span className="text-xs font-medium">Currency</span>
+                <span className="text-9x1 font-semibold">
                     <NumberFormat value={currency} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                </p>
+                </span>
             </div>
 
             {/* Income Stacked */}
@@ -136,10 +136,10 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                 {/* Income */}
 
                 <div className="flex flex-col items-center justify-center ml-2">
-                    <p className="text-xs font-medium">Income Stacked</p>
-                    <p className="font-semibold mb-1">
+                    <span className="text-xs font-medium">Income Stacked</span>
+                    <span className="font-semibold mb-1">
                         <NumberFormat value={income_accumulated} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                    </p>
+                    </span>
                     {/* <Button width="auto" height="8" background={true} text="Collect" onClick={() => collectIncome()} disabled={income_accumulated === 0} /> */}
                     <button
                         className="bg-custom-button-primary shadow-button rounded-lg  text-white text-sm  uppercase font-semibold py-2 px-4  justify-center items-center  disabled:cursor-not-allowed  disabled:opacity-50 hover:bg-opacity-90"
@@ -160,7 +160,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
             {/* Friends */}
             <div className="flex flex-col gap-y-2">
                 <div className="flex items-center justify-between">
-                    <p className="font-semibold">Friends ({relationshipData ? relationshipData.length : 0})</p>
+                    <span className="font-semibold">Friends ({relationshipData ? relationshipData.length : 0})</span>
                     <div className="bg-custom-card-light rounded-full p-2">
                         <IoPersonAddOutline size={12} />
                     </div>
@@ -170,7 +170,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                         ? relationshipData.map((relationship, index) => {
                             return <FriendCard key={index} username={relationship.username} level={relationship.level} character={relationship.character} />
                         })
-                        : <p>You currently do not have any friends!</p>
+                        : <span>You currently do not have any friends!</span>
                 }
             </div>
         </div>

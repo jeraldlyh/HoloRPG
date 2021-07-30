@@ -11,26 +11,26 @@ function Items({ setRef }) {
             <div className="flex">
                 <div className="flex flex-col w-auto ">
                     {/* Enhancements */}
-                    <p className="text-xs text-custom-color-lightgrey mb-3">Total enhancements</p>
+                    <span className="text-xs text-custom-color-lightgrey mb-3">Total enhancements</span>
                     <div className="flex items-center h-auto space-x-6 mb-6">
                         <div className="flex flex-col items-center justify-center">
                             <RiHeartPulseFill size={24} />
-                            <p className="text-sm mt-2.5">+62</p>
+                            <span className="text-sm mt-2.5">+62</span>
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <GiPiercingSword size={24} />
-                            <p className="text-sm mt-2.5">+30</p>
+                            <span className="text-sm mt-2.5">+30</span>
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <GiCheckedShield size={24} />
-                            <p className="text-sm mt-2.5">+120</p>
+                            <span className="text-sm mt-2.5">+120</span>
                         </div>
                     </div>
 
                     {/* Total Items */}
                     <div className="flex flex-col">
-                        <p className="text-xs text-custom-color-lightgrey mb-1">Total items</p>
-                        <p className="text-xl font-semibold">12</p>
+                        <span className="text-xs text-custom-color-lightgrey mb-1">Total items</span>
+                        <span className="text-xl font-semibold">12</span>
                     </div>
                 </div>
 

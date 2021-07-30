@@ -61,13 +61,13 @@ function Bounty() {
                 <div className="flex w-full h-full justify-between">
                     {/* Left container */}
                     <div className="flex flex-col w-7/12 h-full">
-                        <p className="flex w-full font-semibold p-5 justify-between">
-                            <p className="flex space-x-12">
+                        <div className="flex w-full font-semibold p-5 justify-between">
+                            <div className="flex space-x-12">
                                 <span className={getFocusDesign(0, currentIndex)} onClick={() => setCurrentIndex(0)}>Bounty List</span>
                                 <span className={getFocusDesign(1, currentIndex)} onClick={() => setCurrentIndex(1)}>Place a Bounty</span>
-                            </p>
+                            </div>
                             <span className="font-normal text-xs text-white self-end">{lastUpdatedTime()}</span>
-                        </p>
+                        </div>
                         <CardLight height="full" width="full">
                             {
                                 currentIndex === 0
@@ -101,7 +101,7 @@ function Bounty() {
                                                                 </div>
                                                             )
                                                         })
-                                                        : <p className="text-center">An error occurred</p>
+                                                        : <span className="text-center">An error occurred</span>
                                                 }
                                             </div>
                                         </Fragment>

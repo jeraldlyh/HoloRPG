@@ -66,7 +66,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'dj_rest_auth.utils.JWTCookieAuthentication',
     ),
-    'DATETIME_FORMAT': '%m/%d/%Y %H:%M:%S',
+    'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S',
 }
 
 MIDDLEWARE = [
@@ -144,7 +144,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

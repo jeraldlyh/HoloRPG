@@ -6,7 +6,7 @@ function Banner(props) {
     return (
         <div className="flex flex-col justify-between w-full h-44 p-6 bg-custom-card-normal">
             <div className="flex justify-between items-center">
-                <p className="text-white text-md">HOLO</p>
+                <span className="text-white text-md">HOLO</span>
                 <div className="flex space-x-3 text-white">
                     <AiOutlineQuestionCircle size={20} />
                     <FaInbox size={20} />

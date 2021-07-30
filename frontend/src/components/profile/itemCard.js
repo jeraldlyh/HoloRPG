@@ -8,7 +8,7 @@ function ItemCard(props) {
         <CardLight height="40" width="40">
             <div className="flex flex-col items-center justify-center">
                 <div className="w-16 h-16 bg-custom-color-lightgrey"></div>
-                <p className="text-sm my-2.5">{props.name}</p>
+                <span className="text-sm my-2.5">{props.name}</span>
 
                 <div className="flex space-x-2">
                     <div className="flex items-center justify-center space-x-1">

@@ -50,10 +50,10 @@ function Leaderboard({ leaderboardData }) {
                                         <span className="w-1/6  text-center">#{profile.rank}</span>
                                         <div className="flex w-1/6  justify-start items-center">
                                             <div className="w-8 h-8 bg-white" />
-                                            <p className="flex flex-col ml-3">
+                                            <div className="flex flex-col ml-3">
                                                 <span>{profile.username}</span>
                                                 <span>Lv. {profile.level}</span>
-                                            </p>
+                                            </div>
                                         </div>
                                         <span className="w-1/6 text-center">{profile.character ? profile.character : "None"}</span>
                                         <span className="w-1/6 text-center">{profile.account_age} days</span>

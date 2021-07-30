@@ -1,6 +1,7 @@
-from datetime import datetime
+from django.utils import timezone
 
-def get_duration(then, now = datetime.now(), interval="Default"):
+
+def get_duration(then, now = timezone.now(), interval="Default"):
     """
         Returns the various time formats based on a specified time
     """

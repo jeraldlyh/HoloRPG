@@ -15,8 +15,8 @@ function FriendCard({ username, level, character }) {
 
                 {/* Username/Level/Class */}
                 <div className="ml-4 text-xs text-gray-300">
-                    <p className="font-semibold">{username}</p>
-                    <p>Lv. {level} {character}</p>
+                    <span className="font-semibold">{username}</span>
+                    <span>Lv. {level} {character}</span>
                 </div>
             </div>
             <BiChat size={16} />

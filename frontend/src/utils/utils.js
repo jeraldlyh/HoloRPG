@@ -5,6 +5,9 @@ export const clampQuantity = (amount) => {
     return amount
 }
 
+// Bypass dynamic string concatenation class names
+// https://tailwindcss.com/docs/just-in-time-mode
+
 export const isContainFraction = (text) => {
     return text.includes("/")
 }

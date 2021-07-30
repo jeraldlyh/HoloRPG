@@ -101,7 +101,6 @@ class BountyListCreate(views.APIView):
             "player": player_data,
             "lastUpdated": timezone.now()
         }
-
         return Response(data, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):

@@ -11,24 +11,24 @@ function Activity() {
     const renderText = (text) => {
         if (text.includes("online")) {
             return (
-                <p>
+                <div>
                     {text.substr(0, text.indexOf("online"))}
                     <span className="text-custom-misc-online"> online</span>.
-                </p>
+                </div>
             )
         } else if (text.includes("bounty")) {
             return (
-                <p>
+                <div>
                     {text.substr(0, text.indexOf("bounty"))}
                     <span className="text-custom-misc-object"> bounty</span>.
-                </p>
+                </div>
             )
         } else if (text.includes("attacked")) {
             return (
-                <p>
+                <div>
                     {text.substr(0, text.indexOf("attacked"))}
                     <span className="text-custom-misc-status"> attacked</span>.
-                </p>
+                </div>
             )
         }
     }
@@ -36,15 +36,15 @@ function Activity() {
     return (
         <Card height="full" width="2/5" title="Activity" icon={<FiActivity />}>
             <div className="flex text-sm">
-                <p className="text-custom-misc-datetime">[{renderTime()}]</p>&nbsp;
+                <div className="text-custom-misc-datetime">[{renderTime()}]</div>&nbsp;
                 {renderText("Player is online")}
             </div>
             <div className="flex text-sm">
-                <p className="text-custom-misc-datetime">[{renderTime()}]</p>&nbsp;
+                <div className="text-custom-misc-datetime">[{renderTime()}]</div>&nbsp;
                 {renderText("You have claimed a bounty")}
             </div>
             <div className="flex text-sm">
-                <p className="text-custom-misc-datetime">[{renderTime()}]</p>&nbsp;
+                <div className="text-custom-misc-datetime">[{renderTime()}]</div>&nbsp;
                 {renderText("You have been attacked")}
             </div>
         </Card>

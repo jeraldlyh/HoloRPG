@@ -39,7 +39,7 @@ function BountyModal({ toggleModal, userData, username, accessToken, profileMuta
     }
 
     return (
-        <Modal header="Bounty Confirmation" icon={<GiBullseye />} toggleModal={toggleModal} height="1/3" isLoading={isLoading} >
+        <Modal header="Bounty Confirmation" icon={<GiBullseye />} toggleModal={toggleModal} height="auto" isLoading={isLoading} >
             {
                 isLoading
                     ? (

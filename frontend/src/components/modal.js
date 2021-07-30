@@ -18,7 +18,7 @@ function Modal({ header, icon, children, height, toggleModal, isLoading }) {
                 <div className="flex rounded-t-lg items-center justify-between w-full h-12 bg-custom-modal-header px-8">
                     <div className="flex items-center space-x-1.5">
                         {icon}
-                        <p className="uppercase font-semibold text-sm">{header}</p>
+                        <span className="uppercase font-semibold text-sm">{header}</span>
                     </div>
                     {
                         isLoading       // Prevent users from closing modal if a transaction is happening
