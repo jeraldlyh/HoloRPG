@@ -12,14 +12,15 @@ import { useEntity } from "../hooks/useEntity"
 import { useRelationship } from "../hooks/useRelationship"
 import { useAuth } from "../hooks/useAuth"
 
+
 function Profile() {
     const { session } = useAuth()
     const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
     const { data: entityData, loading: entityLoading } = useEntity(username, accessToken)
-    const [currentIndex, setCurrentIndex] = useState(0)
 
+    const [currentIndex, setCurrentIndex] = useState(0)
     const statsRef = useRef(null)
     const itemsRef = useRef(null)
     const stocksRef = useRef(null)

@@ -1,5 +1,6 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useState, useEffect } from "react"
 import moment from "moment"
+import _ from "lodash"
 import { FiPlusCircle } from "react-icons/fi"
 import Layout from "../components/layout"
 import Activity from "../components/home/activity"
@@ -10,19 +11,27 @@ import BountyModal from "../components/bounty/bountyModal"
 import { useProfile } from "../hooks/useProfile"
 import { useAuth } from "../hooks/useAuth"
 import { useBounty } from "../hooks/useBounty"
-import { getFocusDesign } from "../utils/utils"
+import { getFocusDesign } from "../utils"
+
 
 function Bounty() {
     const { session } = useAuth()
     const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
-    const { bountyData, playerData, lastUpdated, loading: bountyLoading } = useBounty(accessToken)
-    const [currentIndex, setCurrentIndex] = useState(0)
+    const { bountyData, playerData, lastUpdated, loading: bountyLoading, mutate: bountyMutate } = useBounty(accessToken)
 
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [filteredPlayerData, setFilteredPlayerData] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [userData, setUserData] = useState(null)
 
+    useEffect(() => {
+        const filtered = _.filter(playerData, function (player) {
+            return player.username !== username
+        })
+        setFilteredPlayerData(filtered)
+    }, [bountyData])
 
     if (relationshipLoading || profileLoading || bountyLoading) {
         return <div className="flex items-center justify-center">Loading...</div>
@@ -50,6 +59,7 @@ function Bounty() {
                         username={username}
                         accessToken={accessToken}
                         profileMutate={profileMutate}
+                        bountyMutate={bountyMutate}
                     />
                     : null
             }
@@ -68,7 +78,7 @@ function Bounty() {
                             </div>
                             <span className="font-normal text-xs text-white self-end">{lastUpdatedTime()}</span>
                         </div>
-                        <CardLight height="full" width="full">
+                        <CardLight height="full" width="full" header={true}>
                             {
                                 currentIndex === 0
                                     ? <BountyList bountyData={bountyData} />
@@ -84,8 +94,8 @@ function Bounty() {
                                             <hr className="border-custom-color-grey w-full mt-1 mb-2" />
                                             <div className="flex flex-col h-full">
                                                 {
-                                                    playerData && playerData.length !== 0
-                                                        ? playerData.map(player => {
+                                                    filteredPlayerData && filteredPlayerData.length !== 0
+                                                        ? filteredPlayerData.map(player => {
                                                             return (
                                                                 <div key={player.id} className="flex justify-around items-center text-sm" style={{ height: "10%" }}>
                                                                     <span className="w-1/6 text-center">#{player.rank}</span>
@@ -101,7 +111,7 @@ function Bounty() {
                                                                 </div>
                                                             )
                                                         })
-                                                        : <span className="text-center">An error occurred</span>
+                                                        : <span className="text-center">No players available to be placed on the bounty list</span>
                                                 }
                                             </div>
                                         </Fragment>

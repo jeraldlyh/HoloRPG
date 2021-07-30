@@ -1,5 +1,5 @@
 import React from "react"
-import { isContainFraction, convertFractionToPercentage } from "../utils/utils"
+import { isContainFraction, convertFractionToPercentage } from "../../utils"
 
 
 function ModalButton({ width, height, background, text, onClick, disabled }) {

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import axiosInstance from "../axios/axiosInstance"
+import axiosInstance from "../axios"
 import moment from "moment"
 
 export const isAccessTokenExpired = (token) => {

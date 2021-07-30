@@ -5,6 +5,7 @@ import { useAuth } from "./useAuth"
 import _ from "lodash"
 import { signOut } from "next-auth/client"
 
+
 const PERMITTED_URLS = ["/login", "/register"]
 
 export const withAuth = () => {

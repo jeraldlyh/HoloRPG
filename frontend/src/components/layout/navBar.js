@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react"
 import { signOut } from "next-auth/client"
 import { useRouter } from "next/router"
 import { MdPerson, MdSettings } from "react-icons/md"
-import { BiLogOut, BiLogIn } from "react-icons/bi"
+import { BiLogOut } from "react-icons/bi"
 import { GiHumanTarget, GiCrossedSwords, GiMoneyStack, GiShop, GiAxeSwing } from "react-icons/gi"
-import { useAuth } from "../hooks/useAuth"
-import axiosInstance from "../axios/axiosInstance"
+import { useAuth } from "../../hooks/useAuth"
+import axiosInstance from "../../axios"
 
 
 function NavBar() {

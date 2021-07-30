@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { convertFractionToPercentage, isContainFraction } from "../utils/utils"
+import { convertFractionToPercentage, isContainFraction } from "../utils"
 
 
 function Card({ height, width, icon, title, children, setRef }) {

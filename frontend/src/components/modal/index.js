@@ -1,5 +1,5 @@
 import React from "react"
-import { convertFractionToPercentage, isContainFraction } from "../utils/utils"
+import { convertFractionToPercentage, isContainFraction } from "../../utils"
 
 
 function Modal({ header, icon, children, height, toggleModal, isLoading }) {

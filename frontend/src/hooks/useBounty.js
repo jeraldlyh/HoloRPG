@@ -2,7 +2,7 @@ import useSWR from "swr"
 
 
 export const useBounty = (token) => {
-    const { data, error } = useSWR(["/api/bounty", token], {
+    const { data, error, mutate } = useSWR(["/api/bounty", token], {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
@@ -14,6 +14,7 @@ export const useBounty = (token) => {
         bountyData: data ? data.bounty : null,
         playerData: data ? data.player : null,
         lastUpdated: data ? data.lastUpdated : null,
+        mutate: mutate,
         loading: typeof data === "undefined" && typeof error === "undefined",
     }
 }

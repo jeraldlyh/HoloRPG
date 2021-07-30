@@ -19,7 +19,6 @@ const fetcher = async (endpoint, token) => {
     }
 }
 
-
 function MyApp({ Component, pageProps }) {
     return (
         <SWRConfig value={{

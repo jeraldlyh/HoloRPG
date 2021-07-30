@@ -5,7 +5,7 @@ import { GiPiercingSword, GiCheckedShield, GiRoundStar } from "react-icons/gi"
 import { IoPersonAddOutline } from "react-icons/io5"
 import Countdown from "react-countdown"
 import FriendCard from "./friendCard"
-import axiosInstance from "../axios/axiosInstance"
+import axiosInstance from "../../axios"
 import { v4 as uuidv4 } from 'uuid'
 
 

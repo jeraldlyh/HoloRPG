@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 import { FaInbox } from "react-icons/fa"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
 
+
 function Banner(props) {
     return (
         <div className="flex flex-col justify-between w-full h-44 p-6 bg-custom-card-normal">

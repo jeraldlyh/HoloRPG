@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
 import axios from "axios"
-import axiosInstance from "../../../axios/axiosInstance"
+import axiosInstance from "../../../axios"
 import { isAccessTokenExpired, refreshToken } from "../../../utils/jwt"
 
 const settings = {

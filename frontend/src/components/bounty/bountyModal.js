@@ -1,15 +1,16 @@
 import React, { Fragment, useState } from "react"
-import RingLoader from "react-spinners/RingLoader"
-import Modal from "../modal"
+import _ from "lodash"
+import axiosInstance from "../../axios"
 import { GiBullseye } from "react-icons/gi"
 import NumberFormat from "react-number-format"
 import { TiTickOutline } from "react-icons/ti"
-import { MdErrorOutline } from "react-icons/md"
-import ModalButton from "../modalButton"
-import axiosInstance from "../../axios/axiosInstance"
+import Modal from "../modal"
+import ModalButton from "../modal/modalButton"
+import Loading from "../modal/loading"
+import ResponseMessage from "../modal/responseMessage"
 
 
-function BountyModal({ toggleModal, userData, username, accessToken, profileMutate }) {
+function BountyModal({ toggleModal, userData, username, accessToken, profileMutate, bountyMutate, playerData }) {
     const [isLoading, setIsLoading] = useState(false)
     const [showResponseMessage, setShowResponseMessage] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
@@ -28,12 +29,20 @@ function BountyModal({ toggleModal, userData, username, accessToken, profileMuta
                 value: net_worth
             }
             await axiosInstance.post("/api/bounty/", body)
-            await profileMutate()
-            showResponseMessage(true)
-            setIsLoading(false)
-        } catch (error) {
+
+            await profileMutate()               // Calls endpoint to refresh client side cache for player data
+            await bountyMutate(() => {          // Remove bounty player from client cache and wait for next call to endpoint to refresh data
+                const updatedData = _.filter(playerData, function (player) {
+                    return player.username !== username
+                })
+                return updatedData
+            }, false)
+
             setShowResponseMessage(true)
+        } catch (error) {
             setErrorMessage(error.response.data.message)
+            setShowResponseMessage(true)
+        } finally {
             setIsLoading(false)
         }
     }
@@ -42,38 +51,22 @@ function BountyModal({ toggleModal, userData, username, accessToken, profileMuta
         <Modal header="Bounty Confirmation" icon={<GiBullseye />} toggleModal={toggleModal} height="auto" isLoading={isLoading} >
             {
                 isLoading
-                    ? (
-                        <div className="flex h-full items-center justify-center">
-                            <RingLoader color="#8955DF" size={140} />
-                        </div>
-                    )
+                    ? <Loading />
                     : (
                         <div className="flex flex-col h-full justify-center items-center">
                             {
                                 showResponseMessage           // Shows response message after placing bounty
-                                    ? (
-                                        <div className="flex flex-col h-full justify-center items-center space-y-3">
-                                            {
-                                                errorMessage
-                                                    ?
-                                                    <div className="flex flex-col items-center space-y-3">
-                                                        <div className="flex items-center justify-center w-16 h-16 p-3 bg-custom-misc-status rounded-full">
-                                                            <MdErrorOutline className="w-full h-full" />
-                                                        </div>
-                                                        <span className="text-custom-misc-status">
-                                                            {errorMessage}
-                                                        </span>
-                                                    </div>
-                                                    : <span className="text-custom-stats-defence">
-                                                        {`You have successfully placed ${target} on the bounty list for `}
-                                                        <NumberFormat value={net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
-                                                        !
-                                                    </span>
-                                            }
-
-                                            <ModalButton background={true} text="Confirm" onClick={toggleModal} width="1/3" height="auto" />
-                                        </div>
-                                    )
+                                    ? <ResponseMessage
+                                        errorMessage={errorMessage}
+                                        successMessage={
+                                            <span>
+                                                {`You have successfully placed ${target} on the bounty list for `}
+                                                <NumberFormat value={net_worth} displayType={"text"} thousandSeparator={true} prefix={"$"} />
+                                                !
+                                            </span>
+                                        }
+                                        toggleModal={toggleModal}
+                                    />
                                     : (
                                         <Fragment>
                                             <div className="flex items-center justify-center w-12 h-12 p-3 bg-custom-misc-accent rounded-full">
@@ -91,7 +84,6 @@ function BountyModal({ toggleModal, userData, username, accessToken, profileMuta
                                         </Fragment>
                                     )
                             }
-
                         </div>
                     )
             }

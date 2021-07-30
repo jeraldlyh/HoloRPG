@@ -6,6 +6,7 @@ import Layout from "../components/layout"
 import PurchaseBar from "../components/stocks/purchaseBar"
 import Graph from  "../components/stocks/graph"
 
+
 function Stock() {
     return (
         <Layout>

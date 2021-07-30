@@ -1,6 +1,7 @@
 import React from "react"
 import { BiChat } from "react-icons/bi"
 
+
 function FriendCard({ username, level, character }) {
     return (
         <div className="flex items-center justify-between">

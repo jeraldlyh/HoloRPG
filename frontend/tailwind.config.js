@@ -61,9 +61,9 @@ module.exports = {
                 white: "0 0 5px rgba(255, 255, 255, 0.5)",
                 "white-lg": "0 0 10px 1px rgba(255, 255, 255, 0.5)"
             },
-            // gridTemplateColumns: {
-            //     "auto": "repeat(auto-fit, 175px)"
-            // },
+            width: {
+                "1/7": "14.2857143%",
+            }
         },
     },
     variants: {

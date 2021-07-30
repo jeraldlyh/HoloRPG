@@ -1,5 +1,5 @@
 import React from "react"
-import { convertFractionToPercentage, isContainFraction } from "../utils/utils"
+import { convertFractionToPercentage, isContainFraction } from "../utils"
 
 
 function CardLight({ width, height, title, header, icon, children, setRef }) {
@@ -31,7 +31,7 @@ function CardLight({ width, height, title, header, icon, children, setRef }) {
             style={hasFraction() ? getStyles() : {}}
         >
             {
-                header
+                header && typeof header !== "boolean"       // Bypass for bounty page that does not contain a header
                     ? <div className="flex flex-col items-center max-w-max">
                         <div className="flex justify-around items-center">
                             &nbsp;{icon}

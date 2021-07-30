@@ -3,6 +3,7 @@ import { GiAxeSwing } from "react-icons/gi"
 import LoginForm from "../components/landing/loginForm"
 import RegisterForm from "../components/landing/registerForm"
 
+
 function Login() {
     const [pageIndex, setPageIndex] = useState(0)
 

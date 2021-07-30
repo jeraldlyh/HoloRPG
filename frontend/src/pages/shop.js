@@ -17,8 +17,8 @@ function Shop() {
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
     const { data: entityData, loading: entityLoading, mutate: entityMutate } = useEntity(username, accessToken)
     const { data: shopData } = useShop(accessToken)
-    const [currentIndex, setCurrentIndex] = useState(0)
 
+    const [currentIndex, setCurrentIndex] = useState(0)
     const [showEntityModal, setShowEntityModal] = useState(false)
     const [purchaseData, setPurchaseData] = useState({
         itemName: "",
