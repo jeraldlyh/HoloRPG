@@ -5,6 +5,7 @@ export const useRelationship = (username, token) => {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
+        dedupingInterval: 2000,
         refreshInterval: 0
     })
 

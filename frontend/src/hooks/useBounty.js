@@ -6,6 +6,7 @@ export const useBounty = (token) => {
         revalidateOnFocus: false,
         revalidateOnMount: true,
         revalidateOnReconnect: false,
+        dedupingInterval: 2000,
         refreshInterval: 2 * 60 * 1000      // 2 minutes
     })
 

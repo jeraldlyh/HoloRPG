@@ -105,17 +105,13 @@ class BountyListCreate(views.APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
-        request_copy = request.data.copy()              # Deep clone a copy of request data
+        serializer = BountySerializer(data=request.data)
         target_name = request.data["target"]
-        target = get_user_by_username(target_name)
-        bounty_value = get_user_net_worth(target.user.username)       # To be computed by a formula to determine player's net worth
-        request_copy["value"] = bounty_value
-        serializer = BountySerializer(data=request_copy)
 
         if serializer.is_valid():
             try:
                 create_bounty(serializer.validated_data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(status=status.HTTP_201_CREATED)
             except SameUserError:
                 return Response({
                     "message": "Unable to place bounty on yourself",

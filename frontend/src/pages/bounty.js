@@ -23,14 +23,14 @@ function Bounty() {
     const [showModal, setShowModal] = useState(false)
     const [userData, setUserData] = useState(null)
 
-    
+
     if (relationshipLoading || profileLoading || bountyLoading) {
         return <div className="flex items-center justify-center">Loading...</div>
     }
 
-    const handleButton = (username, net_worth) => {
+    const handleButton = (target, net_worth) => {
         setUserData({
-            username: username,
+            target: target,
             net_worth: net_worth,
         })
         setShowModal(true)
@@ -44,7 +44,13 @@ function Bounty() {
         <Fragment>
             {
                 showModal
-                    ? <BountyModal toggleModal={() => setShowModal(false)} userData={userData} />
+                    ? <BountyModal
+                        toggleModal={() => setShowModal(false)}
+                        userData={userData}
+                        username={username}
+                        accessToken={accessToken}
+                        profileMutate={profileMutate}
+                    />
                     : null
             }
             <Layout

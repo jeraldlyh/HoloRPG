@@ -136,10 +136,10 @@ class UserRelationship(models.Model):
 
 
 class Bounty(models.Model):
-    id = models.CharField(max_length=36, blank=True, default=uuid.uuid4, primary_key=True)
+    id = models.CharField(primary_key=True, max_length=36, blank=True, default=uuid.uuid4, editable=False)
     placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="placed_by")
     target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="target")
-    value = models.IntegerField(blank=True)
+    value = models.IntegerField()
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
     claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="claimed_by", null=True, editable=False)
     claimed_at = models.DateTimeField(null=True, blank=True, editable=False)

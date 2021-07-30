@@ -2,7 +2,7 @@ import React from "react"
 import { convertFractionToPercentage, isContainFraction } from "../utils/utils"
 
 
-function Modal({ header, icon, children, height, toggleModal }) {
+function Modal({ header, icon, children, height, toggleModal, isLoading }) {
     const getStyles = () => {
         if (isContainFraction(height)) {
             return {
@@ -20,12 +20,16 @@ function Modal({ header, icon, children, height, toggleModal }) {
                         {icon}
                         <p className="uppercase font-semibold text-sm">{header}</p>
                     </div>
-                    <div
-                        className="font-bold text-custom-color-lightgrey cursor-pointer hover:text-custom-misc-status"
-                        onClick={toggleModal}
-                    >
-                        X
-                    </div>
+                    {
+                        isLoading       // Prevent users from closing modal if a transaction is happening
+                            ? null
+                            : (
+                                <div className="font-bold text-custom-color-lightgrey cursor-pointer hover:text-custom-misc-status" onClick={toggleModal}>
+                                    X
+                                </div>
+                            )
+                    }
+
                 </div>
 
                 {/* Body */}
