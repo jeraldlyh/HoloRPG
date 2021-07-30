@@ -6,8 +6,13 @@ from .models import Bounty, UserProfile, UserRelationship
 
 
 def get_x_random_users(number: int) -> list:
-    data = list(get_all_users())
-    return random.sample(data, number if number <= len(data) else len(data))
+    """
+        Filters out players that are not on the bounty list and returns X sample of the results
+    """
+
+    current_bounties = get_bounties_by_status("UNCLAIMED").values_list("target")
+    result = list(UserProfile.objects.exclude(username__in=current_bounties))
+    return random.sample(result, number if number <= len(result) else len(result))
 
 
 def get_all_users() -> QuerySet:

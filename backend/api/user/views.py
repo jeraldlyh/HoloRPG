@@ -1,7 +1,7 @@
 from collections import OrderedDict
-from datetime import datetime
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 from .models import UserProfile
@@ -99,7 +99,7 @@ class BountyListCreate(views.APIView):
         data = {
             "bounty": bounty_data,
             "player": player_data,
-            "lastUpdated": datetime.now()
+            "lastUpdated": timezone.now()
         }
 
         return Response(data, status=status.HTTP_200_OK)
