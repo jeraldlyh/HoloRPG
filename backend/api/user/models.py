@@ -136,6 +136,10 @@ class UserRelationship(models.Model):
 
 
 class Bounty(models.Model):
+    class StatusOptions(models.TextChoices):
+        CLAIMED = "Claimed", _("Claimed")
+        UNCLAIMED = "Unclaimed", _("Unclaimed")
+
     id = models.CharField(primary_key=True, max_length=36, blank=True, default=uuid.uuid4, editable=False)
     placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="placed_by")
     target = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="target")
@@ -143,7 +147,7 @@ class Bounty(models.Model):
     placed_at = models.DateTimeField(auto_now_add=True, blank=True, editable=False)
     claimed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="claimed_by", null=True, editable=False)
     claimed_at = models.DateTimeField(null=True, blank=True, editable=False)
-    status = models.CharField(max_length=10, blank=True, editable=False, default="UNCLAIMED")
+    status = models.CharField(choices=StatusOptions.choices, max_length=10, blank=True, editable=False, default=StatusOptions.UNCLAIMED)
 
     @property
     def get_target_health(self) -> dict:
