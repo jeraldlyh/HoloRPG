@@ -26,7 +26,7 @@ function Login() {
             </div>
 
             <div className="flex flex-col w-96 p-10 bg-black bg-opacity-25 rounded-xl items-center text-custom-misc-inactive">
-                <div className="flex w-full justify-around mb-8 text-lg font-semibold text-center">
+                <div className="flex w-full justify-around mb-6 text-lg font-semibold text-center">
                     <span className={isActive(0)} onClick={() => setPageIndex(0)}>
                         Login
                     </span>

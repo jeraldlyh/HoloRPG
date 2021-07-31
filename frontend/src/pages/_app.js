@@ -3,6 +3,7 @@ import axios from "axios"
 import { withAuth } from "../hooks/withAuth"
 import "../styles/globals.css"
 
+
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 const fetcher = async (endpoint, token) => {
     try {
@@ -15,7 +16,7 @@ const fetcher = async (endpoint, token) => {
         })
         return response.data
     } catch (error) {
-        console.log("Error in useProfile fetcher", error)
+        console.log("Error in main fetcher", error)
     }
 }
 
