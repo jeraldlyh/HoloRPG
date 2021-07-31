@@ -1,10 +1,22 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import { GiSwordWound } from "react-icons/gi"
 import moment from "moment"
 import NumberFormat from "react-number-format"
+import axiosInstance from "../../axios"
 
 
-function BountyList({ bountyData }) {
+function BountyList({ bountyData, accessToken }) {
+    const [isLoading, setIsLoading] = useState(false)
+
+    // const attackPlayer = (bountyId) => {
+    //     setIsLoading(true)
+    //     axiosInstance.interceptors.request.use(function (config) {
+    //         config.headers.Authorization = "Bearer " + accessToken
+    //         return config
+    //     })
+    //     axiosInstance.patch(`/api/bounty/${bountyId}/`, )
+    // }
+
     return (
         <Fragment>
             <div className="flex justify-around mb-3">

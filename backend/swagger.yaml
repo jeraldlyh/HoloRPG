@@ -1,0 +1,118 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/jeraldlyh/HoloRPG/1.0.0
+info:
+  description: 'List of API endpoints available'
+  version: '1.0.0'
+  title: HoloRPG API
+  contact:
+    email: jeraldssw@gmail.com
+tags:
+  - name: admins
+    description: Secured calls for admin only
+  - name: users
+    description: Operations available to authenticated users
+paths:
+  /api/auth/social/google/:
+    post:
+      tags:
+        - users
+      summary: Login method for Google
+      operationId: loginGoogle
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+        - in: query
+          name: password
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/UserProfile'
+components:
+  schemas:
+    Character:
+      type: object
+      required:
+        - main_class
+      properties:
+        main_class:
+          type: string
+          default: 'DEFAULT'
+          maxLength: 32
+    UserProfile:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          maxLength: 254
+        username:
+          type: string
+        is_staff:
+          type: boolean
+          default: false
+        is_superuser:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: false
+        last_login:
+          type: string
+          format: date-time
+          example: '2021-07-31T22:20:50.52'
+        date_joined:
+          type: string
+          format: date-time
+          example: '2021-07-30T06:00:00.00'
+        has_changed_name:
+          type: boolean
+          default: false
+          example: true
+        image:
+          type: string
+          maxLength: 100
+        character:
+          '$ref': '#/components/schemas/Character'
+        level:
+          type: integer
+          default: 1
+        experience:
+          type: integer
+          default: 0
+        currency:
+          type: integer
+          default: 1000
+        reputation:
+          type: integer
+          default: 0
+        current_health:
+          type: integer
+          default: 100
+        max_health:
+          type: integer
+          default: 100
+        attack:
+          type: integer
+          default: 1
+        defence:
+          type: integer
+          default: 1
+        status:
+          type: string
+          maxLength: 10
