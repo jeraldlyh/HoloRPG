@@ -29,7 +29,7 @@ function ModalButton({ width, height, background, text, onClick, disabled }) {
             className={
                 `flex w-${width} h-${height} 
                 ${background ? "bg-custom-misc-accent" : "border border-custom-misc-accent"} 
-                shadow-button rounded-lg 
+                shadow-modal-button rounded-lg 
                 text-white text-sm 
                 uppercase font-semibold py-2 px-4 
                 justify-center items-center 
