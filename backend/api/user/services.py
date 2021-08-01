@@ -111,7 +111,7 @@ def deduct_player_currency(player: UserProfile, value) -> None:
     player.save()
 
 
-def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, UserProfile]:
+def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, int, int, str]:
     """
         Raises InsufficientHealthError if target is already dead prior to attack
         Returns damage dealt in battle and target profile to be rendered on frontend

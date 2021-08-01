@@ -4,8 +4,8 @@ servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/jeraldlyh/HoloRPG/1.0.0
 info:
-  description: 'List of API endpoints available'
-  version: '1.0.0'
+  description: "List of API endpoints available"
+  version: "1.0.0"
   title: HoloRPG API
   contact:
     email: jeraldssw@gmail.com
@@ -33,12 +33,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/Token'
+                $ref: "#/components/schemas/Token"
   /api/auth/login/:
     post:
       tags:
@@ -57,12 +57,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/Token'
+                $ref: "#/components/schemas/Token"
   /api/auth/logout/:
     post:
       tags:
@@ -77,8 +77,8 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -101,8 +101,8 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -122,14 +122,14 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  '$ref': '#/components/schemas/UserProfile'
+                  $ref: "#/components/schemas/UserProfile"
   /api/profile/{id}:
     get:
       tags:
@@ -146,12 +146,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/UserProfile'
+                $ref: "#/components/schemas/UserProfile"
   /api/bounty/:
     get:
       tags:
@@ -161,8 +161,8 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
-          description: SUCCESS
+        "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -171,11 +171,11 @@ paths:
                   bounty:
                     type: array
                     items:
-                      '$ref': '#/components/schemas/Bounty'
+                      $ref: "#/components/schemas/Bounty"
                   player:
                     type: array
                     items:
-                      '$ref': '#/components/schemas/UserProfile'
+                      $ref: "#/components/schemas/UserProfile"
     post:
       tags:
         - users
@@ -203,65 +203,108 @@ paths:
           schema:
             type: integer
       responses:
-        '201':
+        "201":
           description: CREATED
+        "400":
+          description: "BAD REQUEST"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/SameUserError"
+                  - $ref: "#/components/schemas/BountyExistError"
+                  - $ref: "#/components/schemas/InsufficientHealthError"
+                  - $ref: "#/components/schemas/InsufficientCurrencyError"
+  /api/bounty/{id}:
+    patch:
+      tags:
+        - users
+      summary: Attacks a player
+      operationId: attackPlayer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Bounty ID
+          schema:
+            type: string
+        - in: query
+          name: attacker
+          required: true
+          description: Attacker's username
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rewards:
+                    type: object
+                    properties:
+                      target:
+                        type: string
+                      damage:
+                        type: integer
+                      currency:
+                        type: integer
+                      experience:
+                        type: integer
+                  bounty:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Bounty"
+        "400":
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsufficientHealthError"
 # ---------------------------------------------------------------------------- #
 components:
-  responses:
-    SameErrorUser:
-      description: Same user error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                default: Unable to place bounty on yourself
-    BountyExistError:
-      description: Existing bounty
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                default: <targetName> currently has an existing bounty
-    InsufficientHealthError:
-      description: Target has insufficient health
-      content:
-        application/json:
-          schema:
-          type: object
-          properties:
-            message:
-              type: string
-              default: <targetName> is currently dead
-    InsufficientCurrencyError:
-      description: Player has insufficient currency
-      content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            message:
-              type: string
-              default: <playerName> has insufficient currency
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    SameUserError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Unable to place bounty on yourself
+    BountyExistError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: <targetName> currently has an existing bounty
+    InsufficientHealthError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: <targetName> is currently dead
+    InsufficientCurrencyError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: <playerName> has insufficient currency
     Token:
       type: object
-      properties: 
+      properties:
         access_token:
           type: string
         refresh_token:
           type: string
-        user: 
+        user:
           type: object
           properties:
             pk:
@@ -316,7 +359,7 @@ components:
           type: string
           maxLength: 100
         character:
-          '$ref': '#/components/schemas/Character'
+          $ref: "#/components/schemas/Character"
         level:
           type: integer
           default: 1
@@ -346,7 +389,7 @@ components:
           maxLength: 10
         account_age:
           type: integer
-        character_class:  # Check again if character is repeated
+        character_class: # Check again if character is repeated
           type: string
         rank:
           type: integer
@@ -380,11 +423,11 @@ components:
         - relationship
       properties:
         user_from:
-          '$ref': '#/components/schemas/UserProfile'
+          $ref: "#/components/schemas/UserProfile"
         user_to:
-          '$ref': '#/components/schemas/UserProfile'
+          $ref: "#/components/schemas/UserProfile"
         relationship:
-          '$ref': '#/components/schemas/Relationship'
+          $ref: "#/components/schemas/Relationship"
     Bounty:
       type: object
       required:

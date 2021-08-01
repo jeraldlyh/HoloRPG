@@ -106,6 +106,7 @@ class BountyListCreate(views.APIView):
     def post(self, request, format=None):
         serializer = BountySerializer(data=request.data)
         target_name = request.data["target"]
+        player = request.data["placed_by"]
 
         if serializer.is_valid():
             try:
@@ -125,7 +126,7 @@ class BountyListCreate(views.APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
             except InsufficientCurrencyError:
                 return Response({
-                    "message": f"Insufficient currency to place bounty on {target_name}",
+                    "message": f"{player} has insufficient currency",
                 }, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
@@ -149,7 +150,7 @@ class BountyPatch(views.APIView):
                 }, status=status.HTTP_200_OK)
             except InsufficientHealthError:
                 return Response({
-                    "message": "Bounty has already been claimed",
+                    "message": f"{target} is currently dead",
                 }, status=status.HTTP_400_BAD_REQUEST)
         return Response({
             "message": "Bounty parameter not specified",
