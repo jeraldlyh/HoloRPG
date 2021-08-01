@@ -1,4 +1,5 @@
 import math
+import random
 from collections import OrderedDict
 from typing import List, Tuple
 from django.db.models.expressions import F
@@ -12,7 +13,7 @@ from .selectors import get_bounties_by_status, get_bounties_by_target_status, ge
 
 def exp_required(level: int) -> int:
     """
-        Current formula: (8 * (Level^3)) / 4
+        Current formula: (8 * Level^3) / 4
     """
     BASE_EXP = 8
     return (BASE_EXP * (level ** 3)) / 4
@@ -20,9 +21,9 @@ def exp_required(level: int) -> int:
 
 def damage_dealt(player: UserProfile, target: UserProfile) -> int:
     """
-        Current formula: Attack^2 / (Attack + Defence)
+        Damage =  Attack^2 / (Attack + Defence)
     """
-    damage = player.attack**2 / (player.attack / player.defence)
+    damage = math.floor(player.attack ** 2 / (player.attack / player.defence))
 
     if target.current_health - damage > 0:
         target.current_health = F("current_health") - damage
@@ -51,8 +52,15 @@ def get_user_net_worth(username: str) -> int:
 
 
 def exp_gained(player: UserProfile, target: UserProfile) -> int:
-    experience = (8 * (target.level**3)) / 4
+    """
+        Exp Gain = Level^2 +- 15
+    """
+
+    upper = (player + target) * 5
+    buffer = random.randint(0, upper)
+    experience = (target.level ** 2) * 4 + buffer
     player.experience = F("experience") + experience
+    player.save()
 
     return experience
 
@@ -61,12 +69,11 @@ def plunder(player: UserProfile, target: UserProfile) -> int:
     """
         Target loses 5% of currency when attacked by player
     """
-    currency = math.floor(5 * (target.currency / 100))
-    target.currency = F("currency") - currency
-    player.currency = F("currency") + currency
 
-    target.save()
-    player.save()
+    currency = math.floor(5 * (target.currency / 100))
+    add_player_currency(player, currency)
+    deduct_player_currency(target, currency)
+
     return currency
 
 
@@ -75,6 +82,7 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
         Raises InsufficientHealthError if target is already dead
         Returns the damage, currency, exp to be rendered on frontend
     """
+
     if target.current_health == 0:
         raise InsufficientHealthError
 
@@ -116,6 +124,7 @@ def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, int,
         Raises InsufficientHealthError if target is already dead prior to attack
         Returns damage dealt in battle and target profile to be rendered on frontend
     """
+
     player = get_user_by_username(player_name)
     bounty = get_bounty_by_id(bounty_id)
 
