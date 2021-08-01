@@ -82,7 +82,7 @@ function Shop() {
                             ? (         // Entity Shop
                                 <CardLight height="full" width="full">
                                     <div className="flex w-full items-center justify-around mb-3">
-                                        <span className="w-12 text-center font-semibold">ITEM</span>
+                                        <span className="w-12 text-center font-semibold">ENTITY</span>
                                         <span className="w-40 text-center font-semibold">NAME</span>
                                         <span className="w-20 text-center font-semibold">INCOME</span>
                                         <span className="w-20 text-center font-semibold">UPKEEP</span>

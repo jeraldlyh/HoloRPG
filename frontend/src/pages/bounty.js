@@ -13,6 +13,7 @@ import { useAuth } from "../hooks/useAuth"
 import { useBounty } from "../hooks/useBounty"
 import { getFocusDesign } from "../utils"
 import Button from "../components/button"
+import { GiSupersonicArrow } from "react-icons/gi"
 
 
 function Bounty() {
@@ -88,7 +89,7 @@ function Bounty() {
                                             <div className="flex justify-around items-center mb-3">
                                                 <span className="w-1/6 text-center font-semibold">RANK</span>
                                                 <span className="w-1/6 text-center font-semibold">NAME</span>
-                                                <span className="w-1/6 text-center font-semibold">CHARACTER</span>
+                                                <span className="w-1/6 text-center font-semibold">CLASS</span>
                                                 <span className="w-1/6 text-center font-semibold">NET WORTH</span>
                                                 <span className="w-1/6" />
                                             </div>
@@ -106,10 +107,9 @@ function Bounty() {
                                                                     <span
                                                                         className="flex w-1/6 justify-center hover:text-custom-button-primary"
                                                                         onClick={() => handleButton(player.username, player.net_worth)}
-                                                                    >
-                                                                        {/* <Button width="32" height="10" text="Purchase" background={true} onClick={() => handleButton(player.username, player.net_worth)}/>                                                         */}
+                                                                    > 
+                                                                    <Button width="3/4" height="10" text={<GiSupersonicArrow size={16} />} background={true}/>                                                                                                                                                                  
 
-                                                                        <FiPlusCircle />
                                                                     </span>
                                                                 </div>
                                                             )
