@@ -12,6 +12,7 @@ import { useProfile } from "../hooks/useProfile"
 import { useAuth } from "../hooks/useAuth"
 import { useBounty } from "../hooks/useBounty"
 import { getFocusDesign } from "../utils"
+import Button from "../components/button"
 
 
 function Bounty() {
@@ -106,6 +107,8 @@ function Bounty() {
                                                                         className="flex w-1/6 justify-center hover:text-custom-button-primary"
                                                                         onClick={() => handleButton(player.username, player.net_worth)}
                                                                     >
+                                                                        {/* <Button width="32" height="10" text="Purchase" background={true} onClick={() => handleButton(player.username, player.net_worth)}/>                                                         */}
+
                                                                         <FiPlusCircle />
                                                                     </span>
                                                                 </div>

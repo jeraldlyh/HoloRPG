@@ -13,7 +13,7 @@ function Modal({ header, icon, children, height, toggleModal, isLoading }) {
 
     return (
         <div className={`absolute z-50 flex justify-center w-full h-full text-white bg-black/75`}>
-            <div className="flex flex-col justify-center w-2/3 h-full p-36">
+            <div className="flex flex-col justify-center w-auto h-auto p-36">
                 {/* Header */}
                 <div className="flex rounded-t-lg items-center justify-between w-full h-12 bg-custom-modal-header px-8">
                     <div className="flex items-center space-x-1.5">
@@ -34,7 +34,7 @@ function Modal({ header, icon, children, height, toggleModal, isLoading }) {
 
                 {/* Body */}
                 <div
-                    className={`flex flex-col rounded-b-lg gap-y-2 h-${height} items-center bg-custom-modal-body px-8 py-4`}
+                    className={`flex flex-col rounded-b-lg gap-y-2 h-${height} items-center bg-custom-modal-body p-10`}
                     style={isContainFraction(height) ? getStyles() : null}
                 >
                     {children}

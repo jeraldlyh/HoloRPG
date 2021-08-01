@@ -43,7 +43,9 @@ function BountyModal({ toggleModal, userData, username, accessToken, profileMuta
             setErrorMessage(error.response.data.message)
             setShowResponseMessage(true)
         } finally {
-            setIsLoading(false)
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 2000)
         }
     }
 

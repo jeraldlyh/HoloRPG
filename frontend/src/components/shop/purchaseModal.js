@@ -1,14 +1,16 @@
 import React, { useState, useEffect, Fragment } from "react"
 import NumberFormat from "react-number-format"
 import { BiPurchaseTagAlt } from "react-icons/bi"
-import { FiPlusCircle, FiMinusCircle } from "react-icons/fi"
+import { FiPlusSquare, FiMinusSquare } from "react-icons/fi"
 import axiosInstance from "../../axios"
-import Button from "../button"
+import ModalButton from "../modal/modalButton"
 import { clampQuantity } from "../../utils"
 import _ from "lodash"
 import Modal from "../modal"
 import Loading from "../modal/loading"
 import ResponseMessage from "../modal/responseMessage"
+import { RiHeartPulseFill } from "react-icons/ri"
+import { GiPiercingSword, GiCheckedShield } from "react-icons/gi"
 
 
 function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profileData, profileMutate, accessToken }) {
@@ -81,7 +83,9 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
             setErrorMessage(error.response.data.message)
             setShowResponseMessage(true)
         } finally {
-            setIsLoading(false)
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 2000)
         }
     }
 
@@ -90,12 +94,12 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
     }
 
     return (
-        <Modal icon={<BiPurchaseTagAlt />} header="Purchase" height="4/5" toggleModal={toggleModal} isLoading={isLoading}>
+        <Modal icon={<BiPurchaseTagAlt />} header="Purchase" width="auto" height="auto" toggleModal={toggleModal} isLoading={isLoading}>
             {
                 isLoading       // Shows loading spinner if loading
                     ? <Loading />
                     : (
-                        <div className="flex flex-col h-full justify-center items-center">
+                        <div className="flex flex-col w-full h-full justify-center items-center space-y-6">
                             {
                                 showResponseMessage     // Returns response message after interacting with endpoint
                                     ? <ResponseMessage
@@ -105,30 +109,54 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
                                     />
                                     : (                 // Shows purchase modal
                                         <Fragment>
-                                            <div className="flex flex-col items-center">
-                                                <span>{itemName}</span>
-                                                <div className="w-14 h-14 bg-custom-color-grey" />
+                                            <div className="flex w-full h-full justify-center">
+                                                <div className="flex flex-col items-center">
+                                                    <div className="w-14 h-14 bg-custom-color-grey mb-3" />
+
+                                                    <span>{itemName}</span>
+                                                </div>
+
+                                                <div className="flex flex-col ml-10">
+                                                    <p className="text-sm font-light">A short description of item.</p>
+
+                                                    <div className="flex items-center space-x-6 text-sm mt-4">
+                                                        <div className="flex gap-x-1 items-center justify-center">
+                                                            <span className="mr-1">62</span>
+                                                            <RiHeartPulseFill size={22} />
+                                                        </div>
+                                                        <div className="flex gap-x-1 items-center justify-center">
+                                                            <span className="mr-1">30</span>
+                                                            <GiPiercingSword size={22} />
+                                                        </div>
+                                                        <div className="flex gap-x-1 items-center justify-center">
+                                                            <span className="mr-1">120</span>
+                                                            <GiCheckedShield size={22} />
+                                                        </div>
+                                                    </div>
+                                                    <span className="font-semibold mt-6">Inventory: {getEntityOwned()}</span>
+                                                    {
+                                                        isInsufficientCurrency
+                                                            ? <span className="text-xs font-light text-custom-stats-health mt-2">You do not have sufficient currency.</span>
+                                                            : null
+                                                    }
+                                                </div>
+
+                                                <div className="flex flex-col items-center ml-24">
+                                                    <div className="flex justify-center h-12 p-4 bg-custom-card-normal rounded-lg items-center space-x-3">
+                                                        <div className="text-gray-400 hover:text-custom-misc-status cursor-pointer" onClick={() => setQuantity(quantity - 1)}><FiMinusSquare size={26} /></div>
+                                                        <input
+                                                            className="w-16 bg-transparent text-center text-lg"
+                                                            value={quantity}
+                                                            placeholder={quantity}
+                                                            onChange={e => onManualEdit(e)}
+                                                        />
+                                                        <div className="text-gray-400 hover:text-custom-misc-online cursor-pointer" onClick={() => setQuantity(quantity + 1)}><FiPlusSquare size={26} /></div>
+                                                    </div>
+                                                    <span className="font-semibold mt-6 mb-4">Total cost: <NumberFormat value={cost} displayType={"text"} thousandSeparator={true} prefix={"$"} /></span>
+
+                                                    <ModalButton width="full" height="10" background={true} text="confirm" onClick={() => handleSubmit()} disabled={isDisabled() || quantity === 0} />
+                                                </div>
                                             </div>
-                                            <span>You currently own: {getEntityOwned()}</span>
-                                            <div className="flex items-center space-x-1">
-                                                <div className="hover:text-custom-misc-status" onClick={() => setQuantity(quantity - 1)}><FiMinusCircle size={28} /></div>
-                                                <input
-                                                    className="w-14 bg-custom-color-grey text-center"
-                                                    value={quantity}
-                                                    placeholder={quantity}
-                                                    onChange={e => onManualEdit(e)}
-                                                />
-                                                <div className="hover:text-custom-misc-online" onClick={() => setQuantity(quantity + 1)}><FiPlusCircle size={28} /></div>
-                                            </div>
-                                            <div className="flex flex-col items-center">
-                                                <span>Total cost: <NumberFormat value={cost} displayType={"text"} thousandSeparator={true} prefix={"$"} /></span>
-                                                {
-                                                    isInsufficientCurrency
-                                                        ? <span className="text-xs text-custom-stats-health">You do not have sufficient currency</span>
-                                                        : null
-                                                }
-                                            </div>
-                                            <Button width="auto" height="8" background={true} text="confirm" onClick={() => handleSubmit()} disabled={isDisabled() || quantity === 0} />
                                         </Fragment>
                                     )
                             }
