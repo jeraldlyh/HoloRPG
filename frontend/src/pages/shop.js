@@ -8,6 +8,8 @@ import { useRelationship } from "../hooks/useRelationship"
 import { useAuth } from "../hooks/useAuth"
 import CardLight from "../components/cardLight"
 import PurchaseModal from "../components/shop/purchaseModal"
+import Button from "../components/button"
+
 
 
 function Shop() {
@@ -85,7 +87,7 @@ function Shop() {
                                         <span className="w-20 text-center font-semibold">INCOME</span>
                                         <span className="w-20 text-center font-semibold">UPKEEP</span>
                                         <span className="w-20 text-center font-semibold">COST</span>
-                                        <span className="w-28 text-center font-semibold" />
+                                        <span className="w-32 text-center font-semibold" />
                                     </div>
 
                                     <hr className="border-custom-color-grey w-full mt-1 mb-2" />
@@ -102,13 +104,8 @@ function Shop() {
                                                                 <span className="w-40 text-center">{item.name}</span>
                                                                 <span className="w-20 text-center">${item.income}</span>
                                                                 <span className="w-20 text-center">${item.upkeep}</span>
-                                                                <span className="w-20 text-center">${item.cost}</span>
-                                                                <span
-                                                                    className="w-28 h-10 bg-custom-button-primary text-center text-white font-bold py-2 px-4 rounded-lg cursor-pointer"
-                                                                    onClick={() => handleEntityButton(item.name, item.cost)}
-                                                                >
-                                                                    PURCHASE
-                                                                </span>
+                                                                <span className="w-20 text-center">${item.cost}</span>                                                                                                
+                                                                <Button width="32" height="10" text="Purchase" background={true} onClick={() => handleEntityButton(item.name, item.cost)}/>                                                        
                                                             </div>
                                                             <hr className="border-custom-color-grey w-full mt-1 mb-2" />
                                                         </Fragment>

@@ -7,6 +7,7 @@ import Countdown from "react-countdown"
 import FriendCard from "./friendCard"
 import axiosInstance from "../../axios"
 import { v4 as uuidv4 } from 'uuid'
+import Button from "../button"
 
 
 function ProfileBar({ profileData, relationshipData, profileMutate, accessToken }) {
@@ -140,18 +141,21 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                     <span className="font-semibold mb-1">
                         <NumberFormat value={income_accumulated} displayType={"text"} thousandSeparator={true} prefix={"$"} />
                     </span>
-                    {/* <Button width="auto" height="8" background={true} text="Collect" onClick={() => collectIncome()} disabled={income_accumulated === 0} /> */}
-                    <button
+                    
+                    <Button width="auto" height="8" text="Collect Now" background={true} round={true} disabled={!getNextCooldown(last_collected) || getNextCooldown(last_collected) !== 0}
+                        onClick={() => collectIncome()}>                                                        
+                    {/* <button
                         className="bg-custom-button-primary shadow-button rounded-lg  text-white text-sm  uppercase font-semibold py-2 px-4  justify-center items-center  disabled:cursor-not-allowed  disabled:opacity-50 hover:bg-opacity-90"
                         disabled={!getNextCooldown(last_collected) || getNextCooldown(last_collected) !== 0}
                         onClick={() => collectIncome()}
-                    >
+                    > */}
                         <Countdown
                             key={key}
                             date={Date.now() + getNextCooldown(last_collected)}
                             renderer={renderer}
                         />
-                    </button>
+                    {/* </button> */}
+                    </Button>
                 </div>
             </div>
 
@@ -170,7 +174,7 @@ function ProfileBar({ profileData, relationshipData, profileMutate, accessToken 
                         ? relationshipData.map((relationship, index) => {
                             return <FriendCard key={index} username={relationship.username} level={relationship.level} character={relationship.character} />
                         })
-                        : <span>You currently do not have any friends!</span>
+                        : <span className="text-sm font-light">You currently do not have any friends!</span>
                 }
             </div>
         </div>
