@@ -83,7 +83,9 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
             setErrorMessage(error.response.data.message)
             setShowResponseMessage(true)
         } finally {
-            setIsLoading(false)
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 2000)
         }
     }
 
@@ -132,29 +134,29 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
                                                         </div>
                                                     </div>
                                                     <span className="font-semibold mt-6">Inventory: {getEntityOwned()}</span>
-                                                     {
+                                                    {
                                                         isInsufficientCurrency
-                                                        ? <span className="text-xs font-light text-custom-stats-health mt-2">You do not have sufficient currency.</span>
-                                                        : null
+                                                            ? <span className="text-xs font-light text-custom-stats-health mt-2">You do not have sufficient currency.</span>
+                                                            : null
                                                     }
                                                 </div>
 
                                                 <div className="flex flex-col items-center ml-24">
-                                                <div className="flex justify-center h-12 p-4 bg-custom-card-normal rounded-lg items-center space-x-3">
-                                                    <div className="text-gray-400 hover:text-custom-misc-status cursor-pointer" onClick={() => setQuantity(quantity - 1)}><FiMinusSquare size={26} /></div>
-                                                    <input
-                                                        className="w-16 bg-transparent text-center text-lg"
-                                                        value={quantity}
-                                                        placeholder={quantity}
-                                                        onChange={e => onManualEdit(e)}
+                                                    <div className="flex justify-center h-12 p-4 bg-custom-card-normal rounded-lg items-center space-x-3">
+                                                        <div className="text-gray-400 hover:text-custom-misc-status cursor-pointer" onClick={() => setQuantity(quantity - 1)}><FiMinusSquare size={26} /></div>
+                                                        <input
+                                                            className="w-16 bg-transparent text-center text-lg"
+                                                            value={quantity}
+                                                            placeholder={quantity}
+                                                            onChange={e => onManualEdit(e)}
                                                         />
-                                                    <div className="text-gray-400 hover:text-custom-misc-online cursor-pointer" onClick={() => setQuantity(quantity + 1)}><FiPlusSquare size={26} /></div>
-                                                </div>
+                                                        <div className="text-gray-400 hover:text-custom-misc-online cursor-pointer" onClick={() => setQuantity(quantity + 1)}><FiPlusSquare size={26} /></div>
+                                                    </div>
                                                     <span className="font-semibold mt-6 mb-4">Total cost: <NumberFormat value={cost} displayType={"text"} thousandSeparator={true} prefix={"$"} /></span>
-                                                
-                                                <ModalButton width="full" height="10" background={true} text="confirm" onClick={() => handleSubmit()} disabled={isDisabled() || quantity === 0} />
-                                                </div>                                           
-                                            </div>                                           
+
+                                                    <ModalButton width="full" height="10" background={true} text="confirm" onClick={() => handleSubmit()} disabled={isDisabled() || quantity === 0} />
+                                                </div>
+                                            </div>
                                         </Fragment>
                                     )
                             }

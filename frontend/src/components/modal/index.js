@@ -13,7 +13,7 @@ function Modal({ header, icon, children, height, toggleModal, isLoading }) {
 
     return (
         <div className={`absolute z-50 flex justify-center w-full h-full text-white bg-black/75`}>
-            <div className="flex flex-col justify-center w-2/3 h-full p-36">
+            <div className="flex flex-col justify-center w-auto h-auto p-36">
                 {/* Header */}
                 <div className="flex rounded-t-lg items-center justify-between w-full h-12 bg-custom-modal-header px-8">
                     <div className="flex items-center space-x-1.5">
