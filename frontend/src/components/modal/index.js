@@ -34,7 +34,7 @@ function Modal({ header, icon, children, height, toggleModal, isLoading }) {
 
                 {/* Body */}
                 <div
-                    className={`flex flex-col rounded-b-lg gap-y-2 h-${height} items-center bg-custom-modal-body px-8 py-4`}
+                    className={`flex flex-col rounded-b-lg gap-y-2 h-${height} items-center bg-custom-modal-body p-10`}
                     style={isContainFraction(height) ? getStyles() : null}
                 >
                     {children}

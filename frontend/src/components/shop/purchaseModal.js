@@ -92,7 +92,7 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
     }
 
     return (
-        <Modal icon={<BiPurchaseTagAlt />} header="Purchase" height="4/5" toggleModal={toggleModal} isLoading={isLoading}>
+        <Modal icon={<BiPurchaseTagAlt />} header="Purchase" width="auto" height="auto" toggleModal={toggleModal} isLoading={isLoading}>
             {
                 isLoading       // Shows loading spinner if loading
                     ? <Loading />
@@ -107,7 +107,7 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
                                     />
                                     : (                 // Shows purchase modal
                                         <Fragment>
-                                            <div className="flex w-full h-full justify-center mt-10">
+                                            <div className="flex w-full h-full justify-center">
                                                 <div className="flex flex-col items-center">
                                                     <div className="w-14 h-14 bg-custom-color-grey mb-3" />
 
@@ -140,10 +140,10 @@ function PurchaseModal({ itemData, toggleModal, entityData, entityMutate, profil
                                                 </div>
 
                                                 <div className="flex flex-col items-center ml-24">
-                                                <div className="flex justify-center h-12 p-4 bg-custom-card-normal rounded-lg items-center space-x-2">
+                                                <div className="flex justify-center h-12 p-4 bg-custom-card-normal rounded-lg items-center space-x-3">
                                                     <div className="text-gray-400 hover:text-custom-misc-status cursor-pointer" onClick={() => setQuantity(quantity - 1)}><FiMinusSquare size={26} /></div>
                                                     <input
-                                                        className="w-14 bg-transparent text-center text-lg"
+                                                        className="w-16 bg-transparent text-center text-lg"
                                                         value={quantity}
                                                         placeholder={quantity}
                                                         onChange={e => onManualEdit(e)}
