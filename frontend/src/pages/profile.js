@@ -6,11 +6,12 @@ import Statistics from "../components/profile/statistics"
 import Stocks from "../components/profile/stock"
 import Entities from "../components/profile/entities"
 import Button from "../components/button"
-import { getFocusDesign } from "../utils/utils"
+import { getFocusDesign } from "../utils"
 import { useProfile } from "../hooks/useProfile"
 import { useEntity } from "../hooks/useEntity"
 import { useRelationship } from "../hooks/useRelationship"
 import { useAuth } from "../hooks/useAuth"
+
 
 
 function Profile() {
