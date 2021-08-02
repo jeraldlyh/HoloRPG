@@ -21,7 +21,8 @@ function Bounty() {
     const { accessToken, user: { username } } = session
     const { data: relationshipData, loading: relationshipLoading } = useRelationship(username, accessToken)
     const { data: profileData, loading: profileLoading, mutate: profileMutate } = useProfile(username, accessToken)
-    const { bountyData, playerData, lastUpdated, loading: bountyLoading, mutate: bountyMutate } = useBounty(accessToken)
+    const { data: bountyData, loading: bountyLoading, mutate: bountyMutate } = useBounty(accessToken)
+    const { player: playerData } = bountyData
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const [filteredPlayerData, setFilteredPlayerData] = useState([])
@@ -33,7 +34,7 @@ function Bounty() {
             return player.username !== username
         })
         setFilteredPlayerData(filtered)
-    }, [bountyData])
+    }, [playerData])
 
     if (relationshipLoading || profileLoading || bountyLoading) {
         return <div className="flex items-center justify-center">Loading...</div>
@@ -48,7 +49,7 @@ function Bounty() {
     }
 
     const lastUpdatedTime = () => {
-        return moment(lastUpdated).format("[Last updated at] DD/MM/YY [GMT]ZZ h:mm:ss a").toString()
+        return moment(bountyData.lastUpdated).format("[Last updated at] DD/MM/YY [GMT+8] h:mm:ss a").toString()
     }
 
     return (
@@ -60,6 +61,7 @@ function Bounty() {
                         userData={userData}
                         username={username}
                         accessToken={accessToken}
+                        bountyData={bountyData}
                         profileMutate={profileMutate}
                         bountyMutate={bountyMutate}
                     />
@@ -83,7 +85,13 @@ function Bounty() {
                         <CardLight height="full" width="full" header={true}>
                             {
                                 currentIndex === 0
-                                    ? <BountyList bountyData={bountyData} username={username} accessToken={accessToken} />
+                                    ? <BountyList
+                                        bountyData={bountyData}
+                                        bountyMutate={bountyMutate}
+                                        profileMutate={profileMutate}
+                                        username={username}
+                                        accessToken={accessToken}
+                                    />
                                     : (         // Place bounty tab
                                         <Fragment>
                                             <div className="flex justify-around items-center mb-3">
@@ -107,9 +115,8 @@ function Bounty() {
                                                                     <span
                                                                         className="flex w-1/6 justify-center hover:text-custom-button-primary"
                                                                         onClick={() => handleButton(player.username, player.net_worth)}
-                                                                    > 
-                                                                    <Button width="3/4" height="10" text={<GiSupersonicArrow size={16} />} background={true}/>                                                                                                                                                                  
-
+                                                                    >
+                                                                        <Button width="3/4" height="10" text={<GiSupersonicArrow size={16} />} background={true} />
                                                                     </span>
                                                                 </div>
                                                             )

@@ -8,9 +8,10 @@ import Modal from "../modal"
 import ModalButton from "../modal/modalButton"
 import Loading from "../modal/loading"
 import ResponseMessage from "../modal/responseMessage"
+import { v4 as uuidv4 } from "uuid"
 
 
-function BountyModal({ toggleModal, userData, username, accessToken, profileMutate, bountyMutate, playerData }) {
+function BountyModal({ toggleModal, userData, username, accessToken, profileMutate, bountyMutate }) {
     const [isLoading, setIsLoading] = useState(false)
     const [showResponseMessage, setShowResponseMessage] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
@@ -31,12 +32,7 @@ function BountyModal({ toggleModal, userData, username, accessToken, profileMuta
             await axiosInstance.post("/api/bounty/", body)
 
             await profileMutate()               // Calls endpoint to refresh client side cache for player data
-            await bountyMutate(() => {          // Remove bounty player from client cache and wait for next call to endpoint to refresh data
-                const updatedData = _.filter(playerData, function (player) {
-                    return player.username !== username
-                })
-                return updatedData
-            }, false)
+            await bountyMutate()                // Calls endpoint to refresh client side cache for bounty data
 
             setShowResponseMessage(true)
         } catch (error) {

@@ -11,9 +11,11 @@ export const useBounty = (token) => {
     })
 
     return {
-        bountyData: data ? data.bounty : null,
-        playerData: data ? data.player : null,
-        lastUpdated: data ? data.lastUpdated : null,
+        data: {
+            bounty: data ? data.bounty : null,
+            player: data ? data.player : null,
+            lastUpdated: data ? data.lastUpdated : null,
+        },
         mutate: mutate,
         loading: typeof data === "undefined" && typeof error === "undefined",
     }
