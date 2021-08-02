@@ -10,11 +10,12 @@ from .serializers import BountySerializer
 
 def get_x_random_users(number: int) -> list:
     """
-        Filters out players that are not on the bounty list and returns X sample of the results
+        Filters out players that are not on the bounty list and alive. Returns X sample of the results.
     """
 
     current_bounties = get_bounties_by_status("UNCLAIMED").values_list("target")
-    result = list(UserProfile.objects.exclude(username__in=current_bounties))
+    query = ~Q(current_health=0)
+    result = list(UserProfile.objects.filter(query).exclude(username__in=current_bounties))
     return random.sample(result, number if number <= len(result) else len(result))
 
 
