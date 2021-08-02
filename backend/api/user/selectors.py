@@ -1,8 +1,11 @@
+from collections import OrderedDict
+from typing import List
 import random
 from django.db.models.query import QuerySet
 from django.db.models.query_utils import Q
 
 from .models import Bounty, UserProfile, UserRelationship
+from .serializers import BountySerializer
 
 
 def get_x_random_users(number: int) -> list:
@@ -55,6 +58,13 @@ def get_bounty_by_id(id: str) -> Bounty:
 def get_bounties_by_status(status: str) -> QuerySet:
     query = Q(status=status)
     return Bounty.objects.filter(query)
+
+
+def get_unclaimed_bounties() -> List[dict]:
+    bounty_queryset = get_bounties_by_status("UNCLAIMED")
+    bounty_serializer = BountySerializer(bounty_queryset, many=True)
+    result = [dict(OrderedDict(bounty)) for bounty in bounty_serializer.data]
+    return result
 
 
 def get_bounties_by_target_status(target: str,  status: str) -> QuerySet:

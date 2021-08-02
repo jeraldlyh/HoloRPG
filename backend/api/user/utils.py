@@ -43,6 +43,7 @@ def get_duration(then, now = timezone.now(), interval="Default"):
         'default': totalDuration()
     }[interval]
 
+
 def clamp(number, lower, upper):
     """
         Limits the range of a number with a specified boundary

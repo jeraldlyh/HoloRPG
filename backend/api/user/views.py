@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 
 from .models import UserProfile
 from .serializers import UserProfileSerializer, BountySerializer, UserRelationshipSerializer
-from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_unclaimed_bounties, get_user_net_worth
+from .services import attack_player_on_bounty, create_bounty, create_user_relationship, get_user_net_worth
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
-from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_user_id, get_user_by_username, get_users_by_relationships, get_x_random_users
+from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_user_id, get_user_by_username, get_users_by_relationships, get_x_random_users, get_unclaimed_bounties
 
 class UserProfileDetail(views.APIView):
     def get_object(self, pk):
@@ -42,8 +42,6 @@ class UserRelationshipCreate(views.APIView):
         serializer = UserRelationshipSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                user_from = request.data.get("user_from")
-                user_to = request.data.get("user_to")
                 create_user_relationship(serializer.validated_data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except SameUserError:
