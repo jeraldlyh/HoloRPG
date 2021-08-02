@@ -3,6 +3,7 @@ from collections import OrderedDict
 from typing import List, Tuple
 from django.db.models.expressions import F
 from datetime import datetime
+from django.utils import timezone
 
 from .rpg import BASE_STATS, LEVELS
 from .models import Bounty, UserProfile, UserRelationship
@@ -52,12 +53,6 @@ def damage_dealt(player: UserProfile, target: UserProfile, percentage: int = 1) 
     upper_bound = int(1.25 * amount)
     damage = round(random.randint(lower_bound, upper_bound) * percentage)
 
-    # if target.current_health - damage > 0:
-    #     target.current_health = F("current_health") - damage
-    # else:
-    #     target.current_health = 0
-
-    # target.save()
     return damage
 
 
@@ -168,7 +163,7 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
 
     winner_currency = plunder(loser)                    # Winner plunders loser's currency
 
-    print(f"DMG | {winner.username} -= {loser_damage} | {loser.username}-= {winner_damage}")
+    print(f"DMG | {winner.username} -= {loser_damage} | {loser.username} -= {winner_damage}")
     print(f"EXP | {winner.username} += {winner_exp} | {loser.username} += {loser_exp}")
 
     # Database operations
@@ -189,14 +184,6 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
 
     winner.save()
     loser.save()
-
-    # Retrieves latest data from db prior to processing the levels
-    winner.refresh_from_db()
-    loser.refresh_from_db()
-
-    process_level(winner)
-    process_level(loser)
-
     return (winner_damage, winner_currency, winner_exp) if winner == player else (loser_damage, 0, loser_exp)
 
 
@@ -207,7 +194,7 @@ def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
 
     bounty.status = "CLAIMED"
     bounty.claimed_by = player
-    bounty.claimed_at = datetime.now()
+    bounty.claimed_at = timezone.now()
     bounty.save()
 
     add_player_currency(player, bounty.value)
@@ -249,10 +236,19 @@ def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, int,
         raise InsufficientHealthError
     
     damage, currency, exp = attack_target(player, target)
+
+    # Retrieves latest data from db prior to processing the levels
+    player.refresh_from_db()
+    target.refresh_from_db()
+
     if target.current_health == 0:
         claim_bounty(player, bounty)
+
+    # Process level after checking for HP as players may level up in midst of processing their levels causing them not able to die
+    level = process_level(player)
+    process_level(target)
     
-    return damage, currency, exp, target.username
+    return damage, currency, exp, level, target.username
 
 
 def create_bounty(serializer_data: OrderedDict) -> None:
