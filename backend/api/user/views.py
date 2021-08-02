@@ -10,6 +10,7 @@ from .services import attack_player_on_bounty, create_bounty, create_user_relati
 from .exceptions import BountyExistError, SameUserError, InsufficientCurrencyError, InsufficientHealthError
 from .selectors import get_all_users, get_bounties_by_status, get_list_of_relationships_by_username, get_user_by_user_id, get_user_by_username, get_users_by_relationships, get_x_random_users, get_unclaimed_bounties
 
+
 class UserProfileDetail(views.APIView):
     def get_object(self, pk):
         if pk.isdigit():
@@ -148,7 +149,7 @@ class BountyPatch(views.APIView):
                 }, status=status.HTTP_200_OK)
             except InsufficientHealthError:
                 return Response({
-                    "message": f"{target} is currently dead",
+                    "message": f"Target is currently dead",
                 }, status=status.HTTP_400_BAD_REQUEST)
         return Response({
             "message": "Bounty parameter not specified",

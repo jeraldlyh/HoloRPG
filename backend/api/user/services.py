@@ -40,7 +40,7 @@ def exp_required(level: int) -> int:
     return round(amount / 4)
 
 
-def damage_dealt(player: UserProfile, target: UserProfile, percentage: int = 100) -> int:
+def damage_dealt(player: UserProfile, target: UserProfile, percentage: int = 1) -> int:
     """
         Computes damage dealt from player to target
         - Amount = (Attack^2 / (Attack + Defence))
@@ -52,13 +52,24 @@ def damage_dealt(player: UserProfile, target: UserProfile, percentage: int = 100
     upper_bound = int(1.25 * amount)
     damage = round(random.randint(lower_bound, upper_bound) * percentage)
 
-    if target.current_health - damage > 0:
-        target.current_health = F("current_health") - damage
-    else:
-        target.current_health = 0
+    # if target.current_health - damage > 0:
+    #     target.current_health = F("current_health") - damage
+    # else:
+    #     target.current_health = 0
 
-    target.save()
+    # target.save()
     return damage
+
+
+def get_index_enhancements(level: int) -> int:
+    """
+        Retrieves the index for enhancement stats
+    """
+
+    for key in LEVELS[::-1]:
+        if level >= key:
+            return key
+    return 0
 
 
 def process_level(player: UserProfile):
@@ -66,23 +77,28 @@ def process_level(player: UserProfile):
         Returns number of levels if player has leveled up
     """
 
-    # Retrieves the correct index
-    index = 0
-    for key in LEVELS[::-1]:
-        if player.level >= key:
-            index = key
+    currentLevel = player.level
+    totalAttack = 0
+    totalDefence = 0
+    totalHP = 0
 
-    levels = 0
-    while player.experience >= exp_required(player.level):
-        player.attack = F("attack") + BASE_STATS[index]["Player"]["Attack"]
-        player.defence = F("defence") + BASE_STATS[index]["Player"]["Defence"]
-        player.current_health = F("current_health") + BASE_STATS[index]["Player"]["HP"]
-        player.max_health = F("max_health") + BASE_STATS[index]["Player"]["HP"]
+    while player.experience >= exp_required(currentLevel):
+        index = get_index_enhancements(currentLevel)
+        totalAttack += BASE_STATS[index]["Player"]["Attack"]
+        totalDefence += BASE_STATS[index]["Player"]["Defence"]
+        totalHP += BASE_STATS[index]["Player"]["HP"]
+        currentLevel += 1
+    
+    levelDiff = currentLevel - player.level
+
+    if levelDiff != 0:
+        player.attack = F("attack") + totalAttack
+        player.defence = F("defence") + totalDefence
+        player.current_health = F("current_health") + totalHP
+        player.max_health = F("max_health") + totalHP
+        player.level = F("level") + levelDiff
         player.save()
-        player.refresh_from_db()
-        levels += 1
-
-    return levels
+    return levelDiff
 
 
 def get_user_net_worth(username: str) -> int:
@@ -102,31 +118,27 @@ def get_user_net_worth(username: str) -> int:
     return net_worth * 3
 
 
-def exp_gained(player: UserProfile, target: UserProfile, percentage: int = 100) -> int:
+def exp_gained(player: UserProfile, target: UserProfile, percentage: int = 1) -> int:
     """
-        Adds player's experience
+        Compute EXP gained from the battle
         - Buffer = (Player Level + Target Level) * 5
-        - EXP Gained = (Target Level^2 * 4) +- Random(-Buffer, +Buffer) * percentage
+        - EXP Gained = (Target Level^2 * 4) +- Random(0, Buffer) * percentage
     """
 
     bound = (player.level + target.level) * 5
-    buffer = random.randint(-bound, bound)
-    experience = (target.level ** 2) * 4 + buffer
-    player.experience = F("experience") + round(experience * percentage)
-    player.save()
+    buffer = random.randint(0, bound)
+    experience = round(((target.level ** 2) * 4 + buffer) * percentage)
+    if experience > 0:
+        return experience
+    return 0
 
-    return experience
 
-
-def plunder(player: UserProfile, target: UserProfile) -> int:
+def plunder(target: UserProfile) -> int:
     """
         Target loses 3% of currency when attacked by player
     """
 
     currency = round(0.03 * target.currency)
-    add_player_currency(player, currency)
-    deduct_player_currency(target, currency)
-
     return currency
 
 
@@ -143,20 +155,48 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
     if target.current_health == 0:
         raise InsufficientHealthError
 
-    print("BEFORE", player.experience)
     result = is_attack_successful(player, target)
     winner = player if result else target
     loser = target if result else player
+    print("Winner: ", winner.username)
 
     winner_damage = damage_dealt(winner, loser)         # Winner deals 100% damage to loser
-    loser_damage = damage_dealt(loser, winner, 25)      # Loser returns 25% damage to winner
+    loser_damage = damage_dealt(loser, winner, 0.25)    # Loser returns 25% damage to winner
 
     winner_exp = exp_gained(winner, loser)              # Winner earns 100% of experience in the battle
-    loser_exp = exp_gained(loser, winner, 25)           # Loser earns 25% of experience in the battle
+    loser_exp = exp_gained(loser, winner, 0.25)         # Loser earns 25% of experience in the battle
 
-    winner_currency = plunder(winner, target)           # Winner plunders loser's currency
+    winner_currency = plunder(loser)                    # Winner plunders loser's currency
 
-    print("AFTER", player.experience)
+    print(f"DMG | {winner.username} -= {loser_damage} | {loser.username}-= {winner_damage}")
+    print(f"EXP | {winner.username} += {winner_exp} | {loser.username} += {loser_exp}")
+
+    # Database operations
+    if winner.current_health - loser_damage > 0:
+        winner.current_health = F("current_health") - loser_damage
+    else:
+        winner.current_health = 0
+
+    if loser.current_health - winner_damage > 0:
+        loser.current_health = F("current_health") - winner_damage
+    else:
+        loser.current_health = 0
+    
+    winner.experience = F("experience") + winner_exp
+    loser.experience = F("experience") + loser_exp
+    winner.currency = F("currency") + winner_currency
+    loser.currency = F("currency") - winner_currency
+
+    winner.save()
+    loser.save()
+
+    # Retrieves latest data from db prior to processing the levels
+    winner.refresh_from_db()
+    loser.refresh_from_db()
+
+    process_level(winner)
+    process_level(loser)
+
     return (winner_damage, winner_currency, winner_exp) if winner == player else (loser_damage, 0, loser_exp)
 
 

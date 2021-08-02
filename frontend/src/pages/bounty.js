@@ -83,7 +83,7 @@ function Bounty() {
                         <CardLight height="full" width="full" header={true}>
                             {
                                 currentIndex === 0
-                                    ? <BountyList bountyData={bountyData} />
+                                    ? <BountyList bountyData={bountyData} username={username} accessToken={accessToken} />
                                     : (         // Place bounty tab
                                         <Fragment>
                                             <div className="flex justify-around items-center mb-3">

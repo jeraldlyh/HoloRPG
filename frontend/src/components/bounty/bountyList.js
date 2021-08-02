@@ -6,17 +6,18 @@ import axiosInstance from "../../axios"
 import Button from "../button"
 
 
-function BountyList({ bountyData, accessToken }) {
+function BountyList({ bountyData, accessToken, username }) {
     const [isLoading, setIsLoading] = useState(false)
 
-    // const attackPlayer = (bountyId) => {
-    //     setIsLoading(true)
-    //     axiosInstance.interceptors.request.use(function (config) {
-    //         config.headers.Authorization = "Bearer " + accessToken
-    //         return config
-    //     })
-    //     axiosInstance.patch(`/api/bounty/${bountyId}/`, )
-    // }
+    const attackPlayer = async (bountyId) => {
+        setIsLoading(true)
+        axiosInstance.interceptors.request.use(function (config) {
+            config.headers.Authorization = "Bearer " + accessToken
+            return config
+        })
+        const response = await axiosInstance.patch(`/api/bounty/${bountyId}/`, { attacker: username })
+        console.log(response)
+    }
 
     return (
         <Fragment>
@@ -55,7 +56,7 @@ function BountyList({ bountyData, accessToken }) {
                                 </span>
                                 <span className="w-1/6 text-center text-gray-300 text-xs">{moment(bounty.placed_at).fromNow()}</span>
                                 <div className="flex items-center justify-center w-1/7">
-                                    <Button width="3/4" height="10" text={<GiSwordWound size={16} />} background={true}/>                                                                                           
+                                    <Button width="3/4" height="10" text={<GiSwordWound size={16} />} background={true} onClick={() => attackPlayer(bounty.id)}/>
                                 </div>
                             </div>
                         )
