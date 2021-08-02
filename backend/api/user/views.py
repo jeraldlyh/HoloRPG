@@ -136,14 +136,15 @@ class BountyPatch(views.APIView):
             try:
                 player_name = request.data["attacker"]
                 bounty_id = pk
-                damage, currency, exp, target = attack_player_on_bounty(player_name, bounty_id)
+                damage, currency, exp, level, target = attack_player_on_bounty(player_name, bounty_id)
 
                 return Response({
                     "rewards": {
                         "target": target,
                         "damage": damage,
                         "currency": currency,
-                        "experience": exp
+                        "level": level,
+                        "experience": exp,
                     },
                     "bounty": get_unclaimed_bounties(),
                 }, status=status.HTTP_200_OK)
@@ -154,19 +155,3 @@ class BountyPatch(views.APIView):
         return Response({
             "message": "Bounty parameter not specified",
         }, status=status.HTTP_400_BAD_REQUEST)
-
-
-class BountyViewSet(viewsets.ViewSet):
-    serializer_class = BountySerializer
-
-    def create(self, request):
-        request_copy = request.data.copy()
-        target_name = request.data["target"]
-        target = get_user_by_username(target_name)
-        bounty_value = get_user_net_worth(target.username)                          # To be computed by a formula to determine player's net worth
-        request_copy["value"] = bounty_value
-        serializer = self.serializer_class(data=request_copy)
-
-        if serializer.is_valid():
-            create_bounty(serializer.validated_data)
-        return Response({"Bad Request": serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)

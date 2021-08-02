@@ -1,11 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import BountyListCreate, BountyPatch, UserProfileDetail, UserProfileList, UserRelationshipCreate, UserRelationshipDetail, BountyViewSet, UserRelationshipViewSet
+from .views import BountyListCreate, BountyPatch, UserProfileDetail, UserProfileList, UserRelationshipCreate, UserRelationshipDetail, UserRelationshipViewSet
 
 
 router = DefaultRouter()
 router.register(r"relationshipcreate", UserRelationshipViewSet, basename="relationship")
-router.register(r"bountycreate", BountyViewSet, basename="bountycreate")
 
 urlpatterns = [
     path("", include(router.urls)),

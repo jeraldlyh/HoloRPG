@@ -253,6 +253,8 @@ paths:
                         type: integer
                       currency:
                         type: integer
+                      level:
+                        type: integer
                       experience:
                         type: integer
                   bounty:

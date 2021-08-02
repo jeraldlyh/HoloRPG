@@ -161,7 +161,7 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
     winner_exp = exp_gained(winner, loser)              # Winner earns 100% of experience in the battle
     loser_exp = exp_gained(loser, winner, 0.25)         # Loser earns 25% of experience in the battle
 
-    winner_currency = plunder(loser)                    # Winner plunders loser's currency
+    currency = plunder(loser)                    # Winner plunders loser's currency
 
     print(f"DMG | {winner.username} -= {loser_damage} | {loser.username} -= {winner_damage}")
     print(f"EXP | {winner.username} += {winner_exp} | {loser.username} += {loser_exp}")
@@ -179,12 +179,12 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
     
     winner.experience = F("experience") + winner_exp
     loser.experience = F("experience") + loser_exp
-    winner.currency = F("currency") + winner_currency
-    loser.currency = F("currency") - winner_currency
+    winner.currency = F("currency") + currency
+    loser.currency = F("currency") - currency
 
     winner.save()
     loser.save()
-    return (winner_damage, winner_currency, winner_exp) if winner == player else (loser_damage, 0, loser_exp)
+    return (winner_damage, currency, winner_exp) if winner == player else (loser_damage, 0, loser_exp)
 
 
 def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
@@ -196,6 +196,7 @@ def claim_bounty(player: UserProfile, bounty: Bounty) -> None:
     bounty.claimed_by = player
     bounty.claimed_at = timezone.now()
     bounty.save()
+    print(player.username, " collecting ", bounty.value)
 
     add_player_currency(player, bounty.value)
 
@@ -243,6 +244,7 @@ def attack_player_on_bounty(player_name: str, bounty_id: str) -> Tuple[int, int,
 
     if target.current_health == 0:
         claim_bounty(player, bounty)
+        player.refresh_from_db()            # Bug where player receives twice the amount of bounty value due to faulty cached data
 
     # Process level after checking for HP as players may level up in midst of processing their levels causing them not able to die
     level = process_level(player)

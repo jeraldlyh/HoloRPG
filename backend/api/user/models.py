@@ -137,8 +137,8 @@ class UserRelationship(models.Model):
 
 class Bounty(models.Model):
     class StatusOptions(models.TextChoices):
-        CLAIMED = "Claimed", _("Claimed")
-        UNCLAIMED = "Unclaimed", _("Unclaimed")
+        CLAIMED = "Claimed", _("CLAIMED")
+        UNCLAIMED = "Unclaimed", _("UNCLAIMED")
 
     id = models.CharField(primary_key=True, max_length=36, blank=True, default=uuid.uuid4, editable=False)
     placed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="placed_by")
