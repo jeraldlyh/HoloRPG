@@ -41,14 +41,14 @@ def exp_required(level: int) -> int:
     return round(amount / 4)
 
 
-def damage_dealt(player: UserProfile, target: UserProfile, percentage: int = 1) -> int:
+def damage_dealt(player: UserProfile, percentage: int = 1) -> int:
     """
         Computes damage dealt from player to target
         - Amount = (Attack^2 / (Attack + Defence))
         - Damage =  Random(75% of amount, 125% of amount) * Percentage
     """
 
-    amount = player.attack ** 2 / (player.attack / player.defence)
+    amount = player.attack ** 2 / (player.attack + player.defence)
     lower_bound = int(0.75 * amount)
     upper_bound = int(1.25 * amount)
     damage = round(random.randint(lower_bound, upper_bound) * percentage)
@@ -155,8 +155,8 @@ def attack_target(player: UserProfile, target: UserProfile) -> Tuple[int, int, i
     loser = target if result else player
     print("Winner: ", winner.username)
 
-    winner_damage = damage_dealt(winner, loser)         # Winner deals 100% damage to loser
-    loser_damage = damage_dealt(loser, winner, 0.25)    # Loser returns 25% damage to winner
+    winner_damage = damage_dealt(winner)         # Winner deals 100% damage to loser
+    loser_damage = damage_dealt(loser, 0.25)    # Loser returns 25% damage to winner
 
     winner_exp = exp_gained(winner, loser)              # Winner earns 100% of experience in the battle
     loser_exp = exp_gained(loser, winner, 0.25)         # Loser earns 25% of experience in the battle
