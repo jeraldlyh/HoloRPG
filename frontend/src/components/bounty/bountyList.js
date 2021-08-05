@@ -46,7 +46,7 @@ function BountyList({ bountyData, bountyMutate, profileMutate, accessToken, user
                         <span className="w-1/6">PLACED BY</span>
                         <span className="w-1/6">BOUNTY VALUE</span>
                         <span className="w-1/6">TIME</span>
-                        <span className="w-1/7" />
+                        <span className="w-1/7"/>
                     </div>
                     <hr className="border-custom-color-grey w-full mt-1" />
                     {
@@ -60,7 +60,7 @@ function BountyList({ bountyData, bountyMutate, profileMutate, accessToken, user
                                             <div className="w-10">
                                                 <div className="w-10 h-10 bg-custom-color-grey rounded-full"></div>
                                             </div>
-                                            <div className="w-16 ml-4">
+                                            <div className="w-16 ml-3">
                                                 <span>{bounty.target}</span>
                                             </div>
                                         </div>
@@ -68,8 +68,12 @@ function BountyList({ bountyData, bountyMutate, profileMutate, accessToken, user
                                         <span className="w-1/7 text-center">{bounty.target_health.current_health}/{bounty.target_health.max_health}</span>
 
                                         <div className="flex w-1/6 items-center justify-center">
-                                            <div className="w-10 h-10 bg-custom-color-grey rounded-full mr-4"></div>
-                                            <span className="text-center">{bounty.placed_by}</span>
+                                            <div className="w-10">
+                                                <div className="w-10 h-10 bg-custom-color-grey rounded-full"></div>
+                                            </div>
+                                            <div className="w-16 ml-3">
+                                                <span>{bounty.placed_by}</span>
+                                            </div>
                                         </div>
                                         <span className="w-1/6 text-center font-semibold">
                                             <NumberFormat value={bounty.value} displayType={"text"} thousandSeparator={true} prefix={"$"} />
