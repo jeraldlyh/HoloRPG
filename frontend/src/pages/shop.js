@@ -104,8 +104,8 @@ function Shop() {
                                                                 <span className="w-40 text-center">{item.name}</span>
                                                                 <span className="w-20 text-center">${item.income}</span>
                                                                 <span className="w-20 text-center">${item.upkeep}</span>
-                                                                <span className="w-20 text-center">${item.cost}</span>                                                                                                
-                                                                <Button width="32" height="10" text="Purchase" background={true} onClick={() => handleEntityButton(item.name, item.cost)}/>                                                        
+                                                                <span className="w-20 text-center">${item.cost}</span>
+                                                                <Button width="32" height="10" text="Purchase" background={true} onClick={() => handleEntityButton(item.name, item.cost)} />
                                                             </div>
                                                             <hr className="border-custom-color-grey w-full mt-1 mb-2" />
                                                         </Fragment>
