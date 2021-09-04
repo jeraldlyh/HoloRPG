@@ -89,7 +89,7 @@ const settings = {
                         accessToken: newAccessToken,
                         // refreshToken: newRefreshToken,
                         iat: Math.floor(Date.now() / 1000),
-                        exp: Math.floor(Date.now() / 1000 + process.env.JWT_EXPIRY_MINS * 60 * 60)
+                        exp: Math.floor(Date.now() / 1000 + process.env.JWT_ACCESS_TOKEN_EXPIRY_MINS * 60 * 60)
                     }
                     return token
                 }

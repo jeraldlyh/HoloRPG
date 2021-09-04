@@ -167,8 +167,8 @@ CORS_ALLOWED_ORIGINS = [
 
 # JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(config('ACCESS_TOKEN_EXPIRY_MINS'))),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(config('REFRESH_TOKEN_EXPIRY_DAYS'))),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(config('JWT_ACCESS_TOKEN_EXPIRY_MINS'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(config('JWT_REFRESH_TOKEN_EXPIRY_DAYS'))),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True, 
     'UPDATE_LAST_LOGIN': True,
