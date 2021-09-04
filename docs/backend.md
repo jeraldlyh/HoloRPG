@@ -4,7 +4,8 @@
 | ------------------------- | ------------------------------------------------------ |
 | `DJANGO_DEBUG`            | Set to `True` or `False`                               |
 | `DJANGO_SECRET_KEY`       | Secret used to sign the session, messages, crypography |
-Refer to [here](https://docs.djangoproject.com/en/3.2/ref/settings/)
+
+Reference to: [Django Settings Documentation](https://docs.djangoproject.com/en/3.2/ref/settings/)
 
 #### Database
 | Name                 | Description                          |
@@ -20,7 +21,8 @@ Refer to [here](https://docs.djangoproject.com/en/3.2/ref/settings/)
 | ---------------------- | --------------------------------- |
 | `GOOGLE_CLIENT_ID`     | OAuth 2.0 Client ID               |
 | `GOOGLE_CLIENT_SECRET` | OAuth 2.0 Client Secret           |
-- Refer to [here](https://next-auth.js.org/providers/google)
+
+Reference to: [NextAuth Documentation](https://next-auth.js.org/providers/google)
 
 #### JWT Token
 | Name                            | Description                                   |
