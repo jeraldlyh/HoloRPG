@@ -80,6 +80,8 @@ HoloRPG is open to any inputs, whether it's:
 - Proposing new features
 - Becoming a maintainer of the project
 
+Feel free to contact me on [Discord](https://discord.com/) at xDevolution#3059.
+
 ### Commit messages
 This project is transiting into the conventional commits standard. Do kindly follow the specifications specified in [here](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) prior to a pull request.
 
