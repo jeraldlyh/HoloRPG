@@ -7,21 +7,22 @@
 - [Features](#features)
 - [Platforms](#platforms)
 - [Development](#development)
-  - [Environment variables](#Environment-variables)
+  - [Environment variables](#environment-variables)
+  - [Configuration](#configuration)
   - [Installation of dependencies](#installation-of-dependencies)
 
 ## Features
 
-| Released             | Feature         | Description                                                                                |
-| :------------------: | --------------- | ------------------------------------------------------------------------------------------ |
-| :heavy_check_mark:   | Bounty          | Place bounties on other players to make them lose their wealth                             |
-| :heavy_check_mark:   | Leaderboards    | View the global standings of players                                                       |
-| :heavy_check_mark:   | Shop            | Purchase in-game items to enhance players' statistics                                      |
-| :heavy_check_mark:   | Properties      | Maintain properties that generate hourly income                                            |
-| :x:                  | Class Selection | Choose individual classes with unique statistics                                           |
-| :x:                  | PvP             | Attack players that are not on the bounty list to plunder their wealth                     |
-| :x:                  | Stocks          | Gain additional income through trading stocks or receive dividends through passive stocks  |
-| :x:                  | Friends         | Forge meaningful connections/aliances to take down other players                           |
+| Feature         | Description                                                                                | Released             |
+| --------------- | ------------------------------------------------------------------------------------------ | :------------------: |
+| Bounty          | Place bounties on other players to make them lose their wealth                             | :heavy_check_mark:   |
+| Leaderboards    | View the global standings of players                                                       | :heavy_check_mark:   |
+| Shop            | Purchase in-game items to enhance players' statistics                                      | :heavy_check_mark:   |
+| Properties      | Maintain properties that generate hourly income                                            | :heavy_check_mark:   |
+| Class Selection | Choose individual classes with unique statistics                                           | :x:                  |
+| PvP             | Attack players that are not on the bounty list to plunder their wealth                     | :x:                  |
+| Stocks          | Gain additional income through trading stocks or receive dividends through passive stocks  | :x:                  |
+| Friends         | Forge meaningful connections/aliances to take down other players                           | :x:                  |
 
 ## Platforms
 
