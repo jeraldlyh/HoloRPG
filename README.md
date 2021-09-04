@@ -10,6 +10,9 @@
   - [Environment variables](#environment-variables)
   - [Configuration](#configuration)
   - [Installation of dependencies](#installation-of-dependencies)
+- [Contribution](#contribution)
+  - [Commit messages](#commit-messages)
+- [License](#license)
 
 ## Features
 
@@ -68,3 +71,17 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py loaddata data.json    # Load fixtures
 ```
+
+## Contribution
+HoloRPG is open to any inputs, whether it's:
+- Reporting an issue
+- Discussing the state of the code
+- Submitting a fix
+- Proposing new features
+- Becoming a maintainer of the project
+
+### Commit messages
+This project is transiting into the conventional commits standard. Do kindly follow the specifications specified in [here](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) prior to a pull request.
+
+## License
+By contributing to HoloRPG, you agree that your contributions will be licensed under the [LICENSE file](LICENSE).
