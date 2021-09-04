@@ -16,7 +16,8 @@
 | ---------------------- | --------------------------------- |
 | `GOOGLE_CLIENT_ID`     | OAuth 2.0 Client ID               |
 | `GOOGLE_CLIENT_SECRET` | OAuth 2.0 Client Secret           |
-- Refer to [here](https://next-auth.js.org/providers/google)
+
+Reference to [NextAuth Documentation](https://next-auth.js.org/providers/google)
 
 #### JWT Token
 | Name                           | Description                                   |
